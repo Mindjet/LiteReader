@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{data.background}"
+        android:orientation="vertical"
+        app:elevation="@{data.elevation}">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:visibility="@{data.sink}" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp">
+
+            <LinearLayout
+                android:id="@+id/lly_left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:vm="@{data.leftViewModel}" />
+
+            <LinearLayout
+                android:id="@+id/lly_center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal"
+                app:vm="@{data.centerViewModel}" />
+
+            <LinearLayout
+                android:id="@+id/lly_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal"
+                app:vm="@{data.rightViewModel}" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>

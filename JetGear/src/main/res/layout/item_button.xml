@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.jetgear.mvvm.viewmodel.item.ButtonViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_white"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="@{data.action}"
+        android:orientation="vertical"
+        app:elevation="@{data.withElevation}"
+        app:layout_height="@{data.height}"
+        app:layout_width="@{data.width}"
+        app:margin="@{data.margin}">
+
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@{data.padding}"
+            android:text="@{data.text}"
+            android:textColor="@{data.textColor}"
+            android:textSize="@{data.textSize}" />
+
+    </LinearLayout>
+
+</layout>

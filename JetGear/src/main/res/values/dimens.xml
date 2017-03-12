@@ -1,0 +1,38 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--Status Bar-->
+    <dimen name="status_bar_height">25dp</dimen>
+
+    <!--Header-->
+    <dimen name="header_text_size">16sp</dimen>
+    <dimen name="header_text_size_large">18sp</dimen>
+    <dimen name="header_text_size_small">14sp</dimen>
+
+    <!--View Pager-->
+    <dimen name="view_pager_small_height">200dp</dimen>
+    <dimen name="view_pager_height">400dp</dimen>
+    <dimen name="view_pager_dot_space">5dp</dimen>
+    <dimen name="view_pager_dot_large_space">8dp</dimen>
+
+    <!--Drawer-->
+    <dimen name="drawer_width_normal">200dp</dimen>
+    <dimen name="drawer_header_height">100dp</dimen>
+    <dimen name="drawer_header_height_large">200dp</dimen>
+
+    <!--Tab Layout-->
+    <dimen name="tab_item_height">50dp</dimen>
+    <dimen name="tab_item_padding">5dp</dimen>
+    <dimen name="tab_item_image_width">30dp</dimen>
+    <dimen name="tab_item_image_height">30dp</dimen>
+
+    <!--Coordinator Layout-->
+    <dimen name="collapse_layout_height">200dp</dimen>
+    <dimen name="collapse_layout_height_large">300dp</dimen>
+
+    <dimen name="avatar_width">60dp</dimen>
+    <dimen name="avatar_height">60dp</dimen>
+
+</resources>

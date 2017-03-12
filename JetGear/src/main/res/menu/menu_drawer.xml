@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/ground_1"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_item_inbox"
+            android:checked="true"
+            android:icon="@drawable/ic_inbox_gray"
+            android:title="@string/inbox" />
+        <item
+            android:id="@+id/drawer_item_starred"
+            android:icon="@drawable/ic_starred_gray"
+            android:title="@string/starred" />
+        <item
+            android:id="@+id/drawer_item_sent"
+            android:icon="@drawable/ic_sent_gray"
+            android:title="@string/sent_mails" />
+        <item
+            android:id="@+id/drawer_item_draft"
+            android:icon="@drawable/ic_draft_gray"
+            android:title="@string/draft" />
+
+    </group>
+
+    <group
+        android:id="@+id/group_2"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_item_inbox_2"
+            android:icon="@drawable/ic_inbox_gray"
+            android:title="@string/inbox" />
+        <item
+            android:id="@+id/drawer_item_starred_2"
+            android:icon="@drawable/ic_starred_gray"
+            android:title="@string/starred" />
+
+    </group>
+
+</menu>

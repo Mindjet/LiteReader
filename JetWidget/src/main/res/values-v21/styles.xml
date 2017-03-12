@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--This style is used to hide status bar and title, whether the Activity extends the AppCompatActivity or Activity-->
+    <!--But it only takes effect on API 19 and later versions-->
+    <style name="AppTheme.NoTitle" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+</resources>

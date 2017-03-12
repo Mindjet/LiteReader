@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="transition_name_image">transition_name_image</string>
+    <string name="transition_name_text">transition_name_text</string>
+
+    <string name="app_name">JetGear</string>
+    <string name="inbox">Inbox</string>
+    <string name="starred">starred</string>
+    <string name="sent_mails">sent mails</string>
+    <string name="draft">draft</string>
+</resources>

@@ -1,0 +1,33 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!--This style is used to hide status bar and title, whether the Activity extends the AppCompatActivity or Activity-->
+    <!--But it only takes effect on API 19 and later versions-->
+    <style name="AppTheme.NoTitle" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="ToolbarTextAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/common_text_size</item>
+    </style>
+
+    <style name="ToolbarTextAppearance.Collapsed" parent="ToolbarTextAppearance">
+        <item name="android:textSize">@dimen/common_text_size_large</item>
+    </style>
+
+    <style name="ToolbarTextAppearance.Expanded" parent="ToolbarTextAppearance">
+        <item name="android:textSize">@dimen/common_text_size_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

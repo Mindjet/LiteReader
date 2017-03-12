@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.jetgear.mvvm.viewmodel.item.TabViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{data.background}"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/tab_item_padding">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/tab_item_image_width"
+            android:layout_height="@dimen/tab_item_image_height" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.text}"
+            android:visibility='@{data.text.equals("")?View.GONE:View.VISIBLE}' />
+
+    </LinearLayout>
+
+</layout>

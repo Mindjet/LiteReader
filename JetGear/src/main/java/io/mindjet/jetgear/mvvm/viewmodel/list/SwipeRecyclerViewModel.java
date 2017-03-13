@@ -26,11 +26,11 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
 
     @Override
     public void onViewAttached(View view) {
+        afterViewAttached();
         recyclerView = getSelfView().getBinding().recyclerView;
         swipeLayout = getSelfView().getBinding().swipeLayout;
         initSwipeLayout();
         initRecyclerView();
-        afterViewAttached();
     }
 
     private void initSwipeLayout() {

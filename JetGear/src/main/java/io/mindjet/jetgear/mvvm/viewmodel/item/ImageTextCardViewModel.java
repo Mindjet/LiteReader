@@ -28,6 +28,16 @@ public class ImageTextCardViewModel extends BaseViewModel<ViewInterface<ItemImag
         return imageUrl;
     }
 
+    public ImageTextCardViewModel imageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public ImageTextCardViewModel text(String text) {
+        this.text = text;
+        return this;
+    }
+
     public ImageTextCardViewModel action(Action0 action) {
         this.action = action;
         return this;

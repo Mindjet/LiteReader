@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    dataBinding {
+        enabled true
+    }
+
+    defaultConfig {
+        applicationId "io.mindjet.litereader"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        jetpack_dev {
+            storeFile file("jetpack_dev.jks")
+            storePassword "111111"
+            keyAlias "Mindjet"
+            keyPassword "111111"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.jetpack_dev
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        inhouse {
+            applicationId "io.mindjet.litereader.inhouse"
+            manifestPlaceholders = [
+                    appLabel: "@strings/app_name"
+            ]
+            buildConfigField "boolean", "inhouse", "true"
+            buildConfigField "String", "BASE_URL", '"https://api.github.com"'
+            buildConfigField "String", "DATA_PATH", '"LiteReader"'
+        }
+
+        open {}
+    }
+
+    productFlavors.all { flavor ->
+        if (flavor.name != "inhouse") {
+            flavor.applicationId "io.mindjet.litereader"
+            flavor.manifestPlaceholders = [
+                    appLabel: "@strings/app_name"
+            ]
+            flavor.buildConfigField "boolean", "inhouse", "false"
+            flavor.buildConfigField "String", "BASE_URL", '"https://api.github.com"'
+            flavor.buildConfigField "String", "DATA_PATH", '"LiteReader"'
+        }
+    }
+
+}

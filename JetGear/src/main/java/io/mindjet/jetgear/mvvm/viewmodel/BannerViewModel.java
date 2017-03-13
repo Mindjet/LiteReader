@@ -36,6 +36,7 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
     private BannerPagerAdapter adapter;
     private BannerPagerChangeListener listener;
     private Subscription tiktokSub;
+    private boolean isAttached = false;
 
     private BannerViewModel(Builder builder) {
         this.builder = builder;
@@ -43,10 +44,14 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
 
     @Override
     public void onViewAttached(View view) {
-        initPagerAdapter();
-        initPagerListener();
-        initCursors();
-        initTikTok();
+        //avoid doing the initialization work when it is rebound by the RecyclerView.
+        if (!isAttached) {
+            initPagerAdapter();
+            initPagerListener();
+            initCursors();
+            initTikTok();
+            isAttached = true;
+        }
     }
 
     private void initPagerAdapter() {

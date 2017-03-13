@@ -9,7 +9,6 @@ android {
     }
 
     defaultConfig {
-//        applicationId "io.mindjet.jetpack"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1

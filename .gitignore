@@ -29,11 +29,7 @@ Thumbs.db
 *.iml
 build/
 captures/
-.idea
-.idea/compiler.xml
-.idea/misc.xml
-.idea/workspace.xml
-.idea/libraries/
+.idea/
 
 # Gradle Files
 .gradle

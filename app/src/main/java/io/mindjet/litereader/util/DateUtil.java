@@ -21,7 +21,7 @@ public class DateUtil {
         int days = (int) Math.ceil(diff / (24 * 60 * 60 * 1000));
         switch (days) {
             case 1:
-                return "一天前";
+                return "昨天";
             case 2:
                 return "两天前";
             default:

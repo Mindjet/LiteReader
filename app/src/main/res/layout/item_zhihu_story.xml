@@ -20,6 +20,7 @@
         app:cardElevation="@dimen/cardview_default_elevation">
 
         <LinearLayout
+            android:id="@+id/lly_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_default"

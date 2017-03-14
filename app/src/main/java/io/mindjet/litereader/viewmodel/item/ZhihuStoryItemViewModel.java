@@ -1,5 +1,6 @@
 package io.mindjet.litereader.viewmodel.item;
 
+import android.view.MotionEvent;
 import android.view.View;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
@@ -7,6 +8,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.AdapterInterface;
 import io.mindjet.jetpack.R;
 import io.mindjet.jetpack.databinding.ItemZhihuStoryBinding;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
+import rx.functions.Action3;
 
 /**
  * Created by Jet on 3/13/17.
@@ -14,12 +16,16 @@ import io.mindjet.litereader.model.item.ZhihuStoryItem;
 
 public class ZhihuStoryItemViewModel extends BaseViewModel<AdapterInterface<ItemZhihuStoryBinding>> {
 
-    private String imageUrl;
-    private String title;
+    private ZhihuStoryItem item;
+    private Action3<String, Integer, Integer> onAction;
 
     public ZhihuStoryItemViewModel(ZhihuStoryItem item) {
-        this.imageUrl = item.images.get(0);
-        this.title = item.title;
+        this.item = item;
+    }
+
+    public ZhihuStoryItemViewModel onAction(Action3<String, Integer, Integer> onAction) {
+        this.onAction = onAction;
+        return this;
     }
 
     @Override
@@ -29,15 +35,22 @@ public class ZhihuStoryItemViewModel extends BaseViewModel<AdapterInterface<Item
 
     @Override
     public void onViewAttached(View view) {
-
+        getSelfView().getBinding().llyContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP && onAction != null)
+                    onAction.call(item.id, ((int) event.getRawX()), ((int) event.getRawY()));
+                return false;
+            }
+        });
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return item.images.get(0);
     }
 
     public String getTitle() {
-        return title;
+        return item.title;
     }
 }
 

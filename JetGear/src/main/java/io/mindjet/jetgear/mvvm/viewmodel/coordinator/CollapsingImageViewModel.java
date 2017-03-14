@@ -18,7 +18,7 @@ public class CollapsingImageViewModel extends BaseViewModel<ViewInterface<Includ
 
     @DrawableRes
     private int drawableRes;
-    private String imageUrl;
+    private String imageUrl = "";
 
     public CollapsingImageViewModel(@DrawableRes int drawableRes) {
         this.drawableRes = drawableRes;

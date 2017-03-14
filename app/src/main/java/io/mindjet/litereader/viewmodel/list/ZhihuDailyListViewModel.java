@@ -1,5 +1,6 @@
-package io.mindjet.litereader.viewmodel.column;
+package io.mindjet.litereader.viewmodel.list;
 
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
@@ -12,10 +13,13 @@ import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetpack.R;
 import io.mindjet.jetutil.hint.Toaster;
+import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.ZhihuTopStoryItem;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
+import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.ZhihuDailyService;
+import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.DateUtil;
 import io.mindjet.litereader.viewmodel.item.ZhihuBannerItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
@@ -23,6 +27,7 @@ import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Action3;
 import rx.schedulers.Schedulers;
 
 /**
@@ -38,6 +43,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private Action1<ZhihuDailyList> onLoadLatestNews;
     private Action1<ZhihuDailyList> onRefreshLatestNews;
+    private Action3<String, Integer, Integer> onItemClick;
 
     @Override
     protected void afterViewAttached() {
@@ -73,6 +79,17 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 hideRefreshing();
             }
         };
+        onItemClick = new Action3<String, Integer, Integer>() {
+            @Override
+            public void call(String id, Integer touchX, Integer touchY) {
+                Intent intent = ZhihuStoryDetailActivity.intentFor(getContext());
+                intent.putExtra(Constant.EXTRA_ZHIHU_STORY_ID, id);
+                intent.putExtra(Constant.EXTRA_TOUCH_X, touchX);
+                intent.putExtra(Constant.EXTRA_TOUCH_Y, touchY);
+                getContext().startActivity(intent);
+            }
+        };
+
     }
 
     @Override
@@ -114,18 +131,13 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
         service.getLatest()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onNext, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Toaster.toast(getContext(), throwable.toString());
-                    }
-                });
+                .subscribe(onNext, RxAction.onError());
     }
 
     private void initNews(List<ZhihuStoryItem> newsList) {
         List<ZhihuStoryItemViewModel> vmList = new ArrayList<>(newsList.size());
         for (ZhihuStoryItem news : newsList)
-            vmList.add(new ZhihuStoryItemViewModel(news));
+            vmList.add(new ZhihuStoryItemViewModel(news).onAction(onItemClick));
         getAdapter().addAll(vmList);
         getAdapter().notifyDataSetChanged();
     }
@@ -134,7 +146,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
     private void initBanner(List<ZhihuTopStoryItem> topStories) {
         List<ZhihuBannerItemViewModel> vmList = new ArrayList<>(topStories.size());
         for (ZhihuTopStoryItem topStory : topStories)
-            vmList.add(new ZhihuBannerItemViewModel(topStory));
+            vmList.add(new ZhihuBannerItemViewModel(topStory).onAction(onItemClick));
         banner = new BannerViewModel.Builder()
                 .dotSpace(R.dimen.view_pager_dot_space_small)
                 .dotAreaHeight(R.dimen.view_pager_dot_area_height_small)
@@ -148,7 +160,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
     private void updateBanner(List<ZhihuTopStoryItem> topStories) {
         List<ZhihuBannerItemViewModel> vmList = new ArrayList<>(topStories.size());
         for (ZhihuTopStoryItem topStory : topStories)
-            vmList.add(new ZhihuBannerItemViewModel(topStory));
+            vmList.add(new ZhihuBannerItemViewModel(topStory).onAction(onItemClick));
         banner.updateViewModelList(vmList);
     }
 

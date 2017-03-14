@@ -7,6 +7,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.jetpack.R;
 import io.mindjet.jetpack.databinding.ItemZhihuBannerBinding;
 import io.mindjet.litereader.model.item.ZhihuTopStoryItem;
+import rx.functions.Action3;
 
 /**
  * Created by Jet on 3/14/17.
@@ -15,9 +16,15 @@ import io.mindjet.litereader.model.item.ZhihuTopStoryItem;
 public class ZhihuBannerItemViewModel extends BaseViewModel<ViewInterface<ItemZhihuBannerBinding>> {
 
     private ZhihuTopStoryItem item;
+    private Action3<String, Integer, Integer> onAction;
 
     public ZhihuBannerItemViewModel(ZhihuTopStoryItem item) {
         this.item = item;
+    }
+
+    public ZhihuBannerItemViewModel onAction(Action3<String, Integer, Integer> onAction) {
+        this.onAction = onAction;
+        return this;
     }
 
     public String getImageUrl() {
@@ -35,6 +42,13 @@ public class ZhihuBannerItemViewModel extends BaseViewModel<ViewInterface<ItemZh
 
     @Override
     public void onViewAttached(View view) {
-
+        getSelfView().getBinding().llyContainer
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onAction != null)
+                            onAction.call(item.id, 0, 0);
+                    }
+                });
     }
 }

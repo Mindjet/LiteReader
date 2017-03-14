@@ -21,7 +21,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewModel;
 import io.mindjet.jetpack.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
-import io.mindjet.litereader.viewmodel.column.ZhihuDailyListViewModel;
+import io.mindjet.litereader.viewmodel.list.ZhihuDailyListViewModel;
 
 /**
  * Created by Jet on 3/13/17.

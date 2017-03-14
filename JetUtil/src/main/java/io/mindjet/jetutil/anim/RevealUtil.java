@@ -1,12 +1,12 @@
-package io.mindjet.jetutil.view;
+package io.mindjet.jetutil.anim;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 
-import io.mindjet.jetutil.R;
 import io.mindjet.jetutil.logger.JLogger;
 import io.mindjet.jetutil.version.VersionUtil;
 
@@ -14,12 +14,22 @@ import io.mindjet.jetutil.version.VersionUtil;
  * Created by Jet on 3/7/17.
  */
 
-public class AnimUtil {
+public class RevealUtil {
 
     private static boolean takeEffect = VersionUtil.afterLollipop();
-    private static JLogger jLogger = JLogger.get("AnimUtil");
+    private static JLogger jLogger = JLogger.get("RevealUtil");
     private final static String REVEAL_WARNING = "Your version is too old to support reveal animation. Please update to Lollipop or later.";
 
+    /**
+     * Reveal the view from the given centerX and centerY.
+     *
+     * @param view        the target view.
+     * @param duration    animation duration.
+     * @param centerX     the pivotX
+     * @param centerY     the pivotY
+     * @param startRadius the radius of the beginning of the animation, which is generally be zero.
+     * @param endRadius   the radius of the end of the animation, which is generally the maximum of the view's height and width.
+     */
     private static void reveal(final View view, final int duration, final int centerX, final int centerY, final float startRadius, final float endRadius) {
         versionCheck(new Runnable() {
             @Override
@@ -32,6 +42,16 @@ public class AnimUtil {
         }, REVEAL_WARNING);
     }
 
+    /**
+     * Conceal the view from the given centerX and centerY.
+     *
+     * @param view        the target view.
+     * @param duration    animation duration.
+     * @param centerX     the pivotX
+     * @param centerY     the pivotY
+     * @param startRadius the radius of the end of the animation, which is generally the maximum of the view's height and width.
+     * @param endRadius   the radius of the beginning of the animation, which is generally zero.
+     */
     private static void conceal(final View view, final int duration, final int centerX, final int centerY, final float startRadius, final float endRadius) {
         versionCheck(new Runnable() {
             @Override
@@ -134,6 +154,7 @@ public class AnimUtil {
                 public void onAnimationEnd(Animator animation) {
                     rootView.setVisibility(View.GONE);
                     activity.finish();
+                    activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             });
             animator.start();
@@ -142,4 +163,20 @@ public class AnimUtil {
         }
     }
 
+    public static void revealDialog(final Dialog dialog, final int duration) {
+        versionCheck(new Runnable() {
+            @Override
+            public void run() {
+                final View rootView = dialog.findViewById(android.R.id.content);
+                rootView.setVisibility(View.INVISIBLE);
+                rootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        rootView.removeOnLayoutChangeListener(this);
+                        revealRightBottom(rootView, duration);
+                    }
+                });
+            }
+        }, REVEAL_WARNING);
+    }
 }

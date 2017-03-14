@@ -3,9 +3,12 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="card_view_radius_large">5dp</dimen>
+
     <dimen name="blank_height_medium">15dp</dimen>
     <dimen name="blank_height_small">10dp</dimen>
     <dimen name="blank_height_large">20dp</dimen>
+
 
     <dimen name="zhihu_story_item_image_length">80dp</dimen>
 </resources>

@@ -32,6 +32,8 @@ public class ZhihuStoryDetail {
 
     @SerializedName("body")
     public String body;
+    @SerializedName("title")
+    public String title;
     @SerializedName("image_source")
     public String imageSource;
     @SerializedName("image")

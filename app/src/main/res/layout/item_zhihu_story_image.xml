@@ -6,19 +6,17 @@
 
         <variable
             name="data"
-            type="io.mindjet.litereader.viewmodel.item.ZhihuBannerItemViewModel" />
+            type="io.mindjet.litereader.viewmodel.item.ZhihuStoryImageViewModel" />
     </data>
 
     <FrameLayout
-        android:id="@+id/lly_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/collapse_layout_height">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            app:placeHolder="@{@drawable/ic_placeholder}"
             app:url="@{data.imageUrl}" />
 
         <ImageView
@@ -30,11 +28,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/common_gap"
-            android:padding="@dimen/common_gap_medium"
-            android:text="@{data.title}"
-            android:textColor="@color/white"
-            android:textSize="@dimen/common_text_size_medium" />
+            android:padding="@dimen/common_gap"
+            android:text='@{"图片来源："+data.imageSource}'
+            android:textColor="#d9d9d9"
+            android:textSize="@dimen/common_text_size" />
 
     </FrameLayout>
 

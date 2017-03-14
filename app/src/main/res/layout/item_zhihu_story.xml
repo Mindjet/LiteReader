@@ -17,8 +17,7 @@
         android:layout_marginTop="@dimen/common_gap"
         android:background="@color/white"
         app:cardCornerRadius="@dimen/cardview_default_radius"
-        app:cardElevation="@dimen/cardview_default_elevation"
-        app:cardPreventCornerOverlap="true">
+        app:cardElevation="@dimen/cardview_default_elevation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +39,7 @@
                 android:paddingRight="@dimen/common_text_size_medium"
                 android:text="@{data.title}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/common_text_size_medium" />
+                android:textSize="@dimen/common_text_size" />
 
         </LinearLayout>
 

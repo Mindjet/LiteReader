@@ -45,10 +45,11 @@ public class ViewModelBinder {
      * @param attachToParent whether attach to container or not.
      * @param <V>            the binding type(extending ViewDataBinding) of the ViewModel.
      */
-    public static <V extends ViewDataBinding> void bind(ViewGroup container, BaseViewModel<ViewInterface<V>> viewModel, boolean attachToParent) {
+    public static <V extends ViewDataBinding> V bind(ViewGroup container, BaseViewModel<ViewInterface<V>> viewModel, boolean attachToParent) {
         V binding = DataBindingUtil.inflate(LayoutInflater.from(container.getContext()), viewModel.getLayoutId(), container, attachToParent);
         ViewInterface<V> viewInterface = ViewInterfaceGen.viewInterface(binding);
         viewModel.onAttach(viewInterface);
+        return binding;
     }
 
     /**

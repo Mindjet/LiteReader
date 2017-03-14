@@ -81,9 +81,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                         .backgroundColor(R.color.colorPrimary)
                         .content(getContext().getResources().getString(R.string.app_name))
                         .build())
-                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_location))
-                .item(new DrawerItemViewModel().content("xxx"))
-                .item(new DrawerItemViewModel().content("xxx"))
+                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_inbox_gray))
+                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_draft_gray))
+                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_starred_gray))
                 .background(R.color.white)
                 .build();
         ViewModelBinder.bind(container, drawer);
@@ -97,9 +97,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void initViewPager(ViewPager viewPager) {
-        //TODO 读取本地消息获取栏目
+        //TODO 读取本地缓存获取栏目
         columnViewPagerAdapter = new ColumnViewPagerAdapter();
-        columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), "知乎日报");
+        columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getContext().getResources().getString(R.string.column_zhihu_daily));
         viewPager.setAdapter(columnViewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPager.getAdapter().getCount() - 1);
     }

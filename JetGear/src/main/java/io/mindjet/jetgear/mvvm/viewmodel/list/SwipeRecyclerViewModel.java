@@ -26,9 +26,9 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
 
     @Override
     public void onViewAttached(View view) {
-        afterViewAttached();
         recyclerView = getSelfView().getBinding().recyclerView;
         swipeLayout = getSelfView().getBinding().swipeLayout;
+        afterViewAttached();
         initSwipeLayout();
         initRecyclerView();
     }
@@ -38,13 +38,17 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
     }
 
     //Can be overridden if not satisfied with the default LinearLayoutManager.
-    public void initRecyclerView() {
+    protected void initRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(getAdapter());
     }
 
-    public SwipeRefreshLayout getSwipeLayout() {
+    protected SwipeRefreshLayout getSwipeLayout() {
         return swipeLayout;
+    }
+
+    protected RecyclerView getRecyclerView() {
+        return recyclerView;
     }
 
     public ViewModelAdapter<S> getAdapter() {
@@ -72,7 +76,7 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
         swipeLayout.setRefreshing(true);
     }
 
-    public void changePbColor(@ColorRes int... draggingColor) {
+    protected void changePbColor(@ColorRes int... draggingColor) {
         swipeLayout.setColorSchemeResources(draggingColor);
     }
 

@@ -2,6 +2,7 @@ package io.mindjet.jetgear.mvvm.viewmodel;
 
 import android.animation.ObjectAnimator;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
@@ -30,7 +31,7 @@ import rx.schedulers.Schedulers;
  * Created by Jet on 2/23/17.
  */
 
-public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBinding>> {
+public class BannerViewModel<T extends BaseViewModel> extends BaseViewModel<ViewInterface<IncludeBannerBinding>> {
 
     private final Builder builder;
     private BannerPagerAdapter adapter;
@@ -55,14 +56,21 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
     }
 
     private void initPagerAdapter() {
-        if (builder.urlList == null) {
-            jLogger.w("Url list is null, use fake list with 3 blank items.");
+        if (builder.vmList != null) {
+            adapter = new BannerPagerAdapter();
+            adapter.updateViewModelList(builder.vmList);
+        } else if (builder.urlList != null) {
+            adapter = new BannerPagerAdapter();
+            adapter.updateUrlList(builder.urlList);
+        } else {
+            jLogger.w("If both ViewModel list and url list are null, use dummy list with 3 blank items.");
             builder.urlList = new ArrayList<>();
             builder.urlList.add("");
             builder.urlList.add("");
             builder.urlList.add("");
+            adapter = new BannerPagerAdapter();
+            adapter.updateUrlList(builder.urlList);
         }
-        adapter = new BannerPagerAdapter(builder.urlList);
         getSelfView().getBinding().viewPager.setAdapter(adapter);
     }
 
@@ -71,25 +79,19 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
         getSelfView().getBinding().viewPager.addOnPageChangeListener(listener);
     }
 
-    /**
-     * Render or re-render the cursors.
-     */
     private void initCursors() {
         getSelfView().getBinding().llyDots.removeAllViews();
-        for (int i = 0; i < builder.urlList.size(); i++) {
+        for (int i = 0; i < adapter.getCount(); i++) {
             ImageView imageView = new ImageView(getContext());
             imageView.setImageResource(builder.normalCursor);
             imageView.setPadding(
                     i == 0 ? 0 : ((int) getContext().getResources().getDimension(builder.dotSpace)), 0,
-                    i == builder.urlList.size() - 1 ? 0 : ((int) getContext().getResources().getDimension(builder.dotSpace)), 0
+                    i == adapter.getCount() - 1 ? 0 : ((int) getContext().getResources().getDimension(builder.dotSpace)), 0
             );
             getSelfView().getBinding().llyDots.addView(imageView, i);
         }
     }
 
-    /**
-     * Let the page changes automatically.
-     */
     private void initTikTok() {
         if (builder.interval != 0)
             tiktokSub = Observable.interval(builder.interval, TimeUnit.MILLISECONDS)
@@ -99,7 +101,7 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
                         @Override
                         public void call(Long aLong) {
                             int page = listener.currentPosition;
-                            page = page + 1 == builder.urlList.size() ? 0 : page + 1;
+                            page = page + 1 == adapter.getCount() ? 0 : page + 1;
                             getSelfView().getBinding().viewPager.setCurrentItem(page, true);
                         }
                     });
@@ -109,21 +111,30 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
         return (int) getContext().getResources().getDimension(builder.height);
     }
 
+    public int getDotAreaHeight() {
+        return (int) getContext().getResources().getDimension(builder.dotAreaHeight);
+    }
+
     public int getHighlightCursor() {
         return builder.highlightCursor;
     }
 
-    /**
-     * When you need to update the data set, you are supposed to call this method.
-     *
-     * @param urlList the new data set.
-     */
     public void updateUrlList(List<String> urlList) {
         if (tiktokSub != null) tiktokSub.unsubscribe();
         builder.urlList = urlList;
         initCursors();
         adapter.updateUrlList(urlList); //notify adapter.
         listener.onDataChanged();       //notify listener.
+        getSelfView().getBinding().viewPager.setCurrentItem(0, true);
+        initTikTok();
+    }
+
+    public void updateViewModelList(List<T> vmList) {
+        if (tiktokSub != null) tiktokSub.unsubscribe();
+        builder.vmList = vmList;
+        initCursors();
+        adapter.updateViewModelList(vmList);
+        listener.onDataChanged();
         getSelfView().getBinding().viewPager.setCurrentItem(0, true);
         initTikTok();
     }
@@ -139,8 +150,9 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
         if (tiktokSub != null && tiktokSub.isUnsubscribed()) tiktokSub.unsubscribe();
     }
 
-    public static class Builder {
+    public static class Builder<T extends BaseViewModel> {
         private List<String> urlList;
+        private List<T> vmList;
         @DimenRes
         private int height = R.dimen.view_pager_height;
         @DimenRes
@@ -148,9 +160,16 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
         @DrawableRes
         private int normalCursor = R.drawable.shape_cursor_normal, highlightCursor = R.drawable.shape_cursor_selected;
         private int interval = 0;
+        @DimenRes
+        private int dotAreaHeight = R.dimen.view_pager_dot_area_height;
 
         public Builder urlList(List<String> urlList) {
             this.urlList = urlList;
+            return this;
+        }
+
+        public Builder vmList(List<T> vmList) {
+            this.vmList = vmList;
             return this;
         }
 
@@ -174,10 +193,15 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
             return this;
         }
 
+        public Builder dotAreaHeight(@DimenRes int dotAreaHeight) {
+            this.dotAreaHeight = dotAreaHeight;
+            return this;
+        }
+
         /**
-         * Set the interval the page changes. If you don't want the viewpager changes page itself, just let interval be 0(default).
+         * Set the page-changing interval. If you don't want the viewpager changes page itself, just let interval be 0(default).
          *
-         * @param interval the page changing interval in millisecond.
+         * @param interval the page-changing interval in millisecond.
          * @return builder
          */
         public Builder interval(int interval) {
@@ -194,10 +218,10 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
     private class BannerPagerAdapter extends PagerAdapter {
 
         private List<String> urlList;
+        private List<T> vmList;
         private LayoutInflater inflater;
 
-        private BannerPagerAdapter(List<String> urlList) {
-            this.urlList = urlList;
+        private BannerPagerAdapter() {
             this.inflater = LayoutInflater.from(getContext());
         }
 
@@ -206,18 +230,30 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
             notifyDataSetChanged();
         }
 
+        void updateViewModelList(List<T> vmList) {
+            this.vmList = vmList;
+            notifyDataSetChanged();
+        }
+
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            ItemBannerBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_banner, container, false);
-            binding.setUrl(urlList.get(position));
-            binding.executePendingBindings();
-            container.addView(binding.getRoot());
-            return binding.getRoot();
+            if (vmList == null) {
+                ItemBannerBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_banner, container, false);
+                binding.setUrl(urlList.get(position));
+                binding.executePendingBindings();
+                container.addView(binding.getRoot());
+                return binding.getRoot();
+            } else {
+                ViewDataBinding binding = ViewModelBinder.bind(container, vmList.get(position), false);
+                binding.executePendingBindings();
+                container.addView(binding.getRoot());
+                return binding.getRoot();
+            }
         }
 
         @Override
         public int getCount() {
-            return urlList.size();
+            return vmList == null ? urlList == null ? 0 : urlList.size() : vmList.size();
         }
 
         @Override
@@ -265,7 +301,7 @@ public class BannerViewModel extends BaseViewModel<ViewInterface<IncludeBannerBi
                 getSelfView().getBinding().llyDots.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 float totalWidth = getSelfView().getBinding().llyDots.getMeasuredWidth();
                 float dotWidth = getSelfView().getBinding().llyDots.getChildAt(0).getWidth() - getContext().getResources().getDimensionPixelSize(builder.dotSpace);
-                offsetWidth = (totalWidth - dotWidth) / (builder.urlList.size() - 1);
+                offsetWidth = (totalWidth - dotWidth) / (adapter.getCount() - 1);
                 hasMeasuredWidths = true;
             }
         }

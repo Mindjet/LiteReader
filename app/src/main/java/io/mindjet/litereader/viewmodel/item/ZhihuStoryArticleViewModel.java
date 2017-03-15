@@ -1,6 +1,5 @@
 package io.mindjet.litereader.viewmodel.item;
 
-import android.text.Spanned;
 import android.view.View;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
@@ -14,10 +13,10 @@ import io.mindjet.jetpack.databinding.ItemZhihuStoryArticleBinding;
 
 public class ZhihuStoryArticleViewModel extends BaseViewModel<ViewInterface<ItemZhihuStoryArticleBinding>> {
 
-    private Spanned content;
+    private String content;
     private String title;
 
-    public ZhihuStoryArticleViewModel(String title, Spanned content) {
+    public ZhihuStoryArticleViewModel(String title, String content) {
         this.title = title;
         this.content = content;
     }
@@ -30,6 +29,6 @@ public class ZhihuStoryArticleViewModel extends BaseViewModel<ViewInterface<Item
     @Override
     public void onViewAttached(View view) {
         getSelfView().getBinding().title.setText(title);
-        getSelfView().getBinding().content.setText(content);
+        getSelfView().getBinding().content.setRichText(content);
     }
 }

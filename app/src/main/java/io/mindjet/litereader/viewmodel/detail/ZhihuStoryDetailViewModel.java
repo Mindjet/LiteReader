@@ -3,7 +3,6 @@ package io.mindjet.litereader.viewmodel.detail;
 import android.content.res.ColorStateList;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -102,7 +101,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     }
 
     private void renderArticle(ZhihuStoryDetail detail) {
-        recyclerViewModel.getAdapter().add(new ZhihuStoryArticleViewModel(detail.title, Html.fromHtml(detail.body)));
+        recyclerViewModel.getAdapter().add(new ZhihuStoryArticleViewModel(detail.title, detail.body));
     }
 
     @Override

@@ -1,4 +1,6 @@
 language: android
+cache: bundler
+
 android:
   components:
     - tools

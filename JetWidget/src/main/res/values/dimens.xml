@@ -6,6 +6,7 @@
     <dimen name="tool_bar_status_bar_height">25dp</dimen>
 
     <dimen name="common_text_size">15sp</dimen>
+    <dimen name="common_text_size_small">12sp</dimen>
     <dimen name="common_text_size_medium">18sp</dimen>
     <dimen name="common_text_size_large">20sp</dimen>
 

@@ -7,7 +7,7 @@ import java.io.File;
 
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetimage.picker.ImagePicker;
-import io.mindjet.jetpack.BuildConfig;
+import io.mindjet.litereader.BuildConfig;
 
 /**
  * Created by Jet on 2/8/17.

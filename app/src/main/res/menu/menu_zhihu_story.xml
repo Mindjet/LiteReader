@@ -5,4 +5,12 @@
         android:icon="@drawable/ic_share_gray"
         android:title="@string/menu_share"
         app:showAsAction="always" />
+    <item
+        android:icon="@drawable/ic_star"
+        android:title="@string/menu_collect"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/ic_more"
+        android:title="@string/menu_more"
+        app:showAsAction="always" />
 </menu>

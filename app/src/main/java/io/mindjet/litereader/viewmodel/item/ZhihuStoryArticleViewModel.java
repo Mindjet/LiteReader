@@ -4,8 +4,8 @@ import android.view.View;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
-import io.mindjet.jetpack.R;
-import io.mindjet.jetpack.databinding.ItemZhihuStoryArticleBinding;
+import io.mindjet.litereader.R;
+import io.mindjet.litereader.databinding.ItemZhihuStoryArticleBinding;
 
 /**
  * Created by Jet on 3/14/17.

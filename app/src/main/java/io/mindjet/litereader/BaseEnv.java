@@ -3,7 +3,7 @@ package io.mindjet.litereader;
 import android.content.Context;
 import android.os.Build;
 
-import io.mindjet.jetpack.BuildConfig;
+import io.mindjet.litereader.BuildConfig;
 import io.mindjet.jetutil.logger.JLogger;
 
 

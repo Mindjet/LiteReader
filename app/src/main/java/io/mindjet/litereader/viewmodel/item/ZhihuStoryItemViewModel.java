@@ -5,8 +5,8 @@ import android.view.View;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.AdapterInterface;
-import io.mindjet.jetpack.R;
-import io.mindjet.jetpack.databinding.ItemZhihuStoryBinding;
+import io.mindjet.litereader.R;
+import io.mindjet.litereader.databinding.ItemZhihuStoryBinding;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import rx.functions.Action3;
 

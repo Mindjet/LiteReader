@@ -9,6 +9,8 @@
     <dimen name="blank_height_small">10dp</dimen>
     <dimen name="blank_height_large">20dp</dimen>
 
+    <dimen name="zhihu_section_item_height">60dp</dimen>
+    <dimen name="zhihu_section_item_min_width">100dp</dimen>
 
     <dimen name="zhihu_story_item_image_length">80dp</dimen>
 </resources>

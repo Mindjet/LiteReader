@@ -16,7 +16,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.lang.ref.WeakReference;
 
-import io.mindjet.jetpack.R;
+import io.mindjet.litereader.R;
 import io.mindjet.jetutil.logger.JLogger;
 
 /**

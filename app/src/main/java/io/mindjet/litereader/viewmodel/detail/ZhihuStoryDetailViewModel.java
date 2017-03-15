@@ -13,7 +13,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
-import io.mindjet.jetpack.R;
+import io.mindjet.litereader.R;
 import io.mindjet.jetutil.anim.RevealUtil;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.entity.Constant;
@@ -64,7 +64,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     @Override
     protected void initToolbar(JToolBar toolbar) {
-        toolbar.setNavIcon(R.drawable.ic_left_arrow);
+        toolbar.setNavIcon(R.drawable.ic_arrow_left);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     protected void afterViewAttached() {
         int centerX = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_X, 0);
         int centerY = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_Y, 0);
-        RevealUtil.revealActivity(getSelfView().getCompatActivity(), 500, centerX, centerY);
+        RevealUtil.revealActivity(getSelfView().getCompatActivity(), 1000, centerX, centerY);
         service.getStoryDetail(getSelfView().getCompatActivity().getIntent().getStringExtra(Constant.EXTRA_ZHIHU_STORY_ID))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -102,6 +102,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     private void renderArticle(ZhihuStoryDetail detail) {
         recyclerViewModel.getAdapter().add(new ZhihuStoryArticleViewModel(detail.title, detail.body));
+        recyclerViewModel.getAdapter().notifyDataSetChanged();
     }
 
     @Override

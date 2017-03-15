@@ -4,8 +4,8 @@ import android.view.View;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
-import io.mindjet.jetpack.R;
-import io.mindjet.jetpack.databinding.ItemZhihuBannerBinding;
+import io.mindjet.litereader.R;
+import io.mindjet.litereader.databinding.ItemZhihuBannerBinding;
 import io.mindjet.litereader.model.item.ZhihuTopStoryItem;
 import rx.functions.Action3;
 

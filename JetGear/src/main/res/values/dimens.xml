@@ -22,7 +22,9 @@
 
     <!--Drawer-->
     <dimen name="drawer_width_normal">200dp</dimen>
+    <dimen name="drawer_width_large">250dp</dimen>
     <dimen name="drawer_header_height">100dp</dimen>
+    <dimen name="drawer_header_height_medium">150dp</dimen>
     <dimen name="drawer_header_height_large">200dp</dimen>
 
     <!--Tab Layout-->

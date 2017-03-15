@@ -1,4 +1,4 @@
-package io.mindjet.jetpack;
+package io.mindjet.litereader;
 
 import org.junit.Test;
 

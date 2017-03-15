@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.mindjet.jetpack">
+    package="io.mindjet.litereader">
 
     <application
         android:name="io.mindjet.litereader.BaseApp"
@@ -20,6 +20,9 @@
         </activity>
         <activity
             android:name="io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity"
+            android:theme="@style/AppTheme.NoTitle" />
+        <activity
+            android:name=".ui.activity.ZhihuSectionDetailActivity"
             android:theme="@style/AppTheme.NoTitle" />
     </application>
 

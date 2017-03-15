@@ -2,6 +2,7 @@ package io.mindjet.litereader.service;
 
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
+import io.mindjet.litereader.model.list.ZhihuSectionList;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -25,5 +26,12 @@ public interface ZhihuDailyService {
 
     @GET("http://news-at.zhihu.com/api/4/news/{id}")
     Observable<ZhihuStoryDetail> getStoryDetail(@Path("id") String id);
+
+    @GET("http://news-at.zhihu.com/api/4/sections")
+    Observable<ZhihuSectionList> getSections();
+
+    @GET("http://news-at.zhihu.com/api/4/section/{id}")
+    Observable<ZhihuDailyList> getSectionDetail(@Path("id") String id);
+
 
 }

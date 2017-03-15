@@ -19,7 +19,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderItemViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewModel;
-import io.mindjet.jetpack.R;
+import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
 import io.mindjet.litereader.viewmodel.list.ZhihuDailyListViewModel;
 
@@ -74,16 +74,16 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
     protected void initDrawer(ViewGroup container) {
         //TODO 渲染Drawer，item详情需再确定
         DrawerViewModel drawer = new DrawerViewModel.Builder()
-                .width(R.dimen.drawer_width_normal)
+                .width(R.dimen.drawer_width_large)
                 .item(new DrawerHeaderViewModel.Builder()
                         .icon("")
-                        .height(R.dimen.drawer_header_height_large)
+                        .height(R.dimen.drawer_header_height_medium)
                         .backgroundColor(R.color.colorPrimary)
                         .content(getContext().getResources().getString(R.string.app_name))
                         .build())
                 .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_inbox_gray))
                 .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_draft_gray))
-                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_starred_gray))
+                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_star_gray))
                 .background(R.color.white)
                 .build();
         ViewModelBinder.bind(container, drawer);
@@ -91,8 +91,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void initFab(FloatingActionButton fab) {
+        fab.setSize(FloatingActionButton.SIZE_AUTO);
         fab.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
-        fab.setImageResource(R.drawable.ic_drawer);
+        fab.setImageResource(R.drawable.ic_arrow_up);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void onFabClick() {
-        //TODO 需确定Fab的功能，上滚到顶部？
+        columnViewPagerAdapter.getItem(getViewPager().getCurrentItem()).getRecyclerView().smoothScrollToPosition(0);
     }
 
 }

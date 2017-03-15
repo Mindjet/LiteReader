@@ -1,4 +1,4 @@
-package io.mindjet.jetpack;
+package io.mindjet.litereader;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("io.mindjet.jetpack", appContext.getPackageName());
+        assertEquals("io.mindjet.litereader", appContext.getPackageName());
     }
 }

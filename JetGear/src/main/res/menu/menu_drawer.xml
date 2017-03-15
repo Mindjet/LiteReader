@@ -12,7 +12,7 @@
             android:title="@string/inbox" />
         <item
             android:id="@+id/drawer_item_starred"
-            android:icon="@drawable/ic_starred_gray"
+            android:icon="@drawable/ic_star_gray"
             android:title="@string/starred" />
         <item
             android:id="@+id/drawer_item_sent"
@@ -35,7 +35,7 @@
             android:title="@string/inbox" />
         <item
             android:id="@+id/drawer_item_starred_2"
-            android:icon="@drawable/ic_starred_gray"
+            android:icon="@drawable/ic_star_gray"
             android:title="@string/starred" />
 
     </group>

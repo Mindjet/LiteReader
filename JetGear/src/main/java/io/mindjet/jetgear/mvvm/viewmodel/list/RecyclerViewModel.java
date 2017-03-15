@@ -21,6 +21,21 @@ public class RecyclerViewModel<V extends ViewDataBinding> extends BaseViewModel<
 
     private ViewModelAdapter<V> adapter;
     private RecyclerView recyclerView;
+    private boolean hasLayoutManager = false;
+    private boolean matchParent = true;
+
+    public RecyclerViewModel() {
+    }
+
+    public RecyclerViewModel(boolean matchParent) {
+        this.matchParent = matchParent;
+    }
+
+    public int getHeight() {
+        if (matchParent)
+            return 0;
+        return -1;
+    }
 
     @Override
     public int getLayoutId() {
@@ -30,7 +45,10 @@ public class RecyclerViewModel<V extends ViewDataBinding> extends BaseViewModel<
     @Override
     public void onViewAttached(View view) {
         recyclerView = getSelfView().getBinding().recyclerView;
-        initRecyclerView();
+        if (!hasLayoutManager) {
+            initRecyclerView();
+            hasLayoutManager = true;
+        }
     }
 
     /**

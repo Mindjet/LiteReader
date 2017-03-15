@@ -47,7 +47,7 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
         return swipeLayout;
     }
 
-    protected RecyclerView getRecyclerView() {
+    public RecyclerView getRecyclerView() {
         return recyclerView;
     }
 
@@ -76,7 +76,7 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
         swipeLayout.setRefreshing(true);
     }
 
-    protected void changePbColor(@ColorRes int... draggingColor) {
+    public void changePbColor(@ColorRes int... draggingColor) {
         swipeLayout.setColorSchemeResources(draggingColor);
     }
 

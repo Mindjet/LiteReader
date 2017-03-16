@@ -65,9 +65,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
+        android:layout_marginLeft="@dimen/common_gap_medium"
         android:layout_marginRight="@dimen/common_gap_medium"
         android:layout_marginTop="@dimen/common_gap_large"
         android:background="@color/black_translucent"
+        android:gravity="end"
         android:textColor="#d6ffffff"
         android:textSize="@dimen/common_text_size_small" />
 

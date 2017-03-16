@@ -92,9 +92,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void initFab(FloatingActionButton fab) {
-        fab.setSize(FloatingActionButton.SIZE_AUTO);
+        fab.setSize(FloatingActionButton.SIZE_MINI);
         fab.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
-        fab.setImageResource(R.drawable.ic_arrow_up);
+        fab.setImageResource(R.drawable.ic_up);
     }
 
     @Override

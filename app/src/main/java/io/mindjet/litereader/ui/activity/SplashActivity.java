@@ -50,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
                         wrapper.setVisibility(View.VISIBLE);
                         copyright.setVisibility(View.VISIBLE);
                         ImageLoader.load(wallpaper, adjustResolution(data.data.get(0).url));
-                        copyright.setText(data.data.get(0).copyright);
+                        copyright.setText(breakString(data.data.get(0).copyright));
                         next();
                     }
                 }, new Action1<Throwable>() {
@@ -65,6 +65,15 @@ public class SplashActivity extends AppCompatActivity {
 
     private String adjustResolution(String url) {
         return "http://www.bing.com" + url.replace("1920x1080", getResources().getDisplayMetrics().widthPixels + "x" + getResources().getDisplayMetrics().heightPixels);
+    }
+
+    private String breakString(String string) {
+        StringBuilder sb = new StringBuilder("");
+        int index = string.indexOf('(');
+        sb.append(string.substring(0, index).trim());
+        sb.append("\n");
+        sb.append(string.substring(index, string.length()));
+        return sb.toString();
     }
 
     private void next() {

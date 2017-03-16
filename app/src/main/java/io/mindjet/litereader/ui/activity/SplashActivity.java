@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
         gradient = (ImageView) findViewById(R.id.iv_gradient);
 
         OtherService service = ServiceGen.create(OtherService.class);
-        service.getWallpaper()
+        service.getDailyWallpaper()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<DailyWallpaper>() {

@@ -62,11 +62,6 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
         initActions();
     }
 
-    @Override
-    public void initRecyclerView() {
-        super.initRecyclerView();
-    }
-
     private void initActions() {
         onLoadLatestNews = new Action1<ZhihuDailyList>() {
             @Override
@@ -117,7 +112,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     public void onRefresh() {
-        //这里存在两种情况:
+        // 这里存在两种情况:
         // 一种是一开始断网没有banner然后再刷新，这种情况要处理的操作跟第一次加载一样；
         // 另一种情况是已经有了banner，这时候只要再拿到新数据在填充到banner就可以。
         if (banner != null)

@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="@dimen/common_gap_small"
-                android:textColor="@color/black_translucent"
+                android:textColor="@color/article_text_color"
                 android:textSize="@dimen/common_text_size" />
 
         </LinearLayout>

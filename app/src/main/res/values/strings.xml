@@ -7,6 +7,8 @@
     <string name="special_section">专栏</string>
     <string name="home">首页</string>
 
+    <string name="column_daily_article">每日散文</string>
+
     <string name="menu_share">分享</string>
     <string name="menu_collect">收藏</string>
     <string name="menu_more">更多</string>

@@ -21,6 +21,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewModel;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
+import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.ZhihuDailyListViewModel;
 
 /**
@@ -101,6 +102,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         //TODO 读取本地缓存获取栏目
         columnViewPagerAdapter = new ColumnViewPagerAdapter();
         columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getContext().getResources().getString(R.string.column_zhihu_daily));
+        columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getContext().getResources().getString(R.string.column_daily_article));
         viewPager.setAdapter(columnViewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPager.getAdapter().getCount() - 1);
     }

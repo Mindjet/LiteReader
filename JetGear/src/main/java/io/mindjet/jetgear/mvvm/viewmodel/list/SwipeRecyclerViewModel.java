@@ -31,6 +31,7 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
         afterViewAttached();
         initSwipeLayout();
         initRecyclerView();
+        afterComponentsBound();
     }
 
     private void initSwipeLayout() {
@@ -60,6 +61,10 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
     }
 
     protected void afterViewAttached() {
+
+    }
+
+    protected void afterComponentsBound() {
 
     }
 

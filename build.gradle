@@ -5,7 +5,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 buildscript {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+//        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://jitpack.io' }
         mavenCentral()
         jcenter()
@@ -20,7 +20,7 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+//        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url properties.getProperty("sdk.dir") + "/extras/android/m2repository/" }
         maven { url properties.getProperty("sdk.dir") + "/extras/google/m2repository/" }
         maven { url 'https://jitpack.io' }

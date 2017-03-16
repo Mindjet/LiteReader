@@ -21,6 +21,7 @@ import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.ZhihuTopStoryItem;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
 import io.mindjet.litereader.model.list.ZhihuSectionList;
+import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuSectionDetailActivity;
@@ -75,6 +76,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 getAdapter().add(section);
                 getAdapter().add(new ZhihuDateItemViewModel(R.string.latest_daily));
                 initNews(list.stories);
+                hideRefreshing();
                 loadSections();
             }
         };
@@ -115,7 +117,13 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     public void onRefresh() {
-        fetchLatestNews(onRefreshLatestNews);
+        //这里存在两种情况:
+        // 一种是一开始断网没有banner然后再刷新，这种情况要处理的操作跟第一次加载一样；
+        // 另一种情况是已经有了banner，这时候只要再拿到新数据在填充到banner就可以。
+        if (banner != null)
+            fetchLatestNews(onRefreshLatestNews);
+        else
+            fetchLatestNews(onLoadLatestNews);
     }
 
     @Override
@@ -152,7 +160,13 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
         service.getLatest()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onNext, RxAction.onError());
+                .subscribe(onNext, new ActionHttpError() {
+                    @Override
+                    protected void onError() {
+                        hideRefreshing();
+                        getAdapter().finishLoadMore(false);
+                    }
+                });
     }
 
     private void loadSections() {

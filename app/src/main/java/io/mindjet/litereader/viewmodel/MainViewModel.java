@@ -22,6 +22,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewM
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
+import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
 import io.mindjet.litereader.viewmodel.list.ZhihuDailyListViewModel;
 
 /**
@@ -103,6 +104,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         columnViewPagerAdapter = new ColumnViewPagerAdapter();
         columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getContext().getResources().getString(R.string.column_zhihu_daily));
         columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getContext().getResources().getString(R.string.column_daily_article));
+        columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getContext().getResources().getString(R.string.column_douban_movie));
         viewPager.setAdapter(columnViewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPager.getAdapter().getCount() - 1);
     }

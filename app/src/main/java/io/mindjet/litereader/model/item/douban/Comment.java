@@ -26,8 +26,6 @@ public class Comment {
     public String createdAt;
     @SerializedName("id")
     public String id;
-    @SerializedName("next_start")
-    public String nextStart;            //将该值赋给start，不然start+count不一定返回count个
 
     public class Rating {
         @SerializedName("max")

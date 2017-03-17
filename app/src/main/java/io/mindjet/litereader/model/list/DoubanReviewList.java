@@ -4,18 +4,18 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import io.mindjet.litereader.model.item.douban.Comment;
+import io.mindjet.litereader.model.item.douban.Review;
 
 /**
  * Created by Jet on 3/16/17.
  */
 
-public class DoubanCommentList {
+public class DoubanReviewList {
 
     @SerializedName("count")
     public String count;
-    @SerializedName("comments")
-    public List<Comment> comments;
+    @SerializedName("reviews")
+    public List<Review> reviews;
     @SerializedName("total")
     public String total;
     @SerializedName("next_start")

@@ -1,7 +1,9 @@
 package io.mindjet.litereader.service;
 
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
+import io.mindjet.litereader.model.list.DoubanCommentList;
 import io.mindjet.litereader.model.list.DoubanMovieList;
+import io.mindjet.litereader.model.list.DoubanReviewList;
 import io.mindjet.litereader.model.list.DoubanStillList;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -24,6 +26,9 @@ public interface DoubanService {
     @GET("https://api.douban.com/v2/movie/subject/{id}/photos?apikey=0b2bdeda43b5688921839c8ecb20399b")
     Observable<DoubanStillList> getStillList(@Path("id") String id, @Query("start") int start, @Query("count") int perPage);
 
+    @GET("https://api.douban.com/v2/movie/subject/{id}/comments?apikey=0b2bdeda43b5688921839c8ecb20399b")
+    Observable<DoubanCommentList> getCommentList(@Path("id") String id, @Query("start") int start, @Query("count") int perPage);
 
-
+    @GET("https://api.douban.com/v2/movie/subject/{id}/reviews?apikey=0b2bdeda43b5688921839c8ecb20399b")
+    Observable<DoubanReviewList> getReviewList(@Path("id") String id, @Query("start") int start, @Query("count") int perPage);
 }

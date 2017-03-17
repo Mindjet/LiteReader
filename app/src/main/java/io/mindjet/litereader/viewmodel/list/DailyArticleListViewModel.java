@@ -2,11 +2,11 @@ package io.mindjet.litereader.viewmodel.list;
 
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
-import io.mindjet.jetutil.task.Task;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.model.list.DailyArticle;
 import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.OtherService;
+import io.mindjet.litereader.ui.activity.DoubanMovieDetailActivity;
 import io.mindjet.litereader.viewmodel.item.DailyArticleItemViewModel;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import rx.android.schedulers.AndroidSchedulers;
@@ -33,9 +33,10 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
         onNextArticle = new Action0() {
             @Override
             public void call() {
-                getAdapter().clear();
-                getAdapter().notifyItemRemoved(0);
-                loadRandomArticle();
+                getContext().startActivity(DoubanMovieDetailActivity.intentFor(getContext()));
+//                getAdapter().clear();
+//                getAdapter().notifyItemRemoved(0);
+//                loadRandomArticle();
             }
         };
     }

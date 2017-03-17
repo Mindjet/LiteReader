@@ -1,8 +1,12 @@
-package io.mindjet.litereader.model.item.douban;
+package io.mindjet.litereader.model.item;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import io.mindjet.litereader.model.item.douban.Images;
+import io.mindjet.litereader.model.item.douban.Rating;
+import io.mindjet.litereader.model.item.douban.Staff;
 
 /**
  * Created by Jet on 3/16/17.

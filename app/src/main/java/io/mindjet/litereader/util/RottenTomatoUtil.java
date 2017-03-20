@@ -6,10 +6,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import io.mindjet.jetgear.network.ServiceGen;
+import java.io.IOException;
+
 import io.mindjet.jetutil.logger.JLogger;
 import io.mindjet.litereader.model.other.RottenTomatoes;
-import io.mindjet.litereader.service.OtherService;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -21,18 +22,20 @@ import rx.schedulers.Schedulers;
 
 public class RottenTomatoUtil {
 
-    private static OtherService service = ServiceGen.create(OtherService.class);
+
+    private static String baseUrl = "https://www.rottentomatoes.com/m/";
     private static JLogger jLogger = JLogger.get(RottenTomatoUtil.class.getSimpleName());
 
     public static void getRottenTomatoesData(final TextView tomatoMeter, final TextView audienceScore, final String name, final String year) {
-        String formatName = preProcess(name);
-        service.getRottenTomatoesData(formatName)
+        tomatoMeter.setText("获取数据中");
+        audienceScore.setText("获取数据中");
+        Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .map(new Func1<String, RottenTomatoes>() {
                     @Override
-                    public RottenTomatoes call(String html) {
-                        return decodeHtml(html);
+                    public RottenTomatoes call(String s) {
+                        return decodeData(preProcess(name));
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -43,28 +46,25 @@ public class RottenTomatoUtil {
                             tomatoMeter.setText(data.getTomatoMeter());
                             audienceScore.setText(data.getAudienceScore());
                         } else {
-                            jLogger.e("Retry with year");
-                            tryWithYear(tomatoMeter, audienceScore, name, year);        //加上年份后缀再次尝试
+                            tryWithYear(tomatoMeter, audienceScore, name, year);
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        jLogger.e(throwable.toString());
-                        tryWithYear(tomatoMeter, audienceScore, name, year);
+                        jLogger.e("first try failed." + throwable);
                     }
                 });
     }
 
-    private static void tryWithYear(final TextView tomatoMeter, final TextView audienceScore, String name, String year) {
-        String formatName = processWithYear(name, year);
-        service.getRottenTomatoesData(formatName)
+    private static void tryWithYear(final TextView tomatoMeter, final TextView audienceScore, final String name, final String year) {
+        Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .map(new Func1<String, RottenTomatoes>() {
                     @Override
-                    public RottenTomatoes call(String html) {
-                        return decodeHtml(html);
+                    public RottenTomatoes call(String s) {
+                        return decodeData(processWithYear(name, year));
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -82,23 +82,29 @@ public class RottenTomatoUtil {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        jLogger.e(throwable.toString());
+                        tomatoMeter.setText("暂无数据");
+                        audienceScore.setText("暂无数据");
                     }
                 });
     }
 
-    private static RottenTomatoes decodeHtml(String html) {
-        RottenTomatoes data = new RottenTomatoes();
-        Document doc = Jsoup.parse(html);
-        Element mainColumn = doc.getElementById("mainColumn");
-        if (mainColumn.child(1).tagName().equals("h1")) {
-            return null;
+    private static RottenTomatoes decodeData(final String name) {
+        RottenTomatoes data = null;
+        try {
+            Document doc = Jsoup.connect(baseUrl + name).get();
+            Element mainColumn = doc.getElementById("mainColumn");
+            if (mainColumn.child(1).tagName().equals("h1")) {
+                return null;
+            }
+            String tomatoData = doc.getElementsByClass("meter-value").first().child(0).text();
+            String audienceData = doc.getElementsByClass("meter-value").get(2).child(0).text();
+            data = new RottenTomatoes();
+            data.setTomatoMeter(tomatoData);
+            data.setAudienceScore(audienceData);
+            jLogger.e(tomatoData + "  -- - - - - - -" + audienceData);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        String tomatoMeter = doc.getElementsByClass("meter-value").first().child(0).text();
-        String audienceScore = doc.getElementsByClass("meter-value").get(2).child(0).text();
-        data.setTomatoMeter(tomatoMeter);
-        data.setAudienceScore(audienceScore);
-        jLogger.e("asdassadsa" + tomatoMeter + "asdasdsadsasda" + audienceScore);
         return data;
     }
 

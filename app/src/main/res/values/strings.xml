@@ -10,6 +10,7 @@
     <string name="column_daily_article">每日散文</string>
 
     <string name="column_douban_movie">豆瓣电影</string>
+    <string name="douban_checkout_movie_detail">查看电影详情</string>
 
     <string name="menu_share">分享</string>
     <string name="menu_collect">收藏</string>

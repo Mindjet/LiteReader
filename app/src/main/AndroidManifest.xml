@@ -12,7 +12,11 @@
         <activity
             android:name="io.mindjet.litereader.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoTitle">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity"
@@ -23,11 +27,6 @@
         <activity
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppTheme.NoTitle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.activity.DoubanMovieDetailActivity" />
     </application>

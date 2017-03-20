@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.litereader.viewmodel.item.MovieTypeViewModel" />
+    </data>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_gap_xsmall"
+        android:background="@drawable/shape_oval_border"
+        android:paddingBottom="@dimen/common_gap_small"
+        android:paddingLeft="@dimen/common_gap_medium"
+        android:paddingRight="@dimen/common_gap_medium"
+        android:paddingTop="@dimen/common_gap_small"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/common_text_size_small" />
+
+</layout>

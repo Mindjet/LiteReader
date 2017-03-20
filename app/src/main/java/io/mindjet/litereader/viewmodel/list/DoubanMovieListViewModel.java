@@ -25,6 +25,8 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
     private DoubanService service;
     private int start = 0;
     private int perPage = 6;
+    private Action1<DoubanMovieList> onLoadMore;
+    private Action1<DoubanMovieList> onRefresh;
 
     @Override
     protected void afterViewAttached() {
@@ -33,32 +35,58 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     protected void afterComponentsBound() {
+        changePbColor(R.color.colorPrimary);
         getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
         getRecyclerView().setLayoutManager(new GridLayoutManager(getContext(), 3));
+
+        onLoadMore = new Action1<DoubanMovieList>() {
+            @Override
+            public void call(DoubanMovieList movieList) {
+                addMovieList(movieList.movies);
+                start += perPage;
+                hideRefreshing();
+            }
+        };
+
+        onRefresh = new Action1<DoubanMovieList>() {
+            @Override
+            public void call(DoubanMovieList movieList) {
+                getAdapter().clear();
+                getAdapter().finishLoadMore(false);
+                getAdapter().notifyDataSetChanged();
+                addMovieList(movieList.movies);
+                start += perPage;
+                hideRefreshing();
+            }
+        };
     }
 
     @Override
     public void onRefresh() {
+        if (getAdapter().size() == 0) {
+            getMovieList(onLoadMore);
+        } else {
+            start = 0;
+            getMovieList(onRefresh);
+        }
+    }
 
+    private void getMovieList(Action1<DoubanMovieList> onNext) {
+        service.getMovieList(start, perPage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNext, new ActionHttpError() {
+                    @Override
+                    protected void onError() {
+                        getAdapter().finishLoadMore(false);
+                        hideRefreshing();
+                    }
+                });
     }
 
     @Override
     public void onLoadMore() {
-        service.getMovieList(start, perPage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<DoubanMovieList>() {
-                    @Override
-                    public void call(DoubanMovieList movieList) {
-                        addMovieList(movieList.movies);
-                        start += perPage;
-                    }
-                }, new ActionHttpError() {
-                    @Override
-                    protected void onError() {
-                        getAdapter().finishLoadMore(false);
-                    }
-                });
+        getMovieList(onLoadMore);
     }
 
     private void addMovieList(List<DoubanMovieItem> movies) {
@@ -66,7 +94,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
             for (DoubanMovieItem movie : movies) {
                 getAdapter().add(new DoubanMovieItemViewModel(movie));
             }
-            getAdapter().updateAndContinue();
+            getAdapter().notifyDataSetChanged();
         } else {
             getAdapter().finishLoadMore(true);
         }

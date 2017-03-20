@@ -7,6 +7,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanMovieBinding;
 import io.mindjet.litereader.model.item.DoubanMovieItem;
+import io.mindjet.litereader.ui.dialog.MovieItemDialog;
 
 /**
  * Created by Jet on 3/16/17.
@@ -25,7 +26,7 @@ public class DoubanMovieItemViewModel extends BaseViewModel<ViewInterface<ItemDo
     }
 
     public String getPoster() {
-        return item.images.medium;
+        return item.images.large;
     }
 
     @Override
@@ -36,5 +37,16 @@ public class DoubanMovieItemViewModel extends BaseViewModel<ViewInterface<ItemDo
     @Override
     public void onViewAttached(View view) {
 
+    }
+
+    public View.OnLongClickListener getLongClickListener() {
+        return new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                MovieItemDialog dialog = new MovieItemDialog(getContext(), item);
+                dialog.show();
+                return true;
+            }
+        };
     }
 }

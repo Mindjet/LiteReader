@@ -1,17 +1,17 @@
-package io.mindjet.jetgear;
+package io.mindjet.jetgear.base;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.app.AppCompatDialog;
 
 import io.mindjet.jetutil.logger.JLogger;
 
 /**
- * Created by Jet on 3/9/17.
+ * Created by Jet on 3/20/17.
  */
 
-public abstract class BaseDialog extends BottomSheetDialog {
+public abstract class BaseDialog extends AppCompatDialog {
 
     protected JLogger jLogger = JLogger.get(getClass().getSimpleName());
 
@@ -21,18 +21,15 @@ public abstract class BaseDialog extends BottomSheetDialog {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         beforeInitView();
         initView();
-        initListener();
         initData();
-        super.onCreate(savedInstanceState);
     }
 
     protected abstract void beforeInitView();
 
     protected abstract void initView();
-
-    protected abstract void initListener();
 
     protected abstract void initData();
 

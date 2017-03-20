@@ -10,10 +10,10 @@
     <dimen name="common_text_size_medium">18sp</dimen>
     <dimen name="common_text_size_large">20sp</dimen>
 
-
     <dimen name="common_gap">15dp</dimen>
     <dimen name="common_gap_medium">10dp</dimen>
     <dimen name="common_gap_large">25dp</dimen>
     <dimen name="common_gap_small">5dp</dimen>
+    <dimen name="common_gap_xsmall">2dp</dimen>
 
 </resources>

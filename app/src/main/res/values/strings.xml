@@ -15,5 +15,8 @@
     <string name="menu_share">分享</string>
     <string name="menu_collect">收藏</string>
     <string name="menu_more">更多</string>
+    <string name="douban_movie_detail_introduce">简介</string>
+    <string name="douban_movie_detail_more_stills">更多\n剧照</string>
+    <string name="douban_movie_detail_more_reviews">查看更多影评</string>
 
 </resources>

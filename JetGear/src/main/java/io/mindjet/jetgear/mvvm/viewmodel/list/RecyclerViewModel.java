@@ -48,6 +48,7 @@ public class RecyclerViewModel<V extends ViewDataBinding> extends BaseViewModel<
         if (!hasLayoutManager) {
             initRecyclerView();
             hasLayoutManager = true;
+            afterViewAttached();
         }
     }
 
@@ -56,6 +57,10 @@ public class RecyclerViewModel<V extends ViewDataBinding> extends BaseViewModel<
      */
     protected void initRecyclerView() {
         getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    protected void afterViewAttached(){
+
     }
 
     @Override

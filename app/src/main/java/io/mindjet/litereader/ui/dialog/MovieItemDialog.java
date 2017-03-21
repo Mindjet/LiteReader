@@ -2,13 +2,13 @@ package io.mindjet.litereader.ui.dialog;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
@@ -18,6 +18,7 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.DialogMovieItemBinding;
 import io.mindjet.litereader.model.item.DoubanMovieItem;
 import io.mindjet.litereader.viewmodel.item.MovieTypeViewModel;
+import rx.functions.Action1;
 
 /**
  * Created by Jet on 3/20/17.
@@ -27,10 +28,16 @@ public class MovieItemDialog extends BaseDialog {
 
     private DialogMovieItemBinding binding;
     private DoubanMovieItem item;
+    private Action1<DoubanMovieItem> onAction;
 
     public MovieItemDialog(@NonNull Context context, DoubanMovieItem item) {
         super(context);
         this.item = item;
+    }
+
+    public MovieItemDialog onAction(Action1<DoubanMovieItem> onAction) {
+        this.onAction = onAction;
+        return this;
     }
 
     public String getPoster() {
@@ -54,12 +61,8 @@ public class MovieItemDialog extends BaseDialog {
         return builder;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        beforeInitView();
-        initView();
-        initData();
+    public String getPubdate() {
+        return "上映时间：" + item.mainlandPubdate;
     }
 
     @Override
@@ -83,5 +86,15 @@ public class MovieItemDialog extends BaseDialog {
 
     }
 
+    public View.OnClickListener getClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onAction != null) {
+                    onAction.call(item);
+                }
+            }
+        };
+    }
 
 }

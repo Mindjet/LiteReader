@@ -6,9 +6,10 @@ import java.util.List;
 
 import io.mindjet.litereader.model.item.douban.Comment;
 import io.mindjet.litereader.model.item.douban.Images;
-import io.mindjet.litereader.model.item.douban.Still;
 import io.mindjet.litereader.model.item.douban.Rating;
+import io.mindjet.litereader.model.item.douban.Review;
 import io.mindjet.litereader.model.item.douban.Staff;
+import io.mindjet.litereader.model.item.douban.Still;
 import io.mindjet.litereader.model.item.douban.Trailer;
 
 /**
@@ -31,7 +32,7 @@ public class DoubanMovieDetail {
     public Images images;
     @SerializedName("year")
     public String year;
-    @SerializedName("popular_comments")         //很短的影片没什么用
+    @SerializedName("popular_comments")         //很短的影评没什么用
     public List<Comment> popularComments;
     @SerializedName("id")
     public String id;
@@ -80,7 +81,7 @@ public class DoubanMovieDetail {
     @SerializedName("comments_count")
     public String commentsCount;
     @SerializedName("popular_reviews")          //长影评
-    public List<Comment> popularReviews;
+    public List<Review> popularReviews;
     @SerializedName("ratings_count")
     public String ratingsCount;
 }

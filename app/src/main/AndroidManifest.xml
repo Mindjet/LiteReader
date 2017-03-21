@@ -26,9 +26,10 @@
             android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name=".ui.activity.SplashActivity"
-            android:theme="@style/AppTheme.NoTitle">
-        </activity>
-        <activity android:name=".ui.activity.DoubanMovieDetailActivity" />
+            android:theme="@style/AppTheme.NoTitle" />
+        <activity
+            android:name=".ui.activity.DoubanMovieDetailActivity"
+            android:theme="@style/AppTheme.NoTitle" />
     </application>
 
 </manifest>

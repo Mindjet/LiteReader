@@ -38,6 +38,8 @@ public abstract class CoordinatorCollapseLayoutViewModel<V extends ViewInterface
         return R.layout.include_coordinator_collapse_layout;
     }
 
+    protected abstract void afterViewAttached();
+
     /**
      * Here, you can :
      * <ul>
@@ -87,8 +89,6 @@ public abstract class CoordinatorCollapseLayoutViewModel<V extends ViewInterface
      * </ul>
      */
     protected abstract void initFab(FloatingActionButton fab);
-
-    protected abstract void afterViewAttached();
 
     protected abstract void onNavigationIconClick();
 

@@ -8,6 +8,7 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanMovieBinding;
 import io.mindjet.litereader.model.item.DoubanMovieItem;
 import io.mindjet.litereader.ui.dialog.MovieItemDialog;
+import rx.functions.Action1;
 
 /**
  * Created by Jet on 3/16/17.
@@ -16,9 +17,15 @@ import io.mindjet.litereader.ui.dialog.MovieItemDialog;
 public class DoubanMovieItemViewModel extends BaseViewModel<ViewInterface<ItemDoubanMovieBinding>> {
 
     private DoubanMovieItem item;
+    private Action1<DoubanMovieItem> onAction;
 
     public DoubanMovieItemViewModel(DoubanMovieItem item) {
         this.item = item;
+    }
+
+    public DoubanMovieItemViewModel onAction(Action1<DoubanMovieItem> onAction) {
+        this.onAction = onAction;
+        return this;
     }
 
     public String getTitle() {
@@ -39,11 +46,22 @@ public class DoubanMovieItemViewModel extends BaseViewModel<ViewInterface<ItemDo
 
     }
 
+    public View.OnClickListener getClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onAction != null) {
+                    onAction.call(item);
+                }
+            }
+        };
+    }
+
     public View.OnLongClickListener getLongClickListener() {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                MovieItemDialog dialog = new MovieItemDialog(getContext(), item);
+                MovieItemDialog dialog = new MovieItemDialog(getContext(), item).onAction(onAction);
                 dialog.show();
                 return true;
             }

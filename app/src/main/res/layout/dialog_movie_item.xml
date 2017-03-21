@@ -32,8 +32,9 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="@dimen/common_gap_medium">
 
@@ -70,6 +71,14 @@
                     android:gravity="center_vertical"
                     android:text="@{data.rating}" />
 
+                <TextView
+                    android:id="@+id/tv_pubdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_gap_medium"
+                    android:layout_marginTop="@dimen/common_gap_medium"
+                    android:text="@{data.pubdate}" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -78,6 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_theme"
+            android:onClick="@{data.clickListener}"
             android:text="@string/douban_checkout_movie_detail"
             android:textColor="@color/white" />
 

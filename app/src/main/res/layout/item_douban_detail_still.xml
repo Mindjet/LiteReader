@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.litereader.viewmodel.detail.douban.DetailStillItemViewModel" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/cardview_default_radius">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/douban_movie_detail_still_width"
+                android:layout_height="@dimen/douban_movie_detail_still_height"
+                android:scaleType="centerCrop"
+                android:visibility="@{!data.lastOne}"
+                app:url="@{data.still.cover}" />
+
+            <ImageView
+                android:layout_width="@dimen/douban_movie_detail_still_width"
+                android:layout_height="@dimen/douban_movie_detail_still_height"
+                android:background="@color/colorPrimary"
+                android:visibility="@{data.lastOne}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lineSpacingExtra="@dimen/common_gap_small"
+                android:text="@string/douban_movie_detail_more_stills"
+                android:textColor="@color/white"
+                android:visibility="@{data.lastOne}" />
+
+        </FrameLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</layout>

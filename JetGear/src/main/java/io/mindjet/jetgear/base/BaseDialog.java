@@ -21,7 +21,6 @@ public abstract class BaseDialog extends AppCompatDialog {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         beforeInitView();
         initView();
         initData();

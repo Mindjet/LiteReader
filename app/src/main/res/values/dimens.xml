@@ -21,5 +21,13 @@
     <dimen name="douban_movie_poster_height">150dp</dimen>
     <dimen name="douban_movie_dialog_poster_width">120dp</dimen>
     <dimen name="douban_movie_dialog_poster_height">180dp</dimen>
+    <dimen name="douban_movie_detail_staff_width">80dp</dimen>
+    <dimen name="douban_movie_detail_staff_height">100dp</dimen>
+    <dimen name="douban_movie_detail_still_width">120dp</dimen>
+    <dimen name="douban_movie_detail_still_height">120dp</dimen>
+    <dimen name="douban_movie_detail_review_avatar_width">35dp</dimen>
+    <dimen name="douban_movie_detail_review_avatar_height">35dp</dimen>
+    <dimen name="douban_movie_detail_expanded_title_margin_start">20dp</dimen>
+    <dimen name="douban_movie_detail_expanded_title_margin_bottom">60dp</dimen>
 
 </resources>

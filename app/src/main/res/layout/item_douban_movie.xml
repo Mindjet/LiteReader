@@ -16,9 +16,11 @@
         app:cardCornerRadius="@dimen/cardview_default_radius">
 
         <LinearLayout
+            android:id="@+id/lly_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:onClick="@{data.clickListener}"
             android:orientation="vertical"
             android:setOnLongClickListener="@{data.longClickListener}">
 

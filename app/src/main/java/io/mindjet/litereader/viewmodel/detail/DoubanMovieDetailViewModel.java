@@ -23,6 +23,7 @@ import io.mindjet.litereader.model.detail.DoubanMovieDetail;
 import io.mindjet.litereader.model.item.douban.Review;
 import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.DoubanService;
+import io.mindjet.litereader.ui.activity.DoubanMovieMoreReviewActivity;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailImageViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailReviewItemViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStaffViewModel;
@@ -54,6 +55,8 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private DetailStaffViewModel staffViewModel;
     private DetailStillViewModel stillViewModel;
 
+    private Action1<Boolean> onReviewItemClcik;
+
     @Override
     protected void afterViewAttached() {
         service = ServiceGen.create(DoubanService.class);
@@ -66,6 +69,21 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         mainlandPubdate = intent.getStringExtra(Constant.EXTRA_DOUBAN_MOVIE_MAINLAND_PUBDATE);
         rating = intent.getStringExtra(Constant.EXTRA_DOUBAN_MOVIE_RATING);
         RevealUtil.revealActivity(getSelfView().getCompatActivity(), 1000, touchX, touchY);
+        initActions();
+    }
+
+    private void initActions() {
+        onReviewItemClcik = new Action1<Boolean>() {
+            @Override
+            public void call(Boolean lastOne) {
+                if (lastOne) {
+                    Intent intent = DoubanMovieMoreReviewActivity.intentFor(getContext());
+                    intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_ID, id);
+                    intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_TITLE, title);
+                    getContext().startActivity(intent);
+                }
+            }
+        };
     }
 
     @Override
@@ -167,7 +185,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         }
         getAdapter().notifyItemRangeInserted(index, detail.popularReviews.size());
         index += detail.popularReviews.size();
-        getAdapter().add(new DetailReviewItemViewModel(detail.popularReviews.get(0), true));
+        getAdapter().add(new DetailReviewItemViewModel(detail.popularReviews.get(0), true).onAction(onReviewItemClcik));
         getAdapter().notifyItemInserted(index);
     }
 

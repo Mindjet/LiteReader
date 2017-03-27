@@ -7,6 +7,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanDetailReviewBinding;
 import io.mindjet.litereader.model.item.douban.Review;
+import rx.functions.Action1;
 
 /**
  * Created by Jet on 3/21/17.
@@ -16,6 +17,7 @@ public class DetailReviewItemViewModel extends BaseViewModel<ViewInterface<ItemD
 
     private Review review;
     private boolean lastOne;
+    private Action1<Boolean> onAction;
 
     public DetailReviewItemViewModel(Review review) {
         this(review, false);
@@ -24,6 +26,11 @@ public class DetailReviewItemViewModel extends BaseViewModel<ViewInterface<ItemD
     public DetailReviewItemViewModel(Review review, boolean lastOne) {
         this.review = review;
         this.lastOne = lastOne;
+    }
+
+    public DetailReviewItemViewModel onAction(Action1<Boolean> onAction) {
+        this.onAction = onAction;
+        return this;
     }
 
     @Override
@@ -37,6 +44,17 @@ public class DetailReviewItemViewModel extends BaseViewModel<ViewInterface<ItemD
 
     public boolean isLastOne() {
         return lastOne;
+    }
+
+    public View.OnClickListener getClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onAction != null) {
+                    onAction.call(lastOne);
+                }
+            }
+        };
     }
 
     @Override

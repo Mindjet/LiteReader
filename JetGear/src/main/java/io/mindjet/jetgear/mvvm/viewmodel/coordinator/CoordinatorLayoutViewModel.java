@@ -11,6 +11,7 @@ import io.mindjet.jetgear.R;
 import io.mindjet.jetgear.databinding.IncludeCoordinatorLayoutBinding;
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
+import io.mindjet.jetutil.version.VersionUtil;
 
 /**
  * Created by Jet on 3/1/17.
@@ -28,16 +29,20 @@ public abstract class CoordinatorLayoutViewModel<V extends ViewInterface<Include
         viewPager = getSelfView().getBinding().viewPager;
         tabLayout = getSelfView().getBinding().tabLayout;
         tabLayout.addOnTabSelectedListener(this);
+        initDummyStatusbar(getSelfView().getBinding().dummyStatusBar);
         initHeader(getSelfView().getBinding().flyHeader);
         initTab(tabLayout);
         initViewPager(viewPager);
         initFab(fab);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
     public int getLayoutId() {
         return R.layout.include_coordinator_layout;
     }
+
+    protected abstract void initDummyStatusbar(View view);
 
     public abstract void initHeader(ViewGroup container);
 
@@ -51,6 +56,10 @@ public abstract class CoordinatorLayoutViewModel<V extends ViewInterface<Include
 
     public TabLayout getTabLayout() {
         return tabLayout;
+    }
+
+    public boolean getDummyStatusbarVisibility() {
+        return VersionUtil.afterLollipop();
     }
 
     protected abstract void initFab(FloatingActionButton fab);

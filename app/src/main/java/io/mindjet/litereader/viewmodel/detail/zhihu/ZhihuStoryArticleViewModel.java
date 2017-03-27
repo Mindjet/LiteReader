@@ -1,4 +1,4 @@
-package io.mindjet.litereader.viewmodel.item;
+package io.mindjet.litereader.viewmodel.detail.zhihu;
 
 import android.view.View;
 

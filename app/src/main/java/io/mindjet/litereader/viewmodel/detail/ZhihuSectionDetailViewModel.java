@@ -20,7 +20,7 @@ import io.mindjet.litereader.model.list.ZhihuDailyList;
 import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
-import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
+import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryItemViewModel;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

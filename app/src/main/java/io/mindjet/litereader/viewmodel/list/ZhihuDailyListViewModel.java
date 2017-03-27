@@ -30,7 +30,7 @@ import io.mindjet.litereader.util.DateUtil;
 import io.mindjet.litereader.viewmodel.item.ZhihuBannerItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuSectionItemViewModel;
-import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
+import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryItemViewModel;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Action2;

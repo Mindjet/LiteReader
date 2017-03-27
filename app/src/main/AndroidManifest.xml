@@ -30,6 +30,9 @@
         <activity
             android:name=".ui.activity.DoubanMovieDetailActivity"
             android:theme="@style/AppTheme.NoTitle" />
+        <activity
+            android:name=".ui.activity.DoubanMovieMoreReviewActivity"
+            android:theme="@style/AppTheme.NoTitle" />
     </application>
 
 </manifest>

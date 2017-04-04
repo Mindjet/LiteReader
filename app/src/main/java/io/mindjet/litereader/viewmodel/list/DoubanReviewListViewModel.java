@@ -48,6 +48,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
             public void call(List<Review> reviews) {
                 addItems(reviews);
                 start += perPage;
+                hideRefreshing();
 
             }
         };
@@ -60,6 +61,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                 getAdapter().notifyDataSetChanged();
                 addItems(reviews);
                 start += perPage;
+                hideRefreshing();
             }
         };
 
@@ -104,6 +106,8 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                 getAdapter().add(new DoubanReviewItemViewModel(review));
             }
             getAdapter().notifyDataSetChanged();
+        } else {
+            getAdapter().finishLoadMore(true);
         }
     }
 

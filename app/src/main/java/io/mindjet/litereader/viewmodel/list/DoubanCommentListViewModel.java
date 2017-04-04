@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
+import io.mindjet.litereader.R;
 import io.mindjet.litereader.model.item.douban.Comment;
 import io.mindjet.litereader.model.list.DoubanCommentList;
 import io.mindjet.litereader.reactivex.ActionHttpError;
@@ -36,6 +37,12 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
     @Override
     protected void afterViewAttached() {
         service = ServiceGen.create(DoubanService.class);
+    }
+
+    @Override
+    protected void afterComponentsBound() {
+        changePbColor(R.color.colorPrimary);
+        getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
 
         onLoadMore = new Action1<List<Comment>>() {
             @Override
@@ -60,15 +67,11 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
     }
 
     @Override
-    protected void afterComponentsBound() {
-
-    }
-
-    @Override
     public void onRefresh() {
         if (getAdapter().size() == 0) {
             getCommentList(onLoadMore);
         } else {
+            start = 0;
             getCommentList(onRefresh);
         }
     }
@@ -102,6 +105,8 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
                 getAdapter().add(new DoubanCommentItemViewModel(comment));
             }
             getAdapter().notifyDataSetChanged();
+        } else {
+            getAdapter().finishLoadMore(true);
         }
     }
 

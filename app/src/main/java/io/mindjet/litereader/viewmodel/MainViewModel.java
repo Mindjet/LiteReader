@@ -102,7 +102,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
     protected void initViewPager(ViewPager viewPager) {
         //TODO 读取本地缓存获取栏目
         columnViewPagerAdapter = new ColumnViewPagerAdapter();
-//        columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getContext().getResources().getString(R.string.column_zhihu_daily));
+        columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getContext().getResources().getString(R.string.column_zhihu_daily));
 //        columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getContext().getResources().getString(R.string.column_daily_article));
         columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getContext().getResources().getString(R.string.column_douban_movie));
         viewPager.setAdapter(columnViewPagerAdapter);

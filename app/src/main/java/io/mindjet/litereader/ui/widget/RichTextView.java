@@ -1,6 +1,7 @@
 package io.mindjet.litereader.ui.widget;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -16,8 +17,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.lang.ref.WeakReference;
 
-import io.mindjet.litereader.R;
 import io.mindjet.jetutil.logger.JLogger;
+import io.mindjet.litereader.R;
 
 /**
  * Created by Jet on 3/14/17.
@@ -37,6 +38,11 @@ public class RichTextView extends android.support.v7.widget.AppCompatTextView {
 
     public RichTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @BindingAdapter("app:richText")
+    public static void richText(RichTextView tv, String html) {
+        tv.setRichText(html);
     }
 
     public void setRichText(String html) {

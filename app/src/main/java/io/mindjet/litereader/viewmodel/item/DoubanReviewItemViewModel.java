@@ -7,6 +7,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanReviewBinding;
 import io.mindjet.litereader.model.item.douban.Review;
+import io.mindjet.litereader.ui.dialog.MovieReviewDialog;
 
 /**
  * Created by Jet on 3/22/17.
@@ -27,6 +28,16 @@ public class DoubanReviewItemViewModel extends BaseViewModel<ViewInterface<ItemD
 
     public Review getReview() {
         return review;
+    }
+
+    public View.OnClickListener getClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+                new MovieReviewDialog(getContext(), review.content).show();
+            }
+        };
     }
 
     @Override

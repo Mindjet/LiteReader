@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/common_gap"
+                android:text="@{data.title}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_text_size_large" />
 
@@ -35,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="@dimen/common_gap_small"
                 android:textColor="@color/article_text_color"
-                android:textSize="@dimen/common_text_size" />
+                android:textSize="@dimen/common_text_size"
+                app:richText="@{data.content}" />
 
         </LinearLayout>
 

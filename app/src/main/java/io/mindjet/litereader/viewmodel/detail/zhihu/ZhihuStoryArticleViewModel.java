@@ -26,9 +26,16 @@ public class ZhihuStoryArticleViewModel extends BaseViewModel<ViewInterface<Item
         return R.layout.item_zhihu_story_article;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     @Override
     public void onViewAttached(View view) {
-        getSelfView().getBinding().title.setText(title);
-        getSelfView().getBinding().content.setRichText(content);
+
     }
 }

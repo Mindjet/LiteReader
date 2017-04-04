@@ -15,11 +15,15 @@
         android:layout_marginLeft="@dimen/common_gap_small"
         android:layout_marginRight="@dimen/common_gap_small"
         android:layout_marginTop="@dimen/common_gap_small"
+        android:background="@color/white"
         app:cardCornerRadius="@dimen/cardview_default_radius">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/ripple_default"
+            android:clickable="true"
+            android:onClick="@{data.clickListener}"
             android:orientation="vertical"
             android:padding="@dimen/common_gap_medium">
 

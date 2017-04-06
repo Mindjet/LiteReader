@@ -24,7 +24,7 @@ public class HeaderViewModel extends BaseViewModel<ViewInterface<IncludeHeaderBi
         this.builder = builder;
     }
 
-    @BindingAdapter("app:vm")
+    @BindingAdapter("vm")
     public static void attachViewModel(ViewGroup container, HeaderItemViewModel viewModel) {
         if (viewModel != null) ViewModelBinder.bind(container, viewModel);
     }

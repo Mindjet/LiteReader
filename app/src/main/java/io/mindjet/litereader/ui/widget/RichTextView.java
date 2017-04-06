@@ -40,7 +40,7 @@ public class RichTextView extends android.support.v7.widget.AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    @BindingAdapter("app:richText")
+    @BindingAdapter("richText")
     public static void richText(RichTextView tv, String html) {
         tv.setRichText(html);
     }

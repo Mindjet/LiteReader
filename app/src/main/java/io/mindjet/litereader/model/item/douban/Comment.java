@@ -2,6 +2,8 @@ package io.mindjet.litereader.model.item.douban;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Jet on 3/16/17.
  */
@@ -10,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
  * 短影评实体，长影评实体为 {@link Review}
  */
 
-public class Comment {
+public class Comment implements Serializable{
 
     @SerializedName("rating")
     public Rating rating;
@@ -27,7 +29,7 @@ public class Comment {
     @SerializedName("id")
     public String id;
 
-    public class Rating {
+    public class Rating implements Serializable {
         @SerializedName("max")
         public String max;
         @SerializedName("value")

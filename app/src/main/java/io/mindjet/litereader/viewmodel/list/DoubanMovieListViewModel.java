@@ -27,7 +27,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
 
     private DoubanService service;
     private int start = 0;
-    private int perPage = 6;
+    private int perPage = 9;
     private Action1<DoubanMovieList> onLoadMore;
     private Action1<DoubanMovieList> onRefresh;
     private Action1<DoubanMovieItem> onItemClick;

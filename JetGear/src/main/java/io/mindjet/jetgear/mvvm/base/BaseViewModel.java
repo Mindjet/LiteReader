@@ -3,6 +3,7 @@ package io.mindjet.jetgear.mvvm.base;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
@@ -81,6 +82,10 @@ public abstract class BaseViewModel<V extends ViewInterface> extends BaseObserva
 
     public Context getContext() {
         return getSelfView().getContext();
+    }
+
+    protected String getString(@StringRes int stringRes) {
+        return getContext().getResources().getString(stringRes);
     }
 
     @Override

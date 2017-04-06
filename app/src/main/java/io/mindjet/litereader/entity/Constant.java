@@ -15,6 +15,7 @@ public class Constant {
     public final static String EXTRA_DOUBAN_MOVIE_TITLE = "extra_douban_movie_title";
     public final static String EXTRA_DOUBAN_MOVIE_MAINLAND_PUBDATE = "extra_douban_movie_mainland_pubdate";
     public final static String EXTRA_DOUBAN_MOVIE_RATING = "extra_douban_movie_rating";
+    public final static String EXTRA_DOUBAN_MOVIE_REVIEW = "extra_douban_movie_review";
 
     public final static String EXTRA_TOUCH_X = "extra_touch_x";
 

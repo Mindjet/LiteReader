@@ -1,13 +1,15 @@
 package io.mindjet.litereader.viewmodel.item;
 
+import android.content.Intent;
 import android.view.View;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanReviewBinding;
+import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.model.item.douban.Review;
-import io.mindjet.litereader.ui.dialog.MovieReviewDialog;
+import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
 
 /**
  * Created by Jet on 3/22/17.
@@ -34,8 +36,9 @@ public class DoubanReviewItemViewModel extends BaseViewModel<ViewInterface<ItemD
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
-                new MovieReviewDialog(getContext(), review.content).show();
+                Intent intent = DoubanMovieReviewActivity.intentFor(getContext());
+                intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_REVIEW, review);
+                getContext().startActivity(intent);
             }
         };
     }

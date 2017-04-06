@@ -31,4 +31,6 @@ public interface DoubanService {
 
     @GET("https://api.douban.com/v2/movie/subject/{id}/reviews?apikey=0b2bdeda43b5688921839c8ecb20399b")
     Observable<DoubanReviewList> getReviewList(@Path("id") String id, @Query("start") int start, @Query("count") int perPage);
+
+
 }

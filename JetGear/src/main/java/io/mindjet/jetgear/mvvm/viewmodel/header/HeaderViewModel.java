@@ -5,6 +5,9 @@ import android.support.annotation.ColorRes;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.mindjet.jetgear.R;
 import io.mindjet.jetgear.databinding.IncludeHeaderBinding;
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
@@ -24,9 +27,12 @@ public class HeaderViewModel extends BaseViewModel<ViewInterface<IncludeHeaderBi
         this.builder = builder;
     }
 
-    @BindingAdapter("vm")
-    public static void attachViewModel(ViewGroup container, HeaderItemViewModel viewModel) {
-        if (viewModel != null) ViewModelBinder.bind(container, viewModel);
+    @BindingAdapter("vmList")
+    public static void attachViewModels(ViewGroup container, List<HeaderItemViewModel> viewModels) {
+        for (HeaderItemViewModel vm : viewModels) {
+            if (vm != null)
+                ViewModelBinder.bind(container, vm);
+        }
     }
 
     @Override
@@ -43,16 +49,16 @@ public class HeaderViewModel extends BaseViewModel<ViewInterface<IncludeHeaderBi
         return builder.withElevation ? getContext().getResources().getInteger(R.integer.common_elevation) : 0f;
     }
 
-    public HeaderItemViewModel getLeftViewModel() {
-        return builder.leftViewModel;
+    public List<HeaderItemViewModel> getLeftViewModels() {
+        return builder.leftViewModels;
     }
 
-    public HeaderItemViewModel getCenterViewModel() {
-        return builder.centerViewModel;
+    public List<HeaderItemViewModel> getCenterViewModels() {
+        return builder.centerViewModels;
     }
 
-    public HeaderItemViewModel getRightViewModel() {
-        return builder.rightViewModel;
+    public List<HeaderItemViewModel> getRightViewModels() {
+        return builder.rightViewModels;
     }
 
     public int getBackground() {
@@ -67,9 +73,12 @@ public class HeaderViewModel extends BaseViewModel<ViewInterface<IncludeHeaderBi
     public static class Builder {
         @ColorRes
         private int background = R.color.colorPrimary;
-        private HeaderItemViewModel leftViewModel, centerViewModel, rightViewModel;
         private boolean withElevation = true;
         private boolean sink = false;
+
+        private List<HeaderItemViewModel> leftViewModels = new ArrayList<>();
+        private List<HeaderItemViewModel> centerViewModels = new ArrayList<>();
+        private List<HeaderItemViewModel> rightViewModels = new ArrayList<>();
 
         public Builder background(@ColorRes int background) {
             this.background = background;
@@ -77,17 +86,17 @@ public class HeaderViewModel extends BaseViewModel<ViewInterface<IncludeHeaderBi
         }
 
         public Builder leftViewModel(HeaderItemViewModel leftViewModel) {
-            this.leftViewModel = leftViewModel;
+            leftViewModels.add(leftViewModel);
             return this;
         }
 
         public Builder centerViewModel(HeaderItemViewModel centerViewModel) {
-            this.centerViewModel = centerViewModel;
+            centerViewModels.add(centerViewModel);
             return this;
         }
 
         public Builder rightViewModel(HeaderItemViewModel rightViewModel) {
-            this.rightViewModel = rightViewModel;
+            rightViewModels.add(rightViewModel);
             return this;
         }
 

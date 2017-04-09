@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_default"
             android:clickable="true"
-            android:onClick="@{data.clickListener}"
+            android:onClick="@{() -> data.onClick()}"
             android:orientation="vertical"
             android:padding="@dimen/common_gap_medium">
 

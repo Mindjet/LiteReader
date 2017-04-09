@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                app:vm="@{data.leftViewModel}" />
+                app:vmList="@{data.leftViewModels}" />
 
             <LinearLayout
                 android:id="@+id/lly_center"
@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:orientation="horizontal"
-                app:vm="@{data.centerViewModel}" />
+                app:vmList="@{data.centerViewModels}" />
 
             <LinearLayout
                 android:id="@+id/lly_right"
@@ -47,7 +47,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:orientation="horizontal"
-                app:vm="@{data.rightViewModel}" />
+                app:vmList="@{data.rightViewModels}" />
 
         </RelativeLayout>
 

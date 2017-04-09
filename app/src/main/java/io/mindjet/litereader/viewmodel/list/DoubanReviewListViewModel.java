@@ -1,14 +1,18 @@
 package io.mindjet.litereader.viewmodel.list;
 
+import android.content.Intent;
+
 import java.util.List;
 
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
+import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.model.item.douban.Review;
 import io.mindjet.litereader.model.list.DoubanReviewList;
 import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.DoubanService;
+import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
 import io.mindjet.litereader.viewmodel.item.DoubanReviewItemViewModel;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -28,6 +32,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
 
     private Action1<List<Review>> onLoadMore;
     private Action1<List<Review>> onRefresh;
+    private Action1<Review> onItemClick;
 
     public DoubanReviewListViewModel(String id) {
         this.id = id;
@@ -62,6 +67,15 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                 addItems(reviews);
                 start += perPage;
                 hideRefreshing();
+            }
+        };
+
+        onItemClick = new Action1<Review>() {
+            @Override
+            public void call(Review review) {
+                Intent intent = DoubanMovieReviewActivity.intentFor(getContext());
+                intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_REVIEW, review);
+                getContext().startActivity(intent);
             }
         };
 
@@ -103,7 +117,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
     private void addItems(List<Review> reviews) {
         if (reviews.size() != 0) {      //只有 reviews 不为空时才能调用 notifyDataSetChanged，不然又会触发 LoadMore 进入死循环
             for (Review review : reviews) {
-                getAdapter().add(new DoubanReviewItemViewModel(review));
+                getAdapter().add(new DoubanReviewItemViewModel(review, onItemClick));
             }
             getAdapter().notifyDataSetChanged();
         } else {

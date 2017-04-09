@@ -55,7 +55,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private DetailStaffViewModel staffViewModel;
     private DetailStillViewModel stillViewModel;
 
-    private Action1<Boolean> onReviewItemClcik;
+    private Action1<Boolean> onReviewItemClick;
 
     @Override
     protected void afterViewAttached() {
@@ -73,7 +73,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     }
 
     private void initActions() {
-        onReviewItemClcik = new Action1<Boolean>() {
+        onReviewItemClick = new Action1<Boolean>() {
             @Override
             public void call(Boolean lastOne) {
                 if (lastOne) {
@@ -185,7 +185,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         }
         getAdapter().notifyItemRangeInserted(index, detail.popularReviews.size());
         index += detail.popularReviews.size();
-        getAdapter().add(new DetailReviewItemViewModel(detail.popularReviews.get(0), true).onAction(onReviewItemClcik));
+        getAdapter().add(new DetailReviewItemViewModel(detail.popularReviews.get(0), true).onAction(onReviewItemClick));
         getAdapter().notifyItemInserted(index);
     }
 

@@ -10,111 +10,118 @@
     </data>
 
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/common_gap_medium">
+        android:layout_margin="@dimen/common_gap_medium"
+        app:cardCornerRadius="@dimen/cardview_default_radius">
 
-        <!--标题-->
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_gap"
-            android:lineSpacingExtra="@dimen/common_gap_small"
-            android:text="@{data.review.title}"
-            android:textColor="@color/article_text_color"
-            android:textSize="@dimen/common_text_size_large" />
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/common_gap_medium">
 
-        <!--创建时间-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_gap_medium"
-            android:text="@{data.review.createdAt}" />
+            <!--标题-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/common_gap"
+                android:lineSpacingExtra="@dimen/common_gap_small"
+                android:text="@{data.review.title}"
+                android:textColor="@color/article_text_color"
+                android:textSize="@dimen/common_text_size_large" />
 
-        <!--支持和不支持-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:orientation="horizontal">
-
+            <!--创建时间-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/common_gap_medium"
-                android:drawableLeft="@drawable/ic_star_gray"
-                android:drawablePadding="@dimen/common_gap_xsmall"
-                android:text="@{data.review.usefulCount}" />
+                android:layout_marginBottom="@dimen/common_gap_medium"
+                android:text="@{data.review.createdAt}" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_star_gray"
-                android:drawablePadding="@dimen/common_gap_xsmall"
-                android:text="@{data.review.uselessCount}" />
-
-        </LinearLayout>
-
-        <RatingBar
-            style="@style/Base.Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_gap_medium"
-            android:setRating="@{Float.valueOf(data.review.rating.value)}"
-            android:stepSize="1" />
-
-        <!--用户信息-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/douban_movie_detail_review_avatar_width"
-                android:layout_height="@dimen/douban_movie_detail_review_avatar_height"
-                app:circle="@{data.review.author.avatar}" />
-
+            <!--支持和不支持-->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/common_gap_medium"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_gravity="end"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@{data.review.author.name}"
-                    android:textColor="@color/article_text_color"
-                    android:textSize="@dimen/common_text_size" />
+                    android:layout_marginRight="@dimen/common_gap_medium"
+                    android:drawableLeft="@drawable/ic_star_gray"
+                    android:drawablePadding="@dimen/common_gap_xsmall"
+                    android:text="@{data.review.usefulCount}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/common_gap_xsmall"
-                    android:singleLine="true"
-                    android:text="@{data.review.author.signature}"
-                    android:visibility='@{!data.review.author.signature.equals("")}' />
+                    android:drawableLeft="@drawable/ic_star_gray"
+                    android:drawablePadding="@dimen/common_gap_xsmall"
+                    android:text="@{data.review.uselessCount}" />
 
             </LinearLayout>
 
+            <RatingBar
+                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/common_gap_medium"
+                android:setRating="@{Float.valueOf(data.review.rating.value)}"
+                android:stepSize="1" />
+
+            <!--用户信息-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/douban_movie_detail_review_avatar_width"
+                    android:layout_height="@dimen/douban_movie_detail_review_avatar_height"
+                    app:circle="@{data.review.author.avatar}" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/common_gap_medium"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@{data.review.author.name}"
+                        android:textColor="@color/article_text_color"
+                        android:textSize="@dimen/common_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_gap_xsmall"
+                        android:singleLine="true"
+                        android:text="@{data.review.author.signature}"
+                        android:visibility='@{!data.review.author.signature.equals("")}' />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--正文-->
+            <io.mindjet.litereader.ui.widget.RichTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_gap_medium"
+                android:lineSpacingExtra="@dimen/common_gap_small"
+                android:textColor="@color/article_text_color"
+                app:richText="@{data.content}" />
+
         </LinearLayout>
 
-        <!--正文-->
-        <io.mindjet.litereader.ui.widget.RichTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_gap_medium"
-            android:lineSpacingExtra="@dimen/common_gap_small"
-            android:textColor="@color/article_text_color"
-            app:richText="@{data.content}" />
-
-    </LinearLayout>
-
+    </android.support.v7.widget.CardView>
 
 </layout>

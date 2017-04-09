@@ -44,7 +44,7 @@ public class DoubanMovieMoreReviewViewModel extends CoordinatorLayoutViewModel<A
         HeaderViewModel header = new HeaderViewModel.Builder()
                 .sink(false)
                 .leftViewModel(new HeaderItemViewModel.BackItemViewModel(getSelfView().getCompatActivity()).icon(R.drawable.ic_arrow_left))
-                .centerViewModel(new HeaderItemViewModel.TitleItemViewModel(title))
+                .leftViewModel(new HeaderItemViewModel.TitleItemViewModel(title))
                 .background(R.color.colorPrimary)
                 .build();
         ViewModelBinder.bind(container, header);

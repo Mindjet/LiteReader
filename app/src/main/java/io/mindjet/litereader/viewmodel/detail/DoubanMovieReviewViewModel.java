@@ -29,6 +29,7 @@ public class DoubanMovieReviewViewModel extends HeaderRecyclerViewModel<Activity
         HeaderViewModel header = new HeaderViewModel.Builder()
                 .sink(true)
                 .leftViewModel(new HeaderItemViewModel.BackItemViewModel(getSelfView().getCompatActivity()).icon(R.drawable.ic_arrow_left))
+                .leftViewModel(new HeaderItemViewModel.TitleItemViewModel(getString(R.string.douban_review_list)))
                 .background(R.color.colorPrimary)
                 .build();
         ViewModelBinder.bind(container, header);
@@ -37,6 +38,7 @@ public class DoubanMovieReviewViewModel extends HeaderRecyclerViewModel<Activity
     @Override
     protected void afterComponentBound() {
         getAdapter().disableLoadMore();
+        getRecyclerViewModel().getRecyclerView().setBackgroundResource(R.color.gray_light_translucent);
         getAdapter().add(new IncludeDoubanMovieReviewViewModel(review));
     }
 }

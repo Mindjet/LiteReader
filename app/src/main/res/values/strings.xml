@@ -2,7 +2,7 @@
     <string name="app_name">LiteReader</string>
     <string name="app_description">轻量阅读，厚积薄发。</string>
 
-    <string name="loading">正在加载</string>
+    <string name="loading">正在加载…</string>
     <string name="load_fail">加载失败</string>
 
     <string name="column_zhihu_daily">知乎日报</string>

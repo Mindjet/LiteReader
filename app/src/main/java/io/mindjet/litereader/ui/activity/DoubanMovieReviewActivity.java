@@ -26,6 +26,7 @@ public class DoubanMovieReviewActivity extends ViewModelCompatActivity<DoubanMov
     @Override
     public DoubanMovieReviewViewModel giveMeViewModel() {
         Review review = (Review) getIntent().getExtras().get(Constant.EXTRA_DOUBAN_MOVIE_REVIEW);
-        return new DoubanMovieReviewViewModel(review);
+        String title = getIntent().getStringExtra(Constant.EXTRA_DOUBAN_MOVIE_TITLE);
+        return new DoubanMovieReviewViewModel(review, title);
     }
 }

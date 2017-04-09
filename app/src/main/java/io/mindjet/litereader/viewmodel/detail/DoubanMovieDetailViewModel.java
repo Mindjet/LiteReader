@@ -24,6 +24,7 @@ import io.mindjet.litereader.model.item.douban.Review;
 import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.ui.activity.DoubanMovieMoreReviewActivity;
+import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailImageViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailReviewItemViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStaffViewModel;
@@ -31,6 +32,7 @@ import io.mindjet.litereader.viewmodel.detail.douban.DetailStillViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailSummaryViewModel;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Action2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -55,7 +57,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private DetailStaffViewModel staffViewModel;
     private DetailStillViewModel stillViewModel;
 
-    private Action1<Boolean> onReviewItemClick;
+    private Action2<Boolean, Review> onReviewItemClick;
 
     @Override
     protected void afterViewAttached() {
@@ -73,15 +75,20 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     }
 
     private void initActions() {
-        onReviewItemClick = new Action1<Boolean>() {
+        onReviewItemClick = new Action2<Boolean, Review>() {
             @Override
-            public void call(Boolean lastOne) {
+            public void call(Boolean lastOne, Review review) {
+                // 如果是最后一项，则跳到评论列表，否则跳到评论详情
+                Intent intent;
                 if (lastOne) {
-                    Intent intent = DoubanMovieMoreReviewActivity.intentFor(getContext());
+                    intent = DoubanMovieMoreReviewActivity.intentFor(getContext());
                     intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_ID, id);
-                    intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_TITLE, title);
-                    getContext().startActivity(intent);
+                } else {
+                    intent = DoubanMovieReviewActivity.intentFor(getContext());
+                    intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_REVIEW, review);
                 }
+                intent.putExtra(Constant.EXTRA_DOUBAN_MOVIE_TITLE, title);
+                getContext().startActivity(intent);
             }
         };
     }
@@ -181,7 +188,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         getAdapter().notifyItemInserted(index++);
 
         for (Review review : detail.popularReviews) {
-            getAdapter().add(new DetailReviewItemViewModel(review));
+            getAdapter().add(new DetailReviewItemViewModel(review).onAction(onReviewItemClick));
         }
         getAdapter().notifyItemRangeInserted(index, detail.popularReviews.size());
         index += detail.popularReviews.size();

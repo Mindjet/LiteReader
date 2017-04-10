@@ -129,7 +129,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
 
     @Override
     protected void initFab(FloatingActionButton fab) {
-        fab.setImageResource(R.drawable.ic_star);
+        fab.setImageResource(R.drawable.ic_share);
         fab.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
     }
 

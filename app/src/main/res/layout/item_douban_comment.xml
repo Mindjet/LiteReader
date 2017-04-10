@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_star_gray"
+                    android:drawableLeft="@drawable/ic_like"
                     android:drawablePadding="@dimen/common_gap_small"
                     android:text="@{data.comment.usefulCount}" />
 

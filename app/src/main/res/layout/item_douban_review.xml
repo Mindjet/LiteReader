@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/common_gap_medium"
-                    android:drawableLeft="@drawable/ic_star_gray"
+                    android:drawableLeft="@drawable/ic_like"
                     android:drawablePadding="@dimen/common_gap_small"
                     android:text="@{data.review.usefulCount}"
                     android:textSize="@dimen/common_text_size_small" />
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/common_gap_medium"
-                    android:drawableLeft="@drawable/ic_star_gray"
+                    android:drawableLeft="@drawable/ic_dislike"
                     android:drawablePadding="@dimen/common_gap_small"
                     android:text="@{data.review.uselessCount}"
                     android:textSize="@dimen/common_text_size_small" />

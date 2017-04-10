@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/common_gap_medium"
-                    android:drawableLeft="@drawable/ic_star_gray"
+                    android:drawableLeft="@drawable/ic_like"
                     android:drawablePadding="@dimen/common_gap_xsmall"
                     android:text="@{data.review.usefulCount}"
                     android:visibility='@{data.review.usefulCount!=null}' />
@@ -60,7 +60,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_star_gray"
+                    android:drawableLeft="@drawable/ic_dislike"
                     android:drawablePadding="@dimen/common_gap_xsmall"
                     android:text="@{data.review.uselessCount}"
                     android:visibility='@{data.review.uselessCount!=null}' />

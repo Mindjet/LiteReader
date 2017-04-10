@@ -22,13 +22,15 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:clickable="false"
-            android:orientation="vertical"
-            android:padding="@dimen/common_gap">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/common_gap_small"
+                android:paddingLeft="@dimen/common_gap"
+                android:paddingRight="@dimen/common_gap"
+                android:paddingTop="@dimen/common_gap"
                 android:text="@string/douban_movie_detail_introduce"
                 android:textColor="@color/article_text_color"
                 android:textSize="@dimen/common_text_size_medium" />
@@ -39,19 +41,23 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:paddingLeft="@dimen/common_gap"
+                    android:paddingRight="@dimen/common_gap"
                     android:id="@+id/tv_summary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="@dimen/common_gap_small" />
 
                 <ImageView
+                    android:layout_marginTop="-10dp"
                     android:id="@+id/iv_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:background="@drawable/ripple_borderless_default"
                     android:clickable="true"
-                    android:src="@drawable/ic_location_gray" />
+                    android:padding="@dimen/common_gap_medium"
+                    android:src="@drawable/ic_down_gray" />
 
             </LinearLayout>
 

@@ -26,11 +26,19 @@
                 android:visibility="@{!data.lastOne}"
                 app:url="@{data.still.cover}" />
 
-            <ImageView
-                android:layout_width="@dimen/douban_movie_detail_still_width"
-                android:layout_height="@dimen/douban_movie_detail_still_height"
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:visibility="@{data.lastOne}" />
+                android:visibility="@{data.lastOne}">
+
+                <ImageView
+                    android:layout_width="@dimen/douban_movie_detail_still_width"
+                    android:layout_height="@dimen/douban_movie_detail_still_height"
+                    android:background="@drawable/ripple_default" />
+
+            </FrameLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"

@@ -18,8 +18,9 @@ public class Constant {
     public final static String EXTRA_DOUBAN_MOVIE_REVIEW = "extra_douban_movie_review";
 
     public final static String EXTRA_TOUCH_X = "extra_touch_x";
-
     public final static String EXTRA_TOUCH_Y = "extra_touch_y";
+
+    public final static String CHANNEL_SUBSCRIPTION_SIGNAL = "channel_subscription_signal";
 
 
 }

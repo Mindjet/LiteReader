@@ -19,11 +19,12 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderItemViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewModel;
+import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
+import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
-import io.mindjet.litereader.viewmodel.list.ZhihuDailyListViewModel;
 
 /**
  * Created by Jet on 3/13/17.
@@ -35,7 +36,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void afterViewAttached(IncludeDrawerCoordinatorLayoutBinding binding) {
-
+        RxBus.getInstance()
+                .receive(Boolean.class, Constant.CHANNEL_SUBSCRIPTION_SIGNAL)
+                .subscribe();
     }
 
     @Override
@@ -103,7 +106,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         //TODO 读取本地缓存获取栏目
         columnViewPagerAdapter = new ColumnViewPagerAdapter();
 //        columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getContext().getResources().getString(R.string.column_zhihu_daily));
-//        columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getContext().getResources().getString(R.string.column_daily_article));
+        columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getContext().getResources().getString(R.string.column_daily_article));
         columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getContext().getResources().getString(R.string.column_douban_movie));
         viewPager.setAdapter(columnViewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPager.getAdapter().getCount() - 1);

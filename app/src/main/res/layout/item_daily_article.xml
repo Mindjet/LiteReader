@@ -40,9 +40,11 @@
                     android:id="@+id/iv_random"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="-5dp"
+                    android:layout_marginTop="-5dp"
                     android:background="@drawable/ripple_borderless_default"
                     android:clickable="true"
-                    android:padding="@dimen/common_gap_small"
+                    android:padding="@dimen/common_gap_medium"
                     android:src="@drawable/ic_refresh_gray" />
 
             </LinearLayout>

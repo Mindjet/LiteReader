@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import io.mindjet.jetgear.databinding.IncludeDrawerCoordinatorLayoutBinding;
 import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
 import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
@@ -22,11 +24,19 @@ import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewM
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
+import io.mindjet.litereader.entity.ChannelCode;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.ui.activity.ChannelSubscribeActivity;
+import io.mindjet.litereader.util.ChannelUtil;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
+import io.mindjet.litereader.viewmodel.list.ZhihuDailyListViewModel;
+import rx.functions.Action0;
+import rx.functions.Action1;
 
 /**
+ * 主界面 view model
+ * <p>
  * Created by Jet on 3/13/17.
  */
 
@@ -36,9 +46,18 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void afterViewAttached(IncludeDrawerCoordinatorLayoutBinding binding) {
+        //TODO 接受频道订阅事件，更新频道显示
         RxBus.getInstance()
                 .receive(Boolean.class, Constant.CHANNEL_SUBSCRIPTION_SIGNAL)
-                .subscribe();
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        closeDrawer();
+                        columnViewPagerAdapter.clear();
+                        addChannel(ChannelUtil.getChannels(getContext()));
+                        getViewPager().setAdapter(columnViewPagerAdapter);
+                    }
+                });
     }
 
     @Override
@@ -86,7 +105,10 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                         .backgroundColor(R.color.colorPrimary)
                         .content(getContext().getResources().getString(R.string.app_name))
                         .build())
-                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_inbox_gray))
+                .item(new DrawerItemViewModel()
+                        .content(getString(R.string.subscribe_channel))
+                        .icon(R.drawable.ic_inbox_gray)
+                        .onClick(onSubscribeChannel()))
                 .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_draft_gray))
                 .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_star_gray))
                 .background(R.color.white)
@@ -103,18 +125,43 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void initViewPager(ViewPager viewPager) {
-        //TODO 读取本地缓存获取栏目
         columnViewPagerAdapter = new ColumnViewPagerAdapter();
-//        columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getContext().getResources().getString(R.string.column_zhihu_daily));
-        columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getContext().getResources().getString(R.string.column_daily_article));
-        columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getContext().getResources().getString(R.string.column_douban_movie));
+        //如果本地读取到的频道列表为null，则显示默认的频道
+        List<String> channelList = ChannelUtil.getChannels(getContext());
+        channelList = channelList == null ? ChannelUtil.getDefaultChannels() : channelList;
+        addChannel(channelList);
         viewPager.setAdapter(columnViewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPager.getAdapter().getCount() - 1);
+    }
+
+    /**
+     * 根据channelSet来添加频道 TODO 后续添加更多的频道，注意更新
+     *
+     * @param channelList 频道列表
+     */
+    private void addChannel(List<String> channelList) {
+        for (String channel : channelList) {
+            if (channel.equals(ChannelCode.ZHIHU))
+                columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getString(R.string.column_zhihu_daily));
+            else if (channel.equals(ChannelCode.DAILY))
+                columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getString(R.string.column_daily_article));
+            else if (channel.contentEquals(ChannelCode.DOUBAN))
+                columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getString(R.string.column_douban_movie));
+        }
     }
 
     @Override
     protected void onFabClick() {
         columnViewPagerAdapter.getItem(getViewPager().getCurrentItem()).getRecyclerView().smoothScrollToPosition(0);
+    }
+
+    private Action0 onSubscribeChannel() {
+        return new Action0() {
+            @Override
+            public void call() {
+                getContext().startActivity(ChannelSubscribeActivity.intentFor(getContext()));
+            }
+        };
     }
 
 }

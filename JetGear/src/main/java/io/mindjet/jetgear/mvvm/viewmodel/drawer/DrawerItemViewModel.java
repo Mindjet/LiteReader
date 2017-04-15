@@ -7,6 +7,7 @@ import io.mindjet.jetgear.R;
 import io.mindjet.jetgear.databinding.ItemDrawerBinding;
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
+import rx.functions.Action0;
 
 /**
  * Created by Mindjet on 2017/2/26.
@@ -16,6 +17,7 @@ public class DrawerItemViewModel extends BaseViewModel<ViewInterface<ItemDrawerB
 
     private String content = "...";
     private int icon = R.drawable.ic_inbox_gray;
+    private Action0 onClick;
 
     @Override
     public void onViewAttached(View view) {
@@ -37,6 +39,15 @@ public class DrawerItemViewModel extends BaseViewModel<ViewInterface<ItemDrawerB
         return this;
     }
 
+    public DrawerItemViewModel onClick(Action0 onClick) {
+        this.onClick = onClick;
+        return this;
+    }
+
+    public void onClick() {
+        if (onClick != null) onClick.call();
+    }
+
     public String getContent() {
         return content;
     }
@@ -45,7 +56,7 @@ public class DrawerItemViewModel extends BaseViewModel<ViewInterface<ItemDrawerB
 //        return getContext().getResources().getDrawable(icon);
 //    }
 
-    public int getIcon(){
+    public int getIcon() {
         return icon;
     }
 

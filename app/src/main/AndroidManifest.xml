@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="io.mindjet.litereader.ui.activity.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,21 +21,31 @@
         </activity>
         <activity
             android:name="io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name=".ui.activity.ZhihuSectionDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name=".ui.activity.DoubanMovieDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name=".ui.activity.DoubanMovieMoreReviewActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name=".ui.activity.DoubanMovieReviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitle" />
+        <activity
+            android:name=".ui.activity.ChannelSubscribeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
     </application>
 

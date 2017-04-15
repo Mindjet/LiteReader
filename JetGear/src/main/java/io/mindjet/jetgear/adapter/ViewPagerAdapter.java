@@ -32,6 +32,11 @@ public abstract class ViewPagerAdapter<T> extends PagerAdapter {
         notifyDataSetChanged();
     }
 
+    public void clear(){
+        list.clear();
+        titles.clear();
+    }
+
     public void addAllWithTitles(List<T> items, List<String> titles) {
         this.list.addAll(items);
         this.titles.addAll(titles);

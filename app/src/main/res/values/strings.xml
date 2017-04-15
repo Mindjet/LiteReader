@@ -2,6 +2,10 @@
     <string name="app_name">LiteReader</string>
     <string name="app_description">轻量阅读，厚积薄发。</string>
 
+    <string name="subscribe_channel">订阅频道</string>
+    <string name="please_select_at_least_one_channel">请至少选择一个频道</string>
+    <string name="save">保存</string>
+
     <string name="loading">正在加载…</string>
     <string name="load_fail">加载失败</string>
 

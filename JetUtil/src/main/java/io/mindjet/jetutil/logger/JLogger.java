@@ -16,6 +16,7 @@ import java.util.List;
 
 public class JLogger {
 
+    private final String NULL = "null";
     private String TAG;
     private int JSON_INDENT = 4;
     private int LOG_LENGTH = 2048;
@@ -35,20 +36,32 @@ public class JLogger {
     }
 
     public void e(Object o) {
-        for (String s : toSections(prettyFormat(o.toString()))) {
-            Log.e(tag(), s);
+        if (o == null) {
+            Log.e(tag(), NULL);
+        } else {
+            for (String s : toSections(prettyFormat(o.toString()))) {
+                Log.e(tag(), s);
+            }
         }
     }
 
     public void i(Object o) {
-        for (String s : toSections(prettyFormat(o.toString()))) {
-            Log.i(tag(), s);
+        if (o == null) {
+            Log.e(tag(), NULL);
+        } else {
+            for (String s : toSections(prettyFormat(o.toString()))) {
+                Log.i(tag(), s);
+            }
         }
     }
 
     public void w(Object o) {
-        for (String s : toSections(prettyFormat(o.toString()))) {
-            Log.w(tag(), s);
+        if (o == null) {
+            Log.e(tag(), NULL);
+        } else {
+            for (String s : toSections(prettyFormat(o.toString()))) {
+                Log.w(tag(), s);
+            }
         }
     }
 

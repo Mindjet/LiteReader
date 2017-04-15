@@ -5,6 +5,9 @@
 
     <dimen name="card_view_radius_large">5dp</dimen>
 
+    <!--订阅频道-->
+    <dimen name="channel_item_height">50dp</dimen>
+
     <!--欢迎页-->
     <dimen name="splash_app_icon_length">60dp</dimen>
 

@@ -16,6 +16,10 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.jetutil.version.VersionUtil;
 
 /**
+ * An integrated layout of DrawerLayout and CoordinatorLayout.
+ * <p>
+ * Meanwhile, the CoordinatorLayout contains a TabLayout and a ViewPager.
+ * <p>
  * Created by Jet on 3/9/17.
  */
 

@@ -42,6 +42,7 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
     @Override
     protected void afterComponentsBound() {
         getRecyclerView().setItemAnimator(new FadeInAnimator());
+        getSwipeLayout().setDistanceToTriggerSync(500);
         onRefresh();
     }
 

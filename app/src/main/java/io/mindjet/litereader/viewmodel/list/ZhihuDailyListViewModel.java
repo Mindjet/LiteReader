@@ -58,6 +58,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
     protected void afterViewAttached() {
         service = ServiceGen.create(ZhihuDailyService.class);
         getSwipeLayout().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
+        getSwipeLayout().setDistanceToTriggerSync(500);
         changePbColor(R.color.colorPrimary);
         initActions();
     }

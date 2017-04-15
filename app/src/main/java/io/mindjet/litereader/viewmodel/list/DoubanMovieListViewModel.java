@@ -42,6 +42,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
         changePbColor(R.color.colorPrimary);
         getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
         getRecyclerView().setLayoutManager(new GridLayoutManager(getContext(), 3));
+        getSwipeLayout().setDistanceToTriggerSync(500);
 
         onLoadMore = new Action1<DoubanMovieList>() {
             @Override

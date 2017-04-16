@@ -16,6 +16,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
+ * 短影评列表 view model
+ * <p>
  * Created by Jet on 3/22/17.
  */
 
@@ -28,7 +30,7 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
     private Action1<List<Comment>> onRefresh;
 
     private int start = 0;
-    private int perPage = 5;
+    private int perPage = 10;
 
     public DoubanCommentListViewModel(String id) {
         this.id = id;
@@ -47,6 +49,7 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
         onLoadMore = new Action1<List<Comment>>() {
             @Override
             public void call(List<Comment> comments) {
+                setIsLoadingMore(false);
                 addItems(comments);
                 start += perPage;
                 hideRefreshing();
@@ -57,11 +60,10 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
             @Override
             public void call(List<Comment> comments) {
                 getAdapter().clear();
-//                getAdapter().finishLoadMore(false);//TODO 修改
-                getAdapter().notifyDataSetChanged();
                 addItems(comments);
                 start += perPage;
                 hideRefreshing();
+                enableLoadMore();
             }
         };
     }
@@ -94,7 +96,7 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
-//                        getAdapter().finishLoadMore(false);//TODO 修改
+                        setIsLoadingMore(false);
                     }
                 });
     }
@@ -106,7 +108,7 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
             }
             getAdapter().notifyDataSetChanged();
         } else {
-//            getAdapter().finishLoadMore(true);//TODO 修改
+            disableLoadMore();
         }
     }
 

@@ -20,6 +20,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
+ * 长影评列表 view model
+ * <p>
  * Created by Jet on 3/22/17.
  */
 
@@ -27,7 +29,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
 
     private String id;
     private int start = 0;
-    private int perPage = 5;
+    private int perPage = 10;
     private DoubanService service;
 
     private Action1<List<Review>> onLoadMore;
@@ -51,6 +53,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
         onLoadMore = new Action1<List<Review>>() {
             @Override
             public void call(List<Review> reviews) {
+                setIsLoadingMore(false);
                 addItems(reviews);
                 start += perPage;
                 hideRefreshing();
@@ -62,11 +65,10 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
             @Override
             public void call(List<Review> reviews) {
                 getAdapter().clear();
-//                getAdapter().finishLoadMore(false);//TODO 修改
-                getAdapter().notifyDataSetChanged();
                 addItems(reviews);
                 start += perPage;
                 hideRefreshing();
+                enableLoadMore();
             }
         };
 
@@ -121,7 +123,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
             }
             getAdapter().notifyDataSetChanged();
         } else {
-//            getAdapter().finishLoadMore(true);//TODO 修改
+            disableLoadMore();
         }
     }
 

@@ -13,6 +13,7 @@ import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.listener.LoadMoreListener;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
+import io.mindjet.jetutil.task.Task;
 
 /**
  * SwipeRefreshLayout+RecyclerView ViewModel, provides refresh and load more features.
@@ -32,6 +33,15 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
         initSwipeLayout();
         initRecyclerView();
         afterComponentsBound();
+
+        //auto refresh at the very first time
+        swipeLayout.setRefreshing(true);
+        Task.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        }, 1000);
     }
 
     private void initSwipeLayout() {
@@ -77,21 +87,24 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
     }
 
     /**
-     * All components are safe to manipulate in this method, as all of them are bound.
+     * All components are safe to manipulate in this method, as all of them are already bound.
      */
     protected void afterComponentsBound() {
 
     }
 
-    protected void finishLoadMore() {
-        recyclerViewModel.finishLoadMore();
+    /**
+     * @see RecyclerViewModel#setIsLoadingMore(boolean)
+     */
+    public void setIsLoadingMore(boolean isLoadingMore) {
+        recyclerViewModel.setIsLoadingMore(isLoadingMore);
     }
 
-    protected void disableLoadMore() {
+    public void disableLoadMore() {
         recyclerViewModel.disableLoadMore();
     }
 
-    protected void enableLoadMore() {
+    public void enableLoadMore() {
         recyclerViewModel.enableLoadMore();
     }
 

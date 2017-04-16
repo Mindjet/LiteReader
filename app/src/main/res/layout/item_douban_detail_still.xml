@@ -35,7 +35,8 @@
                 <ImageView
                     android:layout_width="@dimen/douban_movie_detail_still_width"
                     android:layout_height="@dimen/douban_movie_detail_still_height"
-                    android:background="@drawable/ripple_default" />
+                    android:background="@drawable/ripple_default"
+                    android:clickable="true" />
 
             </FrameLayout>
 

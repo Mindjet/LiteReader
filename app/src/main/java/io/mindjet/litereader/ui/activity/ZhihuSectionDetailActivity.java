@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import io.mindjet.jetgear.mvvm.viewmodel.activity.ViewModelCompatActivity;
-import io.mindjet.litereader.viewmodel.detail.ZhihuSectionDetailViewModel;
+import io.mindjet.litereader.viewmodel.list.ZhihuSectionDetailViewModel;
 
 /**
  * Created by Jet on 3/15/17.

@@ -56,6 +56,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                         columnViewPagerAdapter.clear();
                         addChannel(ChannelUtil.getChannels(getContext()));
                         getViewPager().setAdapter(columnViewPagerAdapter);
+                        getViewPager().setOffscreenPageLimit(columnViewPagerAdapter.getCount());
                     }
                 });
     }

@@ -11,6 +11,8 @@ import io.mindjet.litereader.databinding.ItemDoubanDetailStillBinding;
 import io.mindjet.litereader.model.item.douban.Still;
 
 /**
+ * 电影详情中 剧照 item view model
+ * <p>
  * Created by Jet on 3/21/17.
  */
 

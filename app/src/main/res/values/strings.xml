@@ -4,6 +4,7 @@
 
     <string name="subscribe_channel">订阅频道</string>
     <string name="please_select_at_least_one_channel">请至少选择一个频道</string>
+    <string name="long_press_and_drag_to_arrange_the_order">长按并拖动可以对频道进行排序</string>
     <string name="save">保存</string>
 
     <string name="loading">正在加载…</string>

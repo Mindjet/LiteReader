@@ -13,10 +13,11 @@ import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
-import io.mindjet.litereader.R;
 import io.mindjet.jetutil.anim.RevealUtil;
 import io.mindjet.jetwidget.JToolBar;
+import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.http.SimpleHttpResponseHandler;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
 import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.ZhihuDailyService;
@@ -58,7 +59,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     protected void initContent(ViewGroup container) {
         recyclerViewModel = new RecyclerViewModel();
         ViewModelBinder.bind(container, recyclerViewModel);
-//        recyclerViewModel.getAdapter().disableLoadMore();//TODO 修改
+        recyclerViewModel.disableLoadMore();
         recyclerViewModel.getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
     }
 
@@ -84,15 +85,14 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
         int centerY = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_Y, 0);
         RevealUtil.revealActivity(getSelfView().getCompatActivity(), 1000, centerX, centerY);
         service.getStoryDetail(getSelfView().getCompatActivity().getIntent().getStringExtra(Constant.EXTRA_ZHIHU_STORY_ID))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(new SimpleHttpResponseHandler<ZhihuStoryDetail>())
                 .subscribe(new Action1<ZhihuStoryDetail>() {
                     @Override
                     public void call(ZhihuStoryDetail detail) {
                         renderStoryImage(detail);
                         renderArticle(detail);
                     }
-                }, RxAction.onError());
+                });
     }
 
     private void renderStoryImage(ZhihuStoryDetail detail) {

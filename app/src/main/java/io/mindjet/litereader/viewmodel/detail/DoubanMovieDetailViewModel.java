@@ -114,11 +114,10 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
 
     @Override
     protected void initContent(ViewGroup container) {
-        //TODO 添加简介、演职员表、长短评、剧照、标签
         recyclerViewModel = new RecyclerViewModel(true);
         ViewModelBinder.bind(container, recyclerViewModel);
         recyclerViewModel.getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
-//        recyclerViewModel.getAdapter().disableLoadMore();//TODO 修改
+        recyclerViewModel.disableLoadMore();
         getMovieDetail();
     }
 

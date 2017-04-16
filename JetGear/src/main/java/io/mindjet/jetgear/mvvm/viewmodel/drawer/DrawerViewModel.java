@@ -32,7 +32,7 @@ public class DrawerViewModel extends BaseViewModel<ViewInterface<IncludeDrawerBi
     public void onViewAttached(View view) {
         recyclerViewModel = new RecyclerViewModel();
         ViewModelBinder.bind(getSelfView().getBinding().llyContent, recyclerViewModel);
-//        recyclerViewModel.getAdapter().disableLoadMore();       //TODO 修改
+        recyclerViewModel.disableLoadMore();
         recyclerViewModel.getAdapter().addAll(builder.vmList);
     }
 

@@ -13,6 +13,8 @@ import io.mindjet.litereader.model.item.douban.Review;
 import io.mindjet.litereader.viewmodel.item.IncludeDoubanMovieReviewViewModel;
 
 /**
+ * 长影评 view model
+ * <p>
  * Created by Mindjet on 2017/4/6.
  */
 
@@ -39,7 +41,7 @@ public class DoubanMovieReviewViewModel extends HeaderRecyclerViewModel<Activity
 
     @Override
     protected void afterComponentBound() {
-//        getAdapter().disableLoadMore();//TODO 修改
+        getRecyclerViewModel().disableLoadMore();
         getRecyclerViewModel().getRecyclerView().setBackgroundResource(R.color.gray_light_translucent);
         getAdapter().add(new IncludeDoubanMovieReviewViewModel(review));
     }

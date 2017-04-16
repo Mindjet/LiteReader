@@ -10,6 +10,8 @@ import io.mindjet.litereader.model.item.douban.Review;
 import rx.functions.Action2;
 
 /**
+ * 电影详情中 评论 item view model
+ * <p>
  * Created by Jet on 3/21/17.
  */
 

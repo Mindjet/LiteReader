@@ -55,31 +55,27 @@ public abstract class HeaderSwipeLayoutViewModel<V extends ViewInterface<Include
         return swipe.getRecyclerView();
     }
 
-    protected SwipeLayoutViewModelImpl getSwipeLayout() {
+    protected SwipeLayoutViewModelImpl getSwipeLayoutViewModel() {
         return swipe;
     }
 
     protected void hideRefreshing() {
-        getSwipeLayout().hideRefreshing();
+        getSwipeLayoutViewModel().hideRefreshing();
     }
 
     protected void showRefreshing() {
-        getSwipeLayout().showRefreshing();
-    }
-
-    protected void finishLoadMore(boolean lastPage) {
-//        getAdapter().finishLoadMore(lastPage); //TODO 修改
+        getSwipeLayoutViewModel().showRefreshing();
     }
 
     protected void changePbColor(@ColorRes int... color) {
-        getSwipeLayout().changePbColor(color);
+        getSwipeLayoutViewModel().changePbColor(color);
     }
 
     protected abstract void onRefresh();
 
     protected abstract void onLoadMore();
 
-    private class SwipeLayoutViewModelImpl extends SwipeRecyclerViewModel {
+    public class SwipeLayoutViewModelImpl extends SwipeRecyclerViewModel {
 
         @Override
         public void onRefresh() {

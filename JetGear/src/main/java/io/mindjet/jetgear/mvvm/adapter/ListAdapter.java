@@ -25,6 +25,10 @@ public abstract class ListAdapter<T, V extends ViewDataBinding> extends BaseAdap
         list = new ArrayList<>();
     }
 
+    public List<T> getList() {
+        return list;
+    }
+
     @Override
     public int getItemCount() {
         return list.size();

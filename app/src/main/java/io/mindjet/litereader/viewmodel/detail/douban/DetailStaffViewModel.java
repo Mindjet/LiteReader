@@ -10,6 +10,8 @@ import io.mindjet.litereader.model.item.douban.Staff;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
+ * 电影详情中 演职员表 view model
+ * <p>
  * Created by Jet on 3/21/17.
  */
 
@@ -31,9 +33,9 @@ public class DetailStaffViewModel extends RecyclerViewModel<ItemDoubanDetailStaf
     protected void initRecyclerView() {
         getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         getRecyclerView().setItemAnimator(new SlideInUpAnimator());
+        disableLoadMore();
         //这一句非常重要。因为该横向RecyclerView是嵌套在纵向RecyclerView中，该横向RecyclerView会默认捕捉焦点，导致在该横向RecyclerView上纵向滑动时不能触发纵向RecyclerView滑动。
         getRecyclerView().setNestedScrollingEnabled(false);
-//        getAdapter().disableLoadMore();//TODO 修改
     }
 
     @Override

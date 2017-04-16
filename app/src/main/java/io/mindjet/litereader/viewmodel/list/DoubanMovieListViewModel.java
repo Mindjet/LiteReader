@@ -20,6 +20,8 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
+ * 豆瓣电影列表 view model
+ * <p>
  * Created by Jet on 3/16/17.
  */
 
@@ -47,6 +49,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
         onLoadMore = new Action1<DoubanMovieList>() {
             @Override
             public void call(DoubanMovieList movieList) {
+                setIsLoadingMore(false);        //一定要在load more完成时调用该方法，不然RecyclerView不能再次load more
                 addMovieList(movieList.movies);
                 start += movieList.movies.size();
                 hideRefreshing();
@@ -57,11 +60,10 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
             @Override
             public void call(DoubanMovieList movieList) {
                 getAdapter().clear();
-//                getAdapter().finishLoadMore(false);
-//                getAdapter().notifyDataSetChanged();
                 addMovieList(movieList.movies);
                 start += perPage;
                 hideRefreshing();
+                enableLoadMore();           //允许load more
             }
         };
 
@@ -78,9 +80,6 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
             }
         };
 
-        // 刷新拿数据
-        getSwipeLayout().setRefreshing(true);
-        onRefresh();
     }
 
     @Override
@@ -100,8 +99,8 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
-//                        getAdapter().finishLoadMore(false);//TODO 修改
                         hideRefreshing();
+                        setIsLoadingMore(false);
                     }
                 });
     }
@@ -112,11 +111,14 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
     }
 
     private void addMovieList(List<DoubanMovieItem> movies) {
-        //TODO 修改
-        for (DoubanMovieItem movie : movies) {
-            getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
+        if (movies.size() == 0) {
+            disableLoadMore();          //禁止load more
+        } else {
+            for (DoubanMovieItem movie : movies) {
+                getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
+            }
+            getAdapter().notifyDataSetChanged();
         }
-        getAdapter().notifyDataSetChanged();
     }
 
 }

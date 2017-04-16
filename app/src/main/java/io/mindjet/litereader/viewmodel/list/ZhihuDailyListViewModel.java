@@ -38,6 +38,8 @@ import rx.functions.Action3;
 import rx.schedulers.Schedulers;
 
 /**
+ * 知乎日报 首页 view model
+ * <p>
  * Created by Jet on 3/13/17.
  */
 
@@ -65,9 +67,6 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
         getSwipeLayout().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
         getSwipeLayout().setDistanceToTriggerSync(500);
         changePbColor(R.color.colorPrimary);
-
-        getSwipeLayout().setRefreshing(true);
-        onRefresh();
     }
 
     private void initActions() {
@@ -81,6 +80,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 initNews(list.stories);
                 hideRefreshing();
                 loadSections();
+                setIsLoadingMore(false);
             }
         };
         onRefreshLatestNews = new Action1<ZhihuDailyList>() {
@@ -95,6 +95,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 initNews(list.stories);
                 hideRefreshing();
                 loadSections();
+                setIsLoadingMore(false);
                 date = new Date();          //重置日期
             }
         };
@@ -147,15 +148,15 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                     @Override
                     public void call(ZhihuDailyList zhihuDailyList) {
                         date = DateUtil.yesterday(date);
+                        setIsLoadingMore(false);
                         getAdapter().add(new ZhihuDateItemViewModel(date));
                         initNews(zhihuDailyList.stories);
-//                        getAdapter().finishLoadMore(false);//TODO 修改
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         Toaster.toast(getContext(), throwable.toString());
-//                        getAdapter().finishLoadMore(false);//TODO 修改
+                        setIsLoadingMore(false);
                     }
                 });
     }
@@ -168,7 +169,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                     @Override
                     protected void onError() {
                         hideRefreshing();
-//                        getAdapter().finishLoadMore(false);//TODO 修改
+                        setIsLoadingMore(false);
                     }
                 });
     }
@@ -187,7 +188,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private void initSection(List<ZhihuSectionItem> sections) {
         section.getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-//        section.getAdapter().disableLoadMore();//TODO 修改
+        section.disableLoadMore();
         section.getAdapter().clear();
         for (ZhihuSectionItem item : sections)
             section.getAdapter().add(new ZhihuSectionItemViewModel(item).onAction(onSectionItemClick));

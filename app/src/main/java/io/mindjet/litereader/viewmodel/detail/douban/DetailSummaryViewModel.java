@@ -13,6 +13,8 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanDetailSummaryBinding;
 
 /**
+ * 电影简介 view model
+ * <p>
  * Created by Jet on 3/21/17.
  */
 

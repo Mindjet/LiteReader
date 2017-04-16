@@ -1,4 +1,4 @@
-package io.mindjet.litereader.viewmodel.detail;
+package io.mindjet.litereader.viewmodel.list;
 
 import android.content.Intent;
 import android.view.ViewGroup;
@@ -15,19 +15,19 @@ import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderSwipeLayoutViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.http.SimpleHttpResponseHandler;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
-import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryItemViewModel;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Action3;
-import rx.schedulers.Schedulers;
 
 /**
+ * 专栏详情 列表 view model
+ * <p>
  * Created by Jet on 3/15/17.
  */
 
@@ -48,6 +48,7 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
     protected void afterComponentsBound() {
         getRecyclerView().setItemAnimator(new SlideInUpAnimator(new LinearInterpolator()));
         changePbColor(R.color.colorPrimary);
+        getSwipeLayoutViewModel().disableLoadMore();            //数据是一次性拿到，不需要load more
     }
 
     @Override
@@ -65,21 +66,20 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
     @Override
     protected void onRefresh() {
         getAdapter().clear();
-        onLoadMore();
-    }
-
-    @Override
-    protected void onLoadMore() {
         service.getSectionDetail(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(new SimpleHttpResponseHandler<ZhihuDailyList>())
                 .subscribe(new Action1<ZhihuDailyList>() {
                     @Override
                     public void call(ZhihuDailyList list) {
                         initArticles(list.stories);
                         hideRefreshing();
                     }
-                }, RxAction.onError());
+                });
+    }
+
+    @Override
+    protected void onLoadMore() {
+
     }
 
     private void initArticles(List<ZhihuStoryItem> items) {
@@ -96,7 +96,7 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
                         }
                     }));
         getAdapter().notifyDataSetChanged();
-//        getAdapter().disableLoadMore();//TODO 修改
+
     }
 
 }

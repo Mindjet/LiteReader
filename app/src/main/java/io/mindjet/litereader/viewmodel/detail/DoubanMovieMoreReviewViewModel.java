@@ -20,6 +20,8 @@ import io.mindjet.litereader.viewmodel.list.DoubanCommentListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanReviewListViewModel;
 
 /**
+ * 更多影评 view model
+ * <p>
  * Created by Jet on 3/21/17.
  */
 

@@ -8,6 +8,8 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanDetailImageBinding;
 
 /**
+ * 电影详情中 顶部图片 view model
+ * <p>
  * Created by Jet on 3/20/17.
  */
 

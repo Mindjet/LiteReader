@@ -11,6 +11,8 @@ import io.mindjet.litereader.databinding.ItemDoubanDetailStaffBinding;
 import io.mindjet.litereader.model.item.douban.Staff;
 
 /**
+ * 演职员 item view model
+ * <p>
  * Created by Jet on 3/21/17.
  */
 

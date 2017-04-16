@@ -12,14 +12,17 @@ import io.mindjet.jetgear.mvvm.listener.LoadMoreListener;
 import io.mindjet.jetutil.task.Task;
 
 /**
+ * RecyclerView Adapter, provides load more feature.
+ * <p>
  * Created by Jet on 2/16/17.
  */
 
+@Deprecated
 public abstract class LoadMoreAdapter<T, V extends ViewDataBinding> extends ListAdapter<T, V> {
 
+    public LoadMoreListener loadMoreListener;
     private boolean loadMore = true;
     private ItemProgressBinding progressBinding;
-    public LoadMoreListener loadMoreListener;
 
     public LoadMoreAdapter(Context context) {
         super(context);
@@ -86,16 +89,6 @@ public abstract class LoadMoreAdapter<T, V extends ViewDataBinding> extends List
                 }
             }, 500);
         }
-    }
-
-    @Override
-    public void onItemClick(ViewDataBinding binding, int position) {
-        //TODO do something to response item click.
-    }
-
-    @Override
-    public void onItemLongClick(ViewDataBinding binding, int position) {
-        //TODO do something to response item long click.
     }
 
 }

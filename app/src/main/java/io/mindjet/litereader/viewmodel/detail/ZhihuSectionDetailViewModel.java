@@ -96,7 +96,7 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
                         }
                     }));
         getAdapter().notifyDataSetChanged();
-        getAdapter().disableLoadMore();
+//        getAdapter().disableLoadMore();//TODO 修改
     }
 
 }

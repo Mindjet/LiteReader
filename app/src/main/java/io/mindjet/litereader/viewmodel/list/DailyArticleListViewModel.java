@@ -25,9 +25,6 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
     @Override
     protected void afterViewAttached() {
         service = ServiceGen.create(OtherService.class);
-        getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
-        getAdapter().disableLoadMore();
-        changePbColor(R.color.colorPrimary);
 
         onNextArticle = new Action0() {
             @Override
@@ -41,6 +38,9 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     protected void afterComponentsBound() {
+        getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
+//        getAdapter().disableLoadMore();//TODO 修改
+        changePbColor(R.color.colorPrimary);
         getRecyclerView().setItemAnimator(new FadeInAnimator());
         getSwipeLayout().setDistanceToTriggerSync(500);
         onRefresh();
@@ -67,7 +67,7 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
                 }, new ActionHttpError() {
                     @Override
                     protected void onError() {
-                        getAdapter().finishLoadMore(false);
+//                        getAdapter().finishLoadMore(false);//TODO 修改
                     }
                 });
     }

@@ -62,7 +62,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
             @Override
             public void call(List<Review> reviews) {
                 getAdapter().clear();
-                getAdapter().finishLoadMore(false);
+//                getAdapter().finishLoadMore(false);//TODO 修改
                 getAdapter().notifyDataSetChanged();
                 addItems(reviews);
                 start += perPage;
@@ -109,7 +109,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
-                        getAdapter().finishLoadMore(false);
+//                        getAdapter().finishLoadMore(false);//TODO 修改
                     }
                 });
     }
@@ -121,7 +121,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
             }
             getAdapter().notifyDataSetChanged();
         } else {
-            getAdapter().finishLoadMore(true);
+//            getAdapter().finishLoadMore(true);//TODO 修改
         }
     }
 

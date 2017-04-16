@@ -27,10 +27,10 @@ import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuSectionDetailActivity;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.DateUtil;
+import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuBannerItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuSectionItemViewModel;
-import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryItemViewModel;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Action2;
@@ -57,10 +57,17 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
     @Override
     protected void afterViewAttached() {
         service = ServiceGen.create(ZhihuDailyService.class);
+        initActions();
+    }
+
+    @Override
+    protected void afterComponentsBound() {
         getSwipeLayout().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
         getSwipeLayout().setDistanceToTriggerSync(500);
         changePbColor(R.color.colorPrimary);
-        initActions();
+
+        getSwipeLayout().setRefreshing(true);
+        onRefresh();
     }
 
     private void initActions() {
@@ -88,6 +95,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 initNews(list.stories);
                 hideRefreshing();
                 loadSections();
+                date = new Date();          //重置日期
             }
         };
         onDailyItemClick = new Action3<String, Integer, Integer>() {
@@ -141,13 +149,13 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                         date = DateUtil.yesterday(date);
                         getAdapter().add(new ZhihuDateItemViewModel(date));
                         initNews(zhihuDailyList.stories);
-                        getAdapter().finishLoadMore(false);
+//                        getAdapter().finishLoadMore(false);//TODO 修改
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         Toaster.toast(getContext(), throwable.toString());
-                        getAdapter().finishLoadMore(false);
+//                        getAdapter().finishLoadMore(false);//TODO 修改
                     }
                 });
     }
@@ -160,7 +168,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                     @Override
                     protected void onError() {
                         hideRefreshing();
-                        getAdapter().finishLoadMore(false);
+//                        getAdapter().finishLoadMore(false);//TODO 修改
                     }
                 });
     }
@@ -179,7 +187,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private void initSection(List<ZhihuSectionItem> sections) {
         section.getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        section.getAdapter().disableLoadMore();
+//        section.getAdapter().disableLoadMore();//TODO 修改
         section.getAdapter().clear();
         for (ZhihuSectionItem item : sections)
             section.getAdapter().add(new ZhihuSectionItemViewModel(item).onAction(onSectionItemClick));

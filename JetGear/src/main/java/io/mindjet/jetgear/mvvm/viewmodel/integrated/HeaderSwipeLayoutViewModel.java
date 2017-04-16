@@ -68,7 +68,7 @@ public abstract class HeaderSwipeLayoutViewModel<V extends ViewInterface<Include
     }
 
     protected void finishLoadMore(boolean lastPage) {
-        getAdapter().finishLoadMore(lastPage);
+//        getAdapter().finishLoadMore(lastPage); //TODO 修改
     }
 
     protected void changePbColor(@ColorRes int... color) {

@@ -48,7 +48,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
             @Override
             public void call(DoubanMovieList movieList) {
                 addMovieList(movieList.movies);
-                start += perPage;
+                start += movieList.movies.size();
                 hideRefreshing();
             }
         };
@@ -57,8 +57,8 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
             @Override
             public void call(DoubanMovieList movieList) {
                 getAdapter().clear();
-                getAdapter().finishLoadMore(false);
-                getAdapter().notifyDataSetChanged();
+//                getAdapter().finishLoadMore(false);
+//                getAdapter().notifyDataSetChanged();
                 addMovieList(movieList.movies);
                 start += perPage;
                 hideRefreshing();
@@ -77,6 +77,10 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
                 getContext().startActivity(intent);
             }
         };
+
+        // 刷新拿数据
+        getSwipeLayout().setRefreshing(true);
+        onRefresh();
     }
 
     @Override
@@ -96,7 +100,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
-                        getAdapter().finishLoadMore(false);
+//                        getAdapter().finishLoadMore(false);//TODO 修改
                         hideRefreshing();
                     }
                 });
@@ -108,14 +112,11 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
     }
 
     private void addMovieList(List<DoubanMovieItem> movies) {
-        if (movies.size() != 0) {
-            for (DoubanMovieItem movie : movies) {
-                getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
-            }
-            getAdapter().notifyDataSetChanged();
-        } else {
-            getAdapter().finishLoadMore(true);
+        //TODO 修改
+        for (DoubanMovieItem movie : movies) {
+            getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
         }
+        getAdapter().notifyDataSetChanged();
     }
 
 }

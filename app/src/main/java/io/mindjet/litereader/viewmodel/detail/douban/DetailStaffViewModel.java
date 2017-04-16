@@ -33,7 +33,7 @@ public class DetailStaffViewModel extends RecyclerViewModel<ItemDoubanDetailStaf
         getRecyclerView().setItemAnimator(new SlideInUpAnimator());
         //这一句非常重要。因为该横向RecyclerView是嵌套在纵向RecyclerView中，该横向RecyclerView会默认捕捉焦点，导致在该横向RecyclerView上纵向滑动时不能触发纵向RecyclerView滑动。
         getRecyclerView().setNestedScrollingEnabled(false);
-        getAdapter().disableLoadMore();
+//        getAdapter().disableLoadMore();//TODO 修改
     }
 
     @Override

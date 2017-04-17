@@ -3,7 +3,7 @@ package io.mindjet.litereader.viewmodel.list;
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
-import io.mindjet.litereader.http.SimpleHttpResponseHandler;
+import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.model.list.DailyArticle;
 import io.mindjet.litereader.service.OtherService;
 import io.mindjet.litereader.viewmodel.item.DailyArticleItemViewModel;
@@ -54,7 +54,7 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
 
     private void loadDailyArticle() {
         service.getDailyArticle()
-                .compose(new SimpleHttpResponseHandler<DailyArticle>())
+                .compose(new SimpleHttpHandler<DailyArticle>())
                 .subscribe(new Action1<DailyArticle>() {
                     @Override
                     public void call(DailyArticle article) {
@@ -67,7 +67,7 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
 
     private void loadRandomArticle() {
         service.getRandomArticle()
-                .compose(new SimpleHttpResponseHandler<DailyArticle>())
+                .compose(new SimpleHttpHandler<DailyArticle>())
                 .subscribe(new Action1<DailyArticle>() {
                     @Override
                     public void call(DailyArticle article) {

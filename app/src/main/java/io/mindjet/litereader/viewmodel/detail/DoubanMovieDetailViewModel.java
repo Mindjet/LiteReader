@@ -174,7 +174,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     }
 
     private void addItems(DoubanMovieDetail detail) {
-        staffViewModel = new DetailStaffViewModel(detail.writers, detail.directors, detail.actors);
+        staffViewModel = new DetailStaffViewModel(title, detail.writers, detail.directors, detail.actors);
         getAdapter().add(staffViewModel);
         getAdapter().notifyItemInserted(index++);
 

@@ -1,6 +1,7 @@
 package io.mindjet.litereader.service;
 
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
+import io.mindjet.litereader.model.item.douban.StaffDetail;
 import io.mindjet.litereader.model.list.DoubanCommentList;
 import io.mindjet.litereader.model.list.DoubanMovieList;
 import io.mindjet.litereader.model.list.DoubanReviewList;
@@ -32,5 +33,7 @@ public interface DoubanService {
     @GET("https://api.douban.com/v2/movie/subject/{id}/reviews?apikey=0b2bdeda43b5688921839c8ecb20399b")
     Observable<DoubanReviewList> getReviewList(@Path("id") String id, @Query("start") int start, @Query("count") int perPage);
 
+    @GET("http://api.douban.com/v2/movie/celebrity/{id}")
+    Observable<StaffDetail> getStaffDetail(@Path("id") String id);
 
 }

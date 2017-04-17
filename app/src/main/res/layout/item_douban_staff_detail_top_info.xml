@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.litereader.viewmodel.detail.douban.StaffDetailTopInfoViewModel" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_gap_medium"
+        app:cardCornerRadius="@dimen/cardview_default_radius">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/douban_movie_staff_detail_avatar_width"
+                android:layout_height="@dimen/douban_movie_staff_detail_avatar_height"
+                app:url="@{data.detail.avatars.large}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/common_gap_medium"
+                android:paddingLeft="@dimen/common_gap"
+                android:paddingRight="@dimen/common_gap_medium"
+                android:paddingTop="@dimen/common_gap_medium">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_gap_medium"
+                    android:text="@{data.detail.name}"
+                    android:textColor="@color/article_text_color"
+                    android:textSize="@dimen/common_text_size_large" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_gap_medium"
+                    android:text="@{data.englishName}"
+                    android:textColor="@color/article_text_color" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.bornPlace}"
+                    android:textColor="@color/article_text_color"
+                    android:visibility="@{!data.detail.bornPlace.equals(``)}" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>

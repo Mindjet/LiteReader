@@ -36,7 +36,7 @@ public abstract class ScrollLoadMoreListener extends RecyclerView.OnScrollListen
             GridLayoutManager manager = ((GridLayoutManager) layoutManager);
             int spanCount = manager.getSpanCount();
             int itemCount = recyclerView.getAdapter().getItemCount();
-            lastVisibleItemPos = manager.findLastVisibleItemPosition();
+            lastVisibleItemPos = manager.findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPos < spanCount || lastVisibleItemPos >= itemCount - 1 - spanCount) {
                 onLoadMore();
             }
@@ -44,14 +44,14 @@ public abstract class ScrollLoadMoreListener extends RecyclerView.OnScrollListen
             StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) layoutManager;
             int spanCount = manager.getSpanCount();
             int itemCount = recyclerView.getAdapter().getItemCount();
-            lastVisibleItemPos = manager.findLastVisibleItemPositions(null)[0];
+            lastVisibleItemPos = manager.findLastCompletelyVisibleItemPositions(null)[spanCount - 1];
             if (lastVisibleItemPos < spanCount || lastVisibleItemPos >= itemCount - 1 - spanCount) {
                 onLoadMore();
             }
         } else {
             LinearLayoutManager manager = ((LinearLayoutManager) layoutManager);
             int itemCount = recyclerView.getAdapter().getItemCount();
-            lastVisibleItemPos = manager.findLastVisibleItemPosition();
+            lastVisibleItemPos = manager.findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPos == 0 || lastVisibleItemPos >= itemCount - 2) {
                 onLoadMore();
             }

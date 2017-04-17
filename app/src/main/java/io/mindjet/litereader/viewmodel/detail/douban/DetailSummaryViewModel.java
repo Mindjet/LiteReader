@@ -89,4 +89,9 @@ public class DetailSummaryViewModel extends BaseViewModel<ViewInterface<ItemDoub
         folded = !folded;
     }
 
+
+    public void loadData() {
+
+    }
+
 }

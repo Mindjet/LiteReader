@@ -20,6 +20,9 @@
     <string name="column_douban_movie">豆瓣电影</string>
     <string name="douban_checkout_movie_detail">查看电影详情</string>
     <string name="douban_movie_detail_introduce">简介</string>
+    <string name="douban_staff_english_name"><![CDATA[英文名: %1s]]></string>
+    <string name="douban_staff_born_place"><![CDATA[出生地: %1s]]></string>
+    <string name="douban_staff_work">影人作品</string>
     <string name="douban_movie_detail_more_stills">更多\n剧照</string>
     <string name="douban_movie_detail_more_reviews">查看更多影评</string>
     <string name="douban_review_list">影评列表</string>

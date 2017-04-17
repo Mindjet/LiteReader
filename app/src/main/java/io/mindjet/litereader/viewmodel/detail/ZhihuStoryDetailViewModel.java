@@ -17,15 +17,12 @@ import io.mindjet.jetutil.anim.RevealUtil;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpResponseHandler;
+import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
-import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryArticleViewModel;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Jet on 3/14/17.
@@ -85,7 +82,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
         int centerY = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_Y, 0);
         RevealUtil.revealActivity(getSelfView().getCompatActivity(), 1000, centerX, centerY);
         service.getStoryDetail(getSelfView().getCompatActivity().getIntent().getStringExtra(Constant.EXTRA_ZHIHU_STORY_ID))
-                .compose(new SimpleHttpResponseHandler<ZhihuStoryDetail>())
+                .compose(new SimpleHttpHandler<ZhihuStoryDetail>())
                 .subscribe(new Action1<ZhihuStoryDetail>() {
                     @Override
                     public void call(ZhihuStoryDetail detail) {

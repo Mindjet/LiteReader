@@ -9,6 +9,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanDetailStaffBinding;
 import io.mindjet.litereader.model.item.douban.Staff;
+import rx.functions.Action1;
 
 /**
  * 演职员 item view model
@@ -21,9 +22,12 @@ public class DetailStaffItemViewModel extends BaseViewModel<ViewInterface<ItemDo
     private Staff staff;
     private String type;
 
-    public DetailStaffItemViewModel(Staff staff, String type) {
+    private Action1<Staff> onClick;
+
+    public DetailStaffItemViewModel(Staff staff, String type, Action1<Staff> onClick) {
         this.staff = staff;
         this.type = type;
+        this.onClick = onClick;
     }
 
     @Override
@@ -37,6 +41,10 @@ public class DetailStaffItemViewModel extends BaseViewModel<ViewInterface<ItemDo
 
     public String getType() {
         return type;
+    }
+
+    public void onClick() {
+        if (onClick != null) onClick.call(staff);
     }
 
     @Override

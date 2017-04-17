@@ -16,15 +16,15 @@ import rx.schedulers.Schedulers;
  * Created by Mindjet on 2017/4/16.
  */
 
-public class SimpleHttpResponseHandler<T> implements Observable.Transformer<T, T> {
+public class SimpleHttpHandler<T> implements Observable.Transformer<T, T> {
 
     private Action1<Throwable> onError;
 
-    public SimpleHttpResponseHandler(Action1<Throwable> onError) {
+    public SimpleHttpHandler(Action1<Throwable> onError) {
         this.onError = onError;
     }
 
-    public SimpleHttpResponseHandler() {
+    public SimpleHttpHandler() {
     }
 
     @Override

@@ -15,7 +15,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderSwipeLayoutViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpResponseHandler;
+import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
 import io.mindjet.litereader.service.ZhihuDailyService;
@@ -67,7 +67,7 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
     protected void onRefresh() {
         getAdapter().clear();
         service.getSectionDetail(id)
-                .compose(new SimpleHttpResponseHandler<ZhihuDailyList>())
+                .compose(new SimpleHttpHandler<ZhihuDailyList>())
                 .subscribe(new Action1<ZhihuDailyList>() {
                     @Override
                     public void call(ZhihuDailyList list) {

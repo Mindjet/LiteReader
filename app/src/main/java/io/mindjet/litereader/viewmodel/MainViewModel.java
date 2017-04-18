@@ -108,7 +108,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                         .build())
                 .item(new DrawerItemViewModel()
                         .content(getString(R.string.subscribe_channel))
-                        .icon(R.drawable.ic_inbox_gray)
+                        .icon(R.drawable.ic_track_gray)
                         .onClick(onSubscribeChannel()))
                 .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_draft_gray))
                 .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_star_gray))

@@ -17,7 +17,6 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderRecyclerViewModel;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.jetutil.hint.Toaster;
-import io.mindjet.jetutil.version.VersionUtil;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.util.ChannelUtil;
@@ -42,10 +41,8 @@ public class ChannelSubscribeViewModel extends HeaderRecyclerViewModel<ActivityC
                 .leftViewModel(new HeaderItemViewModel.BackItemViewModel(getSelfView().getCompatActivity()).icon(R.drawable.ic_arrow_left))
                 .centerViewModel(new HeaderItemViewModel.TitleItemViewModel(getString(R.string.subscribe_channel)))
                 .rightViewModel(new HeaderItemViewModel()
-                        .text(getString(R.string.save))
+                        .icon(R.drawable.ic_check)
                         .clickable(true)
-                        .textColor(R.color.white)
-                        .textSize(R.dimen.common_text_size)
                         .callback(new IHeaderItemCallback() {
                             @Override
                             public void call() {

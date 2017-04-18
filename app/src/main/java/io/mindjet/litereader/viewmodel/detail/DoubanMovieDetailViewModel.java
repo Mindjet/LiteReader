@@ -174,6 +174,9 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     }
 
     private void addItems(DoubanMovieDetail detail) {
+        //TODO 不要回收简介view model，因为高度变化时可能被回收导致高度变化停止。
+//        recyclerViewModel.getRecyclerView().getRecycledViewPool().setMaxRecycledViews(R.layout.item_douban_detail_summary, 100);
+
         staffViewModel = new DetailStaffViewModel(title, detail.writers, detail.directors, detail.actors);
         getAdapter().add(staffViewModel);
         getAdapter().notifyItemInserted(index++);
@@ -189,10 +192,12 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         for (Review review : detail.popularReviews) {
             getAdapter().add(new DetailReviewItemViewModel(review).onAction(onReviewItemClick));
         }
-        getAdapter().notifyItemRangeInserted(index, detail.popularReviews.size());
-        index += detail.popularReviews.size();
-        getAdapter().add(new DetailReviewItemViewModel(detail.popularReviews.get(0), true).onAction(onReviewItemClick));
-        getAdapter().notifyItemInserted(index);
+        if (detail.popularReviews.size() != 0) {
+            getAdapter().notifyItemRangeInserted(index, detail.popularReviews.size());
+            index += detail.popularReviews.size();
+            getAdapter().add(new DetailReviewItemViewModel(detail.popularReviews.get(0), true).onAction(onReviewItemClick));
+            getAdapter().notifyItemInserted(index);
+        }
     }
 
 }

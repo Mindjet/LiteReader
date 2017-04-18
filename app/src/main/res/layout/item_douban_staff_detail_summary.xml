@@ -45,6 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="@dimen/common_gap_small"
+                    android:layout_marginBottom="@dimen/common_gap"
                     android:paddingLeft="@dimen/common_gap"
                     android:paddingRight="@dimen/common_gap" />
 
@@ -53,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginTop="-10dp"
+                    android:layout_marginTop="-25dp"
                     android:background="@drawable/ripple_borderless_default"
                     android:clickable="true"
                     android:padding="@dimen/common_gap_medium"

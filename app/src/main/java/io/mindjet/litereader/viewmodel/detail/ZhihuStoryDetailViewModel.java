@@ -5,6 +5,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import io.mindjet.jetgear.databinding.IncludeCoordinatorCollapseLayoutBinding;
@@ -25,6 +26,8 @@ import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
 import rx.functions.Action1;
 
 /**
+ * 知乎日报 文章 view model
+ * <p>
  * Created by Jet on 3/14/17.
  */
 
@@ -67,6 +70,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     @Override
     protected void initFab(FloatingActionButton fab) {
+        fab.setVisibility(View.GONE);
         fab.setImageResource(R.drawable.ic_drawer);
         fab.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
     }

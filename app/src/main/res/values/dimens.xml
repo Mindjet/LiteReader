@@ -21,6 +21,7 @@
     <dimen name="zhihu_story_item_image_length">80dp</dimen>
 
     <!--豆瓣影评-->
+    <dimen name="douban_movie_poster_width">120dp</dimen>
     <dimen name="douban_movie_poster_height">150dp</dimen>
     <dimen name="douban_movie_dialog_poster_width">120dp</dimen>
     <dimen name="douban_movie_dialog_poster_height">180dp</dimen>

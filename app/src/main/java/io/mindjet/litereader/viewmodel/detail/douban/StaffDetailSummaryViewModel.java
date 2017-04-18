@@ -66,7 +66,8 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
                         @Override
                         public void call(String summary) {
                             if (summary.length() == 2) {
-                                getSelfView().getBinding().container.setVisibility(View.GONE);
+                                getSelfView().getBinding().tvSummary.setText("暂无本影人简介");
+                                getSelfView().getBinding().ivToggle.setVisibility(View.GONE);
                             } else {
                                 initText(summary);
                             }
@@ -78,6 +79,7 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
     private void initText(String summary) {
         final TextView tvSummary = getSelfView().getBinding().tvSummary;
         final ImageView ivToggle = getSelfView().getBinding().ivToggle;
+        tvSummary.setVisibility(View.INVISIBLE);
         tvSummary.setText(summary);
         tvSummary.post(new Runnable() {
             @Override
@@ -86,6 +88,7 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
                 tvSummary.setHeight(tvSummary.getLineHeight() * maxLine);
                 ivToggle.setVisibility(tvSummary.getLineCount() > maxLine ? View.VISIBLE : View.GONE);
                 folded = tvSummary.getLineCount() > maxLine;
+                tvSummary.setVisibility(View.VISIBLE);
             }
         });
         ivToggle.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +110,6 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
             } else {
                 summary = element.text();
             }
-            jLogger.e(summary.length());
         } catch (Exception e) {
             e.printStackTrace();
         }

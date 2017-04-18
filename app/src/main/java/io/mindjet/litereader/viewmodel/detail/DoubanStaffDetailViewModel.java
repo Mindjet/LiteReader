@@ -13,9 +13,11 @@ import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.model.item.douban.StaffDetail;
+import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailSummaryViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailTopInfoViewModel;
+import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailWorkViewModel;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -32,6 +34,7 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
 
     private StaffDetailTopInfoViewModel topInfoViewModel;
     private StaffDetailSummaryViewModel summaryViewModel;
+    private StaffDetailWorkViewModel workViewModel;
 
     private int index = 0;
     private String id;
@@ -68,7 +71,7 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
                     public void call(StaffDetail detail) {
                         addItem(detail);
                     }
-                });
+                }, RxAction.onError());
     }
 
     private void addItem(StaffDetail detail) {
@@ -78,6 +81,10 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
 
         summaryViewModel = new StaffDetailSummaryViewModel(id);
         getAdapter().add(summaryViewModel);
+        getAdapter().notifyItemInserted(index++);
+
+        workViewModel = new StaffDetailWorkViewModel(detail.works);
+        getAdapter().add(workViewModel);
         getAdapter().notifyItemInserted(index++);
 
     }

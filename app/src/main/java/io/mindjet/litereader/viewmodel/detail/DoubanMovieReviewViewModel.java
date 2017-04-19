@@ -7,9 +7,11 @@ import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
 import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderItemViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
+import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderRecyclerViewModel;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.model.item.douban.Review;
+import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.viewmodel.item.IncludeDoubanMovieReviewViewModel;
 
 /**
@@ -19,6 +21,8 @@ import io.mindjet.litereader.viewmodel.item.IncludeDoubanMovieReviewViewModel;
  */
 
 public class DoubanMovieReviewViewModel extends HeaderRecyclerViewModel<ActivityCompatInterface<IncludeHeaderRecyclerBinding>> {
+
+    private final String PREFIX = "https://movie.douban.com/review/";
 
     private Review review;
     private String title;
@@ -34,6 +38,15 @@ public class DoubanMovieReviewViewModel extends HeaderRecyclerViewModel<Activity
                 .sink(true)
                 .leftViewModel(new HeaderItemViewModel.BackItemViewModel(getSelfView().getCompatActivity()).icon(R.drawable.ic_arrow_left))
                 .leftViewModel(new HeaderItemViewModel.TitleItemViewModel(title == null ? getString(R.string.douban_review_list) : title))
+                .rightViewModel(new HeaderItemViewModel()
+                        .icon(R.drawable.ic_share)
+                        .clickable(true)
+                        .callback(new IHeaderItemCallback() {
+                            @Override
+                            public void call() {
+                                new ShareDialog(getContext(), PREFIX + review.id, false).show();
+                            }
+                        }))
                 .background(R.color.colorPrimary)
                 .build();
         ViewModelBinder.bind(container, header);

@@ -11,6 +11,9 @@
     <!--订阅频道-->
     <dimen name="channel_item_height">50dp</dimen>
 
+    <!--设置-->
+    <dimen name="setting_item_height">50dp</dimen>
+
     <!--欢迎页-->
     <dimen name="splash_app_icon_length">60dp</dimen>
 

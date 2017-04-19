@@ -27,6 +27,7 @@ import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
 import io.mindjet.litereader.entity.ChannelCode;
 import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.ui.activity.ChannelSubscribeActivity;
+import io.mindjet.litereader.ui.activity.SettingActivity;
 import io.mindjet.litereader.util.ChannelUtil;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
@@ -46,7 +47,6 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void afterViewAttached(IncludeDrawerCoordinatorLayoutBinding binding) {
-        //TODO 接受频道订阅事件，更新频道显示
         RxBus.getInstance()
                 .receive(Boolean.class, Constant.CHANNEL_SUBSCRIPTION_SIGNAL)
                 .subscribe(new Action1<Boolean>() {
@@ -114,7 +114,14 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                         .content(getString(R.string.my_collection))
                         .icon(R.drawable.ic_favorite_gray)
                         .onClick(onMyCollection()))
-                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_star_gray))
+                .item(new DrawerItemViewModel()
+                        .content(getString(R.string.setting))
+                        .icon(R.drawable.ic_setting_gray)
+                        .onClick(onSetting()))
+                .item(new DrawerItemViewModel()
+                        .content(getString(R.string.about_me))
+                        .icon(R.drawable.ic_face_gray)
+                        .onClick(onAboutMe()))
                 .background(R.color.white)
                 .build();
         ViewModelBinder.bind(container, drawer);
@@ -169,6 +176,24 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
     }
 
     private Action0 onMyCollection() {
+        return new Action0() {
+            @Override
+            public void call() {
+
+            }
+        };
+    }
+
+    private Action0 onSetting() {
+        return new Action0() {
+            @Override
+            public void call() {
+                getContext().startActivity(SettingActivity.intentFor(getContext()));
+            }
+        };
+    }
+
+    private Action0 onAboutMe() {
         return new Action0() {
             @Override
             public void call() {

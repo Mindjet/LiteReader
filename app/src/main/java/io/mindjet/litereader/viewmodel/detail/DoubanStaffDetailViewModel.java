@@ -7,6 +7,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
 import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderItemViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
+import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
@@ -17,6 +18,7 @@ import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.item.douban.StaffDetail;
 import io.mindjet.litereader.service.DoubanService;
+import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailSummaryViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailTopInfoViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailWorkViewModel;
@@ -43,6 +45,8 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
     private String id;
     private String title;
 
+    private String shareUrl;
+
     public DoubanStaffDetailViewModel(String id, String title) {
         this.id = id;
         this.title = title;
@@ -55,6 +59,16 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
                 .background(R.color.colorPrimary)
                 .leftViewModel(new HeaderItemViewModel.BackItemViewModel(getSelfView().getCompatActivity()).icon(R.drawable.ic_arrow_left))
                 .leftViewModel(new HeaderItemViewModel.TitleItemViewModel(title).textColor(R.color.white))
+                .rightViewModel(new HeaderItemViewModel()
+                        .icon(R.drawable.ic_share)
+                        .clickable(true)
+                        .callback(new IHeaderItemCallback() {
+                            @Override
+                            public void call() {
+                                if (shareUrl != null)
+                                    new ShareDialog(getContext(), shareUrl, false).show();
+                            }
+                        }))
                 .build();
         ViewModelBinder.bind(container, headerViewModel);
     }
@@ -89,6 +103,7 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
     }
 
     private void addItem(StaffDetail detail) {
+        shareUrl = detail.mobileUrl;
         //要等到 summary 加载完才关闭 LoadingView
         RxBus.getInstance()
                 .receive(Boolean.class, Constant.LOADING_COMPLETE_SIGNAL)

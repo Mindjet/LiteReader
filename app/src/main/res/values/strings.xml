@@ -11,6 +11,15 @@
     <!--我的收藏-->
     <string name="my_collection">我的收藏</string>
 
+    <!--设置-->
+    <string name="setting">设置</string>
+    <string name="show_daily_wallpaper_every_time">每次启动均显示每日壁纸</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="auto_check_for_update">自动检查更新</string>
+
+    <!--关于我-->
+    <string name="about_me">关于我</string>
+
     <string name="loading">正在加载…</string>
     <string name="load_fail">加载失败</string>
 

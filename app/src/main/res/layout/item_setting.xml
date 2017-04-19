@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.litereader.viewmodel.item.SettingItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_gap_medium" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/setting_item_height"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_default"
+                android:clickable="@{!data.switch}"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/common_gap"
+                android:paddingRight="@dimen/common_gap"
+                android:text="@{data.text}"
+                android:textColor="@color/article_text_color"
+                android:textSize="@dimen/common_text_size" />
+
+            <Switch
+                android:id="@+id/switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={data.checked}"
+                android:paddingLeft="@dimen/common_gap"
+                android:paddingRight="@dimen/common_gap"
+                android:visibility="@{data.switch}" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_dark" />
+
+    </LinearLayout>
+
+</layout>

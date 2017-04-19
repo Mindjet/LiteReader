@@ -18,6 +18,7 @@
         android:paddingLeft="@dimen/common_gap_medium"
         android:paddingRight="@dimen/common_gap_medium"
         android:paddingTop="@dimen/common_gap_small"
+        android:text="@{data.content}"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/common_text_size_small" />
 

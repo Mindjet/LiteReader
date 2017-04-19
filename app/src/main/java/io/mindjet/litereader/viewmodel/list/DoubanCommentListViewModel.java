@@ -5,6 +5,7 @@ import java.util.List;
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.item.douban.Comment;
 import io.mindjet.litereader.model.list.DoubanCommentList;
 import io.mindjet.litereader.reactivex.ActionHttpError;
@@ -70,12 +71,8 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     public void onRefresh() {
-        if (getAdapter().size() == 0) {
-            getCommentList(onLoadMore);
-        } else {
-            start = 0;
-            getCommentList(onRefresh);
-        }
+        start = 0;
+        getCommentList(onRefresh);
     }
 
     @Override
@@ -85,18 +82,18 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
 
     private void getCommentList(Action1<List<Comment>> onNext) {
         service.getCommentList(id, start, perPage)
-                .subscribeOn(Schedulers.io())
+                .compose(new ThreadDispatcher<DoubanCommentList>())
                 .map(new Func1<DoubanCommentList, List<Comment>>() {
                     @Override
                     public List<Comment> call(DoubanCommentList list) {
                         return list.comments;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
                         setIsLoadingMore(false);
+                        hideRefreshing();
                     }
                 });
     }

@@ -8,16 +8,15 @@ import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.item.douban.Review;
 import io.mindjet.litereader.model.list.DoubanReviewList;
 import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
 import io.mindjet.litereader.viewmodel.item.DoubanReviewItemViewModel;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * 长影评列表 view model
@@ -84,12 +83,8 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     public void onRefresh() {
-        if (getAdapter().size() == 0) {
-            getReviewList(onLoadMore);
-        } else {
-            start = 0;
-            getReviewList(onRefresh);
-        }
+        start = 0;
+        getReviewList(onRefresh);
     }
 
     @Override
@@ -97,20 +92,20 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
         getReviewList(onLoadMore);
     }
 
-    private void getReviewList(Action1<List<Review>> onNext) {
+    private void getReviewList(final Action1<List<Review>> onNext) {
         service.getReviewList(id, start, perPage)
-                .subscribeOn(Schedulers.io())
+                .compose(new ThreadDispatcher<DoubanReviewList>())
                 .map(new Func1<DoubanReviewList, List<Review>>() {
                     @Override
                     public List<Review> call(DoubanReviewList list) {
                         return list.reviews;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
-//                        getAdapter().finishLoadMore(false);//TODO 修改
+                        hideRefreshing();
+                        setIsLoadingMore(false);
                     }
                 });
     }

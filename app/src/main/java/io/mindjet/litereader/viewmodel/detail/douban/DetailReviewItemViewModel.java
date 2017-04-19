@@ -48,15 +48,10 @@ public class DetailReviewItemViewModel extends BaseViewModel<ViewInterface<ItemD
         return lastOne;
     }
 
-    public View.OnClickListener getClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onAction != null) {
-                    onAction.call(lastOne, review);
-                }
-            }
-        };
+    public void onClick() {
+        if (onAction != null) {
+            onAction.call(lastOne, review);
+        }
     }
 
     @Override

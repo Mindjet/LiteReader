@@ -12,6 +12,8 @@ import io.mindjet.litereader.databinding.ItemZhihuDateBinding;
 import io.mindjet.litereader.util.DateUtil;
 
 /**
+ * 知乎日报首页 时间 item view model
+ * <p>
  * Created by Jet on 3/14/17.
  */
 

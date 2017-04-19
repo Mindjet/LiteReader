@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ripple_white"
                 android:clickable="true"
-                android:onClick="@{data.clickListener}"
+                android:onClick="@{() -> data.onClick()}"
                 android:orientation="vertical"
                 android:padding="@dimen/common_gap_medium"
                 android:visibility="@{!data.lastOne}">
@@ -77,7 +77,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/ripple_theme"
                 android:gravity="center"
-                android:onClick="@{data.clickListener}"
+                android:onClick="@{() -> data.onClick()}"
                 android:padding="@dimen/common_gap"
                 android:text="@string/douban_movie_detail_more_reviews"
                 android:textColor="@color/white"

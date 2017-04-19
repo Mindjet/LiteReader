@@ -17,11 +17,9 @@ import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanStaffDetailSummaryBinding;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpHandler;
-import io.mindjet.litereader.reactivex.RxAction;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -55,7 +53,7 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
         if (!hasAttach) {
             hasAttach = true;
             Observable.just("")
-                    .compose(new SimpleHttpHandler<String>())
+                    .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .map(new Func1<String, String>() {
                         @Override
@@ -64,18 +62,18 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
                         }
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<String>() {
+                    .subscribe(new SimpleHttpSubscriber<String>() {
                         @Override
-                        public void call(String summary) {
+                        public void onNext(String summary) {
                             if (summary.length() == 2) {
-                                getSelfView().getBinding().tvSummary.setText("暂无本影人简介");
+                                getSelfView().getBinding().tvSummary.setText(getString(R.string.douban_staff_no_introduce));
                                 getSelfView().getBinding().ivToggle.setVisibility(View.GONE);
                             } else {
                                 initText(summary);
                             }
                             RxBus.getInstance().send(true, Constant.LOADING_COMPLETE_SIGNAL);       //通知已经加载完毕
                         }
-                    }, RxAction.onError());
+                    });
         }
     }
 

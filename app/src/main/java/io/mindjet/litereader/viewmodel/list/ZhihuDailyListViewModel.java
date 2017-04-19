@@ -16,26 +16,25 @@ import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemZhihuSectionBinding;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.item.ZhihuSectionItem;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.ZhihuTopStoryItem;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
 import io.mindjet.litereader.model.list.ZhihuSectionList;
 import io.mindjet.litereader.reactivex.ActionHttpError;
-import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuSectionDetailActivity;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.DateUtil;
-import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryItemViewModel;
+import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuBannerItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuSectionItemViewModel;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Action2;
 import rx.functions.Action3;
-import rx.schedulers.Schedulers;
 
 /**
  * 知乎日报 首页 view model
@@ -144,20 +143,18 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private void loadBeforeNews() {
         service.getBefore(DateFormat.format("yyyyMMdd", date).toString())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ZhihuDailyList>() {
+                .compose(new ThreadDispatcher<ZhihuDailyList>())
+                .subscribe(new SimpleHttpSubscriber<ZhihuDailyList>() {
                     @Override
-                    public void call(ZhihuDailyList zhihuDailyList) {
+                    public void onNext(ZhihuDailyList zhihuDailyList) {
                         date = DateUtil.yesterday(date);
                         setIsLoadingMore(false);
                         getAdapter().add(new ZhihuDateItemViewModel(date));
                         initNews(zhihuDailyList.stories);
                     }
-                }, new Action1<Throwable>() {
+
                     @Override
-                    public void call(Throwable throwable) {
-                        Toaster.toast(getContext(), throwable.toString());
+                    protected void onFailed() {
                         setIsLoadingMore(false);
                     }
                 });
@@ -165,8 +162,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private void fetchLatestNews(Action1<ZhihuDailyList> onNext) {
         service.getLatest()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(new ThreadDispatcher<ZhihuDailyList>())
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
@@ -178,14 +174,13 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private void loadSections() {
         service.getSections()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ZhihuSectionList>() {
+                .compose(new ThreadDispatcher<ZhihuSectionList>())
+                .subscribe(new SimpleHttpSubscriber<ZhihuSectionList>() {
                     @Override
-                    public void call(ZhihuSectionList sections) {
+                    public void onNext(ZhihuSectionList sections) {
                         initSection(sections.data);
                     }
-                }, RxAction.onError());
+                });
     }
 
     private void initSection(List<ZhihuSectionItem> sections) {

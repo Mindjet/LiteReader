@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_theme"
-            android:onClick="@{data.clickListener}"
+            android:onClick="@{() -> data.onClick()}"
             android:text="@string/douban_checkout_movie_detail"
             android:textColor="@color/white" />
 

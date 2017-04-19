@@ -13,15 +13,16 @@ import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.IncludeDoubanReviewBinding;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.model.item.douban.Review;
-import io.mindjet.litereader.reactivex.RxAction;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
+ * 通用长影评详情 view model
+ * <p>
  * Created by Mindjet on 2017/4/6.
  */
 
@@ -61,12 +62,12 @@ public class IncludeDoubanMovieReviewViewModel extends BaseViewModel<ViewInterfa
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<String>() {
+                .subscribe(new SimpleHttpSubscriber<String>() {
                     @Override
-                    public void call(String html) {
+                    public void onNext(String html) {
                         content.set(html);
                     }
-                }, RxAction.onError());
+                });
 
     }
 

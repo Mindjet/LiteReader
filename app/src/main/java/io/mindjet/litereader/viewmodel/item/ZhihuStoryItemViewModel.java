@@ -1,4 +1,4 @@
-package io.mindjet.litereader.viewmodel.detail.zhihu;
+package io.mindjet.litereader.viewmodel.item;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +11,8 @@ import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import rx.functions.Action3;
 
 /**
+ * 知乎日报 item view model
+ * <p>
  * Created by Jet on 3/13/17.
  */
 

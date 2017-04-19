@@ -15,14 +15,14 @@ import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderSwipeLayoutViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpHandler;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
-import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryItemViewModel;
+import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
-import rx.functions.Action1;
 import rx.functions.Action3;
 
 /**
@@ -66,11 +66,15 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
     protected void onRefresh() {
         getAdapter().clear();
         service.getSectionDetail(id)
-                .compose(new SimpleHttpHandler<ZhihuDailyList>())
-                .subscribe(new Action1<ZhihuDailyList>() {
+                .compose(new ThreadDispatcher<ZhihuDailyList>())
+                .subscribe(new SimpleHttpSubscriber<ZhihuDailyList>() {
                     @Override
-                    public void call(ZhihuDailyList list) {
+                    public void onNext(ZhihuDailyList list) {
                         initArticles(list.stories);
+                    }
+
+                    @Override
+                    public void onCompleted() {
                         hideRefreshing();
                     }
                 });

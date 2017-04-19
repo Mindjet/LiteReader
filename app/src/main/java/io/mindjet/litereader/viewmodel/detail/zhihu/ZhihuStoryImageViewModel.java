@@ -9,6 +9,8 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemZhihuStoryImageBinding;
 
 /**
+ * 知乎日报文章 头部图片 view model
+ * <p>
  * Created by Jet on 3/14/17.
  */
 

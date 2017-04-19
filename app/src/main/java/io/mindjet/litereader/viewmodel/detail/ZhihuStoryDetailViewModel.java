@@ -19,13 +19,13 @@ import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpHandler;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryArticleViewModel;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
-import rx.functions.Action1;
 
 /**
  * 知乎日报 文章 view model
@@ -90,10 +90,10 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
         int centerY = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_Y, 0);
         RevealUtil.revealActivity(getSelfView().getCompatActivity(), 1000, centerX, centerY);
         service.getStoryDetail(getSelfView().getCompatActivity().getIntent().getStringExtra(Constant.EXTRA_ZHIHU_STORY_ID))
-                .compose(new SimpleHttpHandler<ZhihuStoryDetail>())
-                .subscribe(new Action1<ZhihuStoryDetail>() {
+                .compose(new ThreadDispatcher<ZhihuStoryDetail>())
+                .subscribe(new SimpleHttpSubscriber<ZhihuStoryDetail>() {
                     @Override
-                    public void call(ZhihuStoryDetail detail) {
+                    public void onNext(ZhihuStoryDetail detail) {
                         renderStoryImage(detail);
                         renderArticle(detail);
                     }

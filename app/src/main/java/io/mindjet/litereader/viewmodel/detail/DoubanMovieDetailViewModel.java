@@ -21,7 +21,8 @@ import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpHandler;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
 import io.mindjet.litereader.model.item.douban.Review;
 import io.mindjet.litereader.service.DoubanService;
@@ -33,10 +34,11 @@ import io.mindjet.litereader.viewmodel.detail.douban.DetailReviewItemViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStaffViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStillViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailSummaryViewModel;
-import rx.functions.Action1;
 import rx.functions.Action2;
 
 /**
+ * 豆瓣电影详情 view model
+ * <p>
  * Created by Jet on 3/17/17.
  */
 
@@ -172,10 +174,10 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
 
     private void getMovieDetail() {
         service.getMovieDetail(id)
-                .compose(new SimpleHttpHandler<DoubanMovieDetail>())
-                .subscribe(new Action1<DoubanMovieDetail>() {
+                .compose(new ThreadDispatcher<DoubanMovieDetail>())
+                .subscribe(new SimpleHttpSubscriber<DoubanMovieDetail>() {
                     @Override
-                    public void call(DoubanMovieDetail detail) {
+                    public void onNext(DoubanMovieDetail detail) {
                         addItems(detail);
                     }
                 });

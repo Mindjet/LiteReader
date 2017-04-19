@@ -8,7 +8,6 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
@@ -21,6 +20,8 @@ import io.mindjet.litereader.viewmodel.item.MovieTypeViewModel;
 import rx.functions.Action1;
 
 /**
+ * 电影弹窗（长按显示）
+ * <p>
  * Created by Jet on 3/20/17.
  */
 
@@ -86,15 +87,9 @@ public class MovieItemDialog extends BaseDialog {
 
     }
 
-    public View.OnClickListener getClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onAction != null) {
-                    onAction.call(item);
-                }
-            }
-        };
+    public void onClick() {
+        if (onAction != null)
+            onAction.call(item);
     }
 
 }

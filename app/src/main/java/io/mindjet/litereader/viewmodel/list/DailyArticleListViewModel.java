@@ -3,13 +3,13 @@ package io.mindjet.litereader.viewmodel.list;
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
-import io.mindjet.litereader.http.SimpleHttpHandler;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.list.DailyArticle;
 import io.mindjet.litereader.service.OtherService;
 import io.mindjet.litereader.viewmodel.item.DailyArticleItemViewModel;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import rx.functions.Action0;
-import rx.functions.Action1;
 
 /**
  * 每日散文 view model
@@ -53,12 +53,16 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
 
     private void loadDailyArticle() {
         service.getDailyArticle()
-                .compose(new SimpleHttpHandler<DailyArticle>())
-                .subscribe(new Action1<DailyArticle>() {
+                .compose(new ThreadDispatcher<DailyArticle>())
+                .subscribe(new SimpleHttpSubscriber<DailyArticle>() {
                     @Override
-                    public void call(DailyArticle article) {
+                    public void onNext(DailyArticle article) {
                         getAdapter().add(new DailyArticleItemViewModel(article).onAction(onNextArticle));
                         getAdapter().notifyItemInserted(0);
+                    }
+
+                    @Override
+                    public void onCompleted() {
                         hideRefreshing();
                     }
                 });
@@ -66,10 +70,10 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
 
     private void loadRandomArticle() {
         service.getRandomArticle()
-                .compose(new SimpleHttpHandler<DailyArticle>())
-                .subscribe(new Action1<DailyArticle>() {
+                .compose(new ThreadDispatcher<DailyArticle>())
+                .subscribe(new SimpleHttpSubscriber<DailyArticle>() {
                     @Override
-                    public void call(DailyArticle article) {
+                    public void onNext(DailyArticle article) {
                         getAdapter().add(new DailyArticleItemViewModel(article).onAction(onNextArticle));
                         getAdapter().notifyItemInserted(0);
                     }

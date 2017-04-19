@@ -8,6 +8,8 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemZhihuStoryArticleBinding;
 
 /**
+ * 知乎日报文章 正文 view model
+ * <p>
  * Created by Jet on 3/14/17.
  */
 

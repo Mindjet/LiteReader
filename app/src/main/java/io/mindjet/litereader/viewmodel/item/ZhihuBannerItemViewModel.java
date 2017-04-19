@@ -10,6 +10,8 @@ import io.mindjet.litereader.model.item.ZhihuTopStoryItem;
 import rx.functions.Action3;
 
 /**
+ * 知乎日报首页 banner item view model
+ * <p>
  * Created by Jet on 3/14/17.
  */
 
@@ -42,13 +44,11 @@ public class ZhihuBannerItemViewModel extends BaseViewModel<ViewInterface<ItemZh
 
     @Override
     public void onViewAttached(View view) {
-        getSelfView().getBinding().llyContainer
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (onAction != null)
-                            onAction.call(item.id, 0, 0);
-                    }
-                });
+
+    }
+
+    public void onClick(){
+        if (onAction != null)
+            onAction.call(item.id, 0, 0);
     }
 }

@@ -13,7 +13,8 @@ import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.jetwidget.LoadingView;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpHandler;
+import io.mindjet.litereader.http.SimpleHttpSubscriber;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.item.douban.StaffDetail;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailSummaryViewModel;
@@ -67,21 +68,21 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
     protected void afterComponentBound() {
         getRecyclerViewModel().disableLoadMore();
         subscription = service.getStaffDetail(id)
-                .compose(new SimpleHttpHandler<StaffDetail>())
+                .compose(new ThreadDispatcher<StaffDetail>())
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
                         LoadingView.show(getContext(), R.string.loading, false);
                     }
                 })
-                .subscribe(new Action1<StaffDetail>() {
+                .subscribe(new SimpleHttpSubscriber<StaffDetail>() {
                     @Override
-                    public void call(StaffDetail detail) {
+                    public void onNext(StaffDetail detail) {
                         addItem(detail);
                     }
-                }, new Action1<Throwable>() {
+
                     @Override
-                    public void call(Throwable throwable) {
+                    protected void onFailed() {
                         LoadingView.dismiss();
                     }
                 });

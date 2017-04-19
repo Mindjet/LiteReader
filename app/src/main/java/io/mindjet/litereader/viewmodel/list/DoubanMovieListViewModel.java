@@ -9,6 +9,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.item.DoubanMovieItem;
 import io.mindjet.litereader.model.list.DoubanMovieList;
 import io.mindjet.litereader.reactivex.ActionHttpError;
@@ -84,18 +85,13 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     public void onRefresh() {
-        if (getAdapter().size() == 0) {
-            getMovieList(onLoadMore);
-        } else {
-            start = 0;
-            getMovieList(onRefresh);
-        }
+        start = 0;
+        getMovieList(onRefresh);
     }
 
     private void getMovieList(Action1<DoubanMovieList> onNext) {
         service.getMovieList(start, perPage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(new ThreadDispatcher<DoubanMovieList>())
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {

@@ -2,21 +2,28 @@
     <string name="app_name">LiteReader</string>
     <string name="app_description">轻量阅读，厚积薄发。</string>
 
+    <!--订阅频道-->
     <string name="subscribe_channel">订阅频道</string>
     <string name="please_select_at_least_one_channel">请至少选择一个频道</string>
     <string name="long_press_and_drag_to_arrange_the_order">长按并拖动可以对频道进行排序</string>
     <string name="save">保存</string>
 
+    <!--我的收藏-->
+    <string name="my_collection">我的收藏</string>
+
     <string name="loading">正在加载…</string>
     <string name="load_fail">加载失败</string>
 
+    <!--知乎日报-->
     <string name="column_zhihu_daily">知乎日报</string>
     <string name="latest_daily">最新日报</string>
     <string name="special_section">专栏</string>
     <string name="home">首页</string>
 
+    <!--每日散文-->
     <string name="column_daily_article">每日散文</string>
 
+    <!--豆瓣电影-->
     <string name="column_douban_movie">豆瓣电影</string>
     <string name="douban_checkout_movie_detail">查看电影详情</string>
     <string name="douban_movie_detail_introduce">简介</string>
@@ -28,10 +35,13 @@
     <string name="douban_review_list">影评列表</string>
     <string name="douban_movie_review">长影评</string>
     <string name="douban_movie_comment">短影评</string>
+
+    <!--顶部菜单-->
     <string name="menu_share">分享</string>
     <string name="menu_collect">收藏</string>
     <string name="menu_more">更多</string>
 
+    <!--分享-->
     <string name="wechat">微信</string>
     <string name="qq">QQ</string>
     <string name="qzone">QQ空间</string>

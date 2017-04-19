@@ -10,15 +10,17 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
+import io.mindjet.jetwidget.LoadingView;
 import io.mindjet.litereader.R;
+import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.model.item.douban.StaffDetail;
-import io.mindjet.litereader.reactivex.RxAction;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailSummaryViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailTopInfoViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailWorkViewModel;
 import rx.Subscription;
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -66,15 +68,36 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
         getRecyclerViewModel().disableLoadMore();
         subscription = service.getStaffDetail(id)
                 .compose(new SimpleHttpHandler<StaffDetail>())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        LoadingView.show(getContext(), R.string.loading, false);
+                    }
+                })
                 .subscribe(new Action1<StaffDetail>() {
                     @Override
                     public void call(StaffDetail detail) {
                         addItem(detail);
                     }
-                }, RxAction.onError());
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        LoadingView.dismiss();
+                    }
+                });
     }
 
     private void addItem(StaffDetail detail) {
+        //要等到 summary 加载完才关闭 LoadingView
+        RxBus.getInstance()
+                .receive(Boolean.class, Constant.LOADING_COMPLETE_SIGNAL)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        LoadingView.dismiss();
+                    }
+                });
+
         topInfoViewModel = new StaffDetailTopInfoViewModel(detail);
         getAdapter().add(topInfoViewModel);
         getAdapter().notifyItemInserted(index++);

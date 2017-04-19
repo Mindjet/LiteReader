@@ -13,8 +13,10 @@ import org.jsoup.nodes.Element;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
+import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanStaffDetailSummaryBinding;
+import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.reactivex.RxAction;
 import rx.Observable;
@@ -71,6 +73,7 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
                             } else {
                                 initText(summary);
                             }
+                            RxBus.getInstance().send(true, Constant.LOADING_COMPLETE_SIGNAL);       //通知已经加载完毕
                         }
                     }, RxAction.onError());
         }

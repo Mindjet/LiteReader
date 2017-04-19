@@ -48,7 +48,6 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
     protected void afterComponentsBound() {
         getRecyclerView().setItemAnimator(new SlideInUpAnimator(new LinearInterpolator()));
         changePbColor(R.color.colorPrimary);
-        getSwipeLayoutViewModel().disableLoadMore();            //数据是一次性拿到，不需要load more
     }
 
     @Override

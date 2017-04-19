@@ -2,6 +2,7 @@ package io.mindjet.litereader.viewmodel.detail.douban;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class StaffDetailWorkViewModel extends RecyclerViewModel<ItemDoubanMovieB
     @Override
     protected void initRecyclerView() {
         getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        getRecyclerView().setItemAnimator(new SlideInDownAnimator());
+        getRecyclerView().setItemAnimator(new SlideInDownAnimator(new BounceInterpolator()));
     }
 
     @Override

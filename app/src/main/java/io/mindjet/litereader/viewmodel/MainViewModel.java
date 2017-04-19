@@ -110,7 +110,10 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                         .content(getString(R.string.subscribe_channel))
                         .icon(R.drawable.ic_track_gray)
                         .onClick(onSubscribeChannel()))
-                .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_draft_gray))
+                .item(new DrawerItemViewModel()
+                        .content(getString(R.string.my_collection))
+                        .icon(R.drawable.ic_favorite_gray)
+                        .onClick(onMyCollection()))
                 .item(new DrawerItemViewModel().content("xxx").icon(R.drawable.ic_star_gray))
                 .background(R.color.white)
                 .build();
@@ -161,6 +164,15 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
             @Override
             public void call() {
                 getContext().startActivity(ChannelSubscribeActivity.intentFor(getContext()));
+            }
+        };
+    }
+
+    private Action0 onMyCollection() {
+        return new Action0() {
+            @Override
+            public void call() {
+
             }
         };
     }

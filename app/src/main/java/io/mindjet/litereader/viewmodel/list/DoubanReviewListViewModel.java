@@ -57,7 +57,6 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                 addItems(reviews);
                 start += perPage;
                 hideRefreshing();
-
             }
         };
 

@@ -24,6 +24,7 @@ public class Constant {
     public final static String EXTRA_TOUCH_Y = "extra_touch_y";
 
     public final static String CHANNEL_SUBSCRIPTION_SIGNAL = "channel_subscription_signal";
+    public final static String LOADING_COMPLETE_SIGNAL = "loading_complete_signal";
 
 
 }

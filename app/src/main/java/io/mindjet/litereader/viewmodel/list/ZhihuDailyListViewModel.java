@@ -81,6 +81,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 hideRefreshing();
                 loadSections();
                 setIsLoadingMore(false);
+                enableLoadMore();
             }
         };
         onRefreshLatestNews = new Action1<ZhihuDailyList>() {
@@ -96,6 +97,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 hideRefreshing();
                 loadSections();
                 setIsLoadingMore(false);
+                enableLoadMore();
                 date = new Date();          //重置日期
             }
         };

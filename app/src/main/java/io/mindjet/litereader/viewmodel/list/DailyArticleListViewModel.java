@@ -39,7 +39,6 @@ public class DailyArticleListViewModel extends SwipeRecyclerViewModel {
     @Override
     protected void afterComponentsBound() {
         getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
-        disableLoadMore();          //不必支持load more，因为此页面的数据是一次性拿到
         changePbColor(R.color.colorPrimary);
         getRecyclerView().setItemAnimator(new FadeInAnimator());
         getSwipeLayout().setDistanceToTriggerSync(500);

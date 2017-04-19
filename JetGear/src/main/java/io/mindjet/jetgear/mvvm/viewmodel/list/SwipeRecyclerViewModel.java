@@ -52,6 +52,8 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
     private void initRecyclerView() {
         recyclerViewModel = new RecyclerViewModel(true);
         recyclerViewModel.setLoadMoreListener(this);
+        //一开始不允许load more，虽然进入时不会load more，但是当refresh失败时，如果触碰屏幕就会自动load more，所以应该在refresh成功后才允许load more
+        recyclerViewModel.disableLoadMore();
         ViewModelBinder.bind(swipeLayout, recyclerViewModel);
     }
 

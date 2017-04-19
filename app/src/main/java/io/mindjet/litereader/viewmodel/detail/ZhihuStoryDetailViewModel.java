@@ -15,12 +15,14 @@ import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutVi
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetutil.anim.RevealUtil;
+import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
 import io.mindjet.litereader.service.ZhihuDailyService;
+import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryArticleViewModel;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
 import rx.functions.Action1;
@@ -37,6 +39,8 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     private RecyclerViewModel recyclerViewModel;
     private ZhihuStoryImageViewModel storyImage;
+
+    private String shareUrl;
 
     public ZhihuStoryDetailViewModel() {
         service = ServiceGen.create(ZhihuDailyService.class);
@@ -102,6 +106,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     }
 
     private void renderArticle(ZhihuStoryDetail detail) {
+        shareUrl = detail.shareUrl;
         recyclerViewModel.getAdapter().add(new ZhihuStoryArticleViewModel(detail.title, detail.body));
         recyclerViewModel.getAdapter().notifyDataSetChanged();
     }
@@ -124,6 +129,16 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        return false;
+        switch (item.getItemId()) {
+            case R.id.item_share:
+                if (shareUrl != null)
+                    new ShareDialog(getContext(), shareUrl, false).show();
+                break;
+            case R.id.item_more:
+                if (shareUrl != null)
+                    ShareManager.with(getContext()).shareAll(shareUrl);
+                break;
+        }
+        return true;
     }
 }

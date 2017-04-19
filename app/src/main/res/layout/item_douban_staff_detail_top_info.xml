@@ -23,6 +23,7 @@
             <ImageView
                 android:layout_width="@dimen/douban_movie_staff_detail_avatar_width"
                 android:layout_height="@dimen/douban_movie_staff_detail_avatar_height"
+                android:scaleType="centerCrop"
                 app:url="@{data.detail.avatars.large}" />
 
             <LinearLayout

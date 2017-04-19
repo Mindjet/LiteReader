@@ -1,39 +1,57 @@
 package io.mindjet.jetgear.base;
 
 import android.content.Context;
-import android.os.Bundle;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
+import android.view.View;
 
+import io.mindjet.jetgear.BR;
+import io.mindjet.jetgear.R;
 import io.mindjet.jetutil.logger.JLogger;
 
 /**
+ * Base bottom sheet dialog, easy apis to custom dialog are exposed.
+ * <p>
  * Created by Jet on 3/9/17.
  */
 
-public abstract class BaseBottomSheetDialog extends BottomSheetDialog {
+public abstract class BaseBottomSheetDialog<V extends ViewDataBinding> extends BottomSheetDialog {
 
     protected JLogger jLogger = JLogger.get(getClass().getSimpleName());
+    protected V binding;
 
     public BaseBottomSheetDialog(@NonNull Context context) {
         super(context);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        beforeInitView();
+        binding = DataBindingUtil.inflate(getLayoutInflater(), getLayoutId(), null, false);
+        setContentView(binding.getRoot());
+        binding.setVariable(BR.data, this);
         initView();
         initListener();
         initData();
-        super.onCreate(savedInstanceState);
     }
 
-    protected abstract void beforeInitView();
 
-    protected abstract void initView();
+    public V getBinding() {
+        return binding;
+    }
 
-    protected abstract void initListener();
+    @LayoutRes
+    protected abstract int getLayoutId();
 
-    protected abstract void initData();
+    protected void initView() {
+        View view = findViewById(R.id.design_bottom_sheet);
+        view.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
+    }
+
+    protected void initListener() {
+
+    }
+
+    protected void initData() {
+
+    }
 
 }

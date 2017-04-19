@@ -5,6 +5,9 @@
 
     <dimen name="card_view_radius_large">5dp</dimen>
 
+    <!--分享-->
+    <dimen name="share_icon_size">38dp</dimen>
+
     <!--订阅频道-->
     <dimen name="channel_item_height">50dp</dimen>
 

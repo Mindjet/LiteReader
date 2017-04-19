@@ -6,6 +6,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import io.mindjet.jetgear.databinding.IncludeCoordinatorCollapseLayoutBinding;
@@ -16,24 +17,24 @@ import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutVi
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetutil.anim.RevealUtil;
+import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.http.SimpleHttpHandler;
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
 import io.mindjet.litereader.model.item.douban.Review;
-import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.ui.activity.DoubanMovieMoreReviewActivity;
 import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
+import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailImageViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailReviewItemViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStaffViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStillViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailSummaryViewModel;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Action2;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Jet on 3/17/17.
@@ -49,6 +50,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private String mainlandPubdate;
     private String rating;
 
+    private String shareUrl;
     private int index = 0;
 
     private DoubanService service;
@@ -128,6 +130,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
 
     @Override
     protected void initFab(FloatingActionButton fab) {
+        fab.setVisibility(View.GONE);
         fab.setImageResource(R.drawable.ic_share);
         fab.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
     }
@@ -144,12 +147,23 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
 
     @Override
     public boolean onCreateOptionMenu(Menu menu) {
-        return super.onCreateOptionMenu(menu);
+        getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_douban_movie, menu);
+        return true;
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        return false;
+        switch (item.getItemId()) {
+            case R.id.item_share:
+                if (shareUrl != null)
+                    new ShareDialog(getContext(), shareUrl, false).show();
+                break;
+            case R.id.item_more:
+                if (shareUrl != null)
+                    ShareManager.with(getContext()).shareAll(shareUrl);
+                break;
+        }
+        return true;
     }
 
     private ViewModelAdapter getAdapter() {
@@ -158,24 +172,19 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
 
     private void getMovieDetail() {
         service.getMovieDetail(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(new SimpleHttpHandler<DoubanMovieDetail>())
                 .subscribe(new Action1<DoubanMovieDetail>() {
                     @Override
                     public void call(DoubanMovieDetail detail) {
                         addItems(detail);
                     }
-                }, new ActionHttpError() {
-                    @Override
-                    protected void onError() {
-
-                    }
                 });
     }
 
     private void addItems(DoubanMovieDetail detail) {
-        //TODO 不要回收简介view model，因为高度变化时可能被回收导致高度变化停止。
+        //TODO 不要回收简介view model，因为高度变化时可能被回收导致高度变化动画停止。
 //        recyclerViewModel.getRecyclerView().getRecycledViewPool().setMaxRecycledViews(R.layout.item_douban_detail_summary, 100);
+        shareUrl = detail.shareUrl;
 
         staffViewModel = new DetailStaffViewModel(title, detail.writers, detail.directors, detail.actors);
         getAdapter().add(staffViewModel);

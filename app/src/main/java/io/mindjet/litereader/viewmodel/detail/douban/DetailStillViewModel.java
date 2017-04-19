@@ -36,7 +36,9 @@ public class DetailStillViewModel extends RecyclerViewModel<ItemDoubanDetailStil
         for (Still still : stills) {
             getAdapter().add(new DetailStillItemViewModel(still));
         }
-        getAdapter().add(new DetailStillItemViewModel(stills.get(0), true));
-        getAdapter().notifyDataSetChanged();
+        if (stills.size() != 0) {
+            getAdapter().add(new DetailStillItemViewModel(stills.get(0), true));
+            getAdapter().notifyDataSetChanged();
+        }
     }
 }

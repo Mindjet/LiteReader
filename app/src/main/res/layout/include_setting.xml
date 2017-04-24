@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.litereader.viewmodel.detail.IncludeSettingViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/common_gap">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_gap"
+            android:text="@string/general"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/common_text_size"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_gap"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/common_gap"
+            android:paddingTop="@dimen/common_gap">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/show_daily_wallpaper_every_time"
+                android:textColor="@color/article_text_color" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_gap"
+                android:checked="@={data.showDailyWallpaper}" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_gap"
+            android:text="@string/other"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/common_text_size"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ripple_default"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> data.onCheckUpdate()}"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/common_gap"
+            android:paddingTop="@dimen/common_gap">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/common_gap_small"
+                android:text="@string/check_for_update"
+                android:textColor="@color/article_text_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.currentVersion}" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_gap"
+            android:background="@drawable/ripple_default"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> data.onClearCache()}"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/common_gap"
+            android:paddingTop="@dimen/common_gap">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/clear_cache"
+                android:textColor="@color/article_text_color" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_gap"
+            android:text="@string/feedback"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/common_text_size"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_gap"
+            android:background="@drawable/ripple_default"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> data.onFeedback()}"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/common_gap"
+            android:paddingTop="@dimen/common_gap">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/feedback"
+                android:textColor="@color/article_text_color" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

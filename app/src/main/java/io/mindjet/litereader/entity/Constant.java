@@ -26,5 +26,8 @@ public class Constant {
     public final static String CHANNEL_SUBSCRIPTION_SIGNAL = "channel_subscription_signal";
     public final static String LOADING_COMPLETE_SIGNAL = "loading_complete_signal";
 
+    public final static String KEY_SETTING_SHOW_WALLPAPER = "key_setting_show_wallpaper";
+    public final static String KEY_APP_LAUNCH_MILLISECOND = "key_app_launch_millisecond";
+
 
 }

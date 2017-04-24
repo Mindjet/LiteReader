@@ -39,6 +39,26 @@ public class SPUtil {
         editor.commit();
     }
 
+    public static void save(Context context, String key, boolean value) {
+        SharedPreferences.Editor editor = getEditor(context);
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public static void save(Context context, String key, long value) {
+        SharedPreferences.Editor editor = getEditor(context);
+        editor.putLong(key, value);
+        editor.commit();
+    }
+
+    public static boolean getBoolean(Context context, String key) {
+        return getSP(context).getBoolean(key, false);
+    }
+
+    public static long getLong(Context context, String key) {
+        return getSP(context).getLong(key, 0);
+    }
+
     /**
      * Save a String set
      *

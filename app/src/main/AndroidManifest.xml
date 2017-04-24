@@ -12,13 +12,7 @@
         <activity
             android:name="io.mindjet.litereader.ui.activity.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoTitle" />
         <activity
             android:name="io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity"
             android:screenOrientation="portrait"
@@ -30,7 +24,13 @@
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitle" />
+            android:theme="@style/AppTheme.NoTitle">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.DoubanMovieDetailActivity"
             android:screenOrientation="portrait"

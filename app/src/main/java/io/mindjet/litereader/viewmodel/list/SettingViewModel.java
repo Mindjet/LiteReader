@@ -9,9 +9,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderItemViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderRecyclerViewModel;
 import io.mindjet.litereader.R;
-import io.mindjet.litereader.viewmodel.item.SettingItemViewModel;
-import rx.functions.Action0;
-import rx.functions.Action1;
+import io.mindjet.litereader.viewmodel.detail.IncludeSettingViewModel;
 
 /**
  * 设置 view model
@@ -20,10 +18,6 @@ import rx.functions.Action1;
  */
 
 public class SettingViewModel extends HeaderRecyclerViewModel<ActivityCompatInterface<IncludeHeaderRecyclerBinding>> {
-
-    private Action1<Boolean> onDailyWallpaper;
-    private Action1<Boolean> onAutoCheckUpdate;
-    private Action0 onClearCache;
 
     @Override
     protected void initHeader(ViewGroup container) {
@@ -38,35 +32,14 @@ public class SettingViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
 
     @Override
     protected void afterViewAttached() {
-        onDailyWallpaper = new Action1<Boolean>() {
-            @Override
-            public void call(Boolean aBoolean) {
 
-            }
-        };
-        onAutoCheckUpdate = new Action1<Boolean>() {
-            @Override
-            public void call(Boolean aBoolean) {
-
-            }
-        };
-        onClearCache = new Action0() {
-            @Override
-            public void call() {
-
-            }
-        };
     }
 
     @Override
     protected void afterComponentBound() {
         getRecyclerViewModel().disableLoadMore();
-        getRecyclerViewModel().getRecyclerView().setBackgroundResource(R.color.white);
-        getAdapter().add(new SettingItemViewModel(getString(R.string.show_daily_wallpaper_every_time), onDailyWallpaper, false));
-        getAdapter().add(new SettingItemViewModel(getString(R.string.auto_check_for_update), onAutoCheckUpdate, false));
-        getAdapter().add(new SettingItemViewModel(getString(R.string.clear_cache), onClearCache));
-        getAdapter().notifyDataSetChanged();
-
+        getRecyclerViewModel().getRecyclerView().setBackgroundResource(R.color.gray_translucent);
+        getAdapter().add(new IncludeSettingViewModel());
     }
 
 

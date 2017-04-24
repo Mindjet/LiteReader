@@ -5,6 +5,8 @@ import android.text.format.DateFormat;
 import java.util.Date;
 
 /**
+ * 时间工具类
+ * <p>
  * Created by Jet on 3/14/17.
  */
 
@@ -48,6 +50,14 @@ public class DateUtil {
             default:
                 return "星期一";
         }
+    }
+
+    /**
+     * 判断给出的时间与当前时间的差距是否大于给出的分钟数
+     */
+    public static boolean timeLapsed(long time, long minutes) {
+        long diff = System.currentTimeMillis() - time;
+        return diff / 1000 / 60 >= minutes;
     }
 
 }

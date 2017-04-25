@@ -2,6 +2,7 @@ package io.mindjet.litereader.model.detail;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.mindjet.litereader.model.item.douban.Comment;
@@ -16,7 +17,7 @@ import io.mindjet.litereader.model.item.douban.Trailer;
  * Created by Jet on 3/16/17.
  */
 
-public class DoubanMovieDetail {
+public class DoubanMovieDetail implements Serializable{
 
     @SerializedName("rating")
     public Rating rating;

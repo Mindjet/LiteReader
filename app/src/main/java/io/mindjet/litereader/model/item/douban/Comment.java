@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 短影评实体，长影评实体为 {@link Review}
  */
 
-public class Comment implements Serializable{
+public class Comment implements Serializable {
 
     @SerializedName("rating")
     public Rating rating;

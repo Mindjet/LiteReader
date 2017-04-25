@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 长影评实体，短影评实体为 {@link Comment}
  */
 
-public class Review implements Serializable{
+public class Review implements Serializable {
 
     @SerializedName("rating")
     public Rating rating;
@@ -41,7 +41,7 @@ public class Review implements Serializable{
     @SerializedName("alt")
     public String alt;
 
-    public class Rating implements Serializable{
+    public class Rating implements Serializable {
         @SerializedName("max")
         public String max;
         @SerializedName("value")

@@ -2,13 +2,14 @@ package io.mindjet.litereader.model.detail;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Jet on 3/13/17.
  */
 
-public class ZhihuStoryDetail {
+public class ZhihuStoryDetail implements Serializable {
 
     /*
     {

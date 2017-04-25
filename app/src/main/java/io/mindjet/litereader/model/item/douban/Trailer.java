@@ -2,12 +2,14 @@ package io.mindjet.litereader.model.item.douban;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Jet on 3/16/17.
  */
 
 //预告片或者花絮实体
-public class Trailer {
+public class Trailer implements Serializable {
 
     @SerializedName("medium")
     public String medium;

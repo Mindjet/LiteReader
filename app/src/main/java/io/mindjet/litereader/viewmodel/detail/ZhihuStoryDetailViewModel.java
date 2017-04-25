@@ -40,7 +40,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     private RecyclerViewModel recyclerViewModel;
     private ZhihuStoryImageViewModel storyImage;
 
-    private String shareUrl;
+    private ZhihuStoryDetail detail;
 
     public ZhihuStoryDetailViewModel() {
         service = ServiceGen.create(ZhihuDailyService.class);
@@ -106,7 +106,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     }
 
     private void renderArticle(ZhihuStoryDetail detail) {
-        shareUrl = detail.shareUrl;
+        this.detail = detail;
         recyclerViewModel.getAdapter().add(new ZhihuStoryArticleViewModel(detail.title, detail.body));
         recyclerViewModel.getAdapter().notifyDataSetChanged();
     }
@@ -131,12 +131,15 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_share:
-                if (shareUrl != null)
-                    new ShareDialog(getContext(), shareUrl, false).show();
+                if (detail != null)
+                    new ShareDialog(getContext(), detail.title + " " + detail.shareUrl, false).show();
+                break;
+            case R.id.item_collect:
+
                 break;
             case R.id.item_more:
-                if (shareUrl != null)
-                    ShareManager.with(getContext()).shareAll(shareUrl);
+                if (detail != null)
+                    ShareManager.with(getContext()).shareAll(detail.title + " " + detail.shareUrl);
                 break;
         }
         return true;

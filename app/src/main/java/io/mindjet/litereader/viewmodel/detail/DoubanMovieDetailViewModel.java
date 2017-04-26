@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.concurrent.TimeUnit;
+
 import io.mindjet.jetgear.databinding.IncludeCoordinatorCollapseLayoutBinding;
 import io.mindjet.jetgear.mvvm.adapter.ViewModelAdapter;
 import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
@@ -25,16 +27,22 @@ import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
 import io.mindjet.litereader.model.item.douban.Review;
+import io.mindjet.litereader.reactivex.RxLoadingView;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.ui.activity.DoubanMovieMoreReviewActivity;
 import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
+import io.mindjet.litereader.util.CollectionManager;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailImageViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailReviewItemViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStaffViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStillViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailSummaryViewModel;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Action2;
+import rx.schedulers.Schedulers;
 
 /**
  * 豆瓣电影详情 view model
@@ -52,7 +60,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private String mainlandPubdate;
     private String rating;
 
-    private String shareUrl;
+    private DoubanMovieDetail detail;
     private int index = 0;
 
     private DoubanService service;
@@ -157,15 +165,39 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_share:
-                if (shareUrl != null)
-                    new ShareDialog(getContext(), shareUrl, false).show();
+                if (detail != null)
+                    new ShareDialog(getContext(), detail.shareUrl, false).show();
+                break;
+            case R.id.item_collect:
+                if (detail != null)
+                    collect();
                 break;
             case R.id.item_more:
-                if (shareUrl != null)
-                    ShareManager.with(getContext()).shareAll(shareUrl);
+                if (detail != null)
+                    ShareManager.with(getContext()).shareAll(detail.shareUrl);
                 break;
         }
         return true;
+    }
+
+    private void collect() {
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(RxLoadingView.show(getContext(),R.string.collect_ing))
+                .observeOn(Schedulers.io())
+                .doOnNext(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        CollectionManager.getInstance(getContext()).collect(detail);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(RxLoadingView.showAction1(getContext(),R.string.collect_success))
+                .delay(2000, TimeUnit.MILLISECONDS)
+                .unsubscribeOn(AndroidSchedulers.mainThread())
+                .doOnUnsubscribe(RxLoadingView.dismiss())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     private ViewModelAdapter getAdapter() {
@@ -186,7 +218,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private void addItems(DoubanMovieDetail detail) {
         //TODO 不要回收简介view model，因为高度变化时可能被回收导致高度变化动画停止。
 //        recyclerViewModel.getRecyclerView().getRecycledViewPool().setMaxRecycledViews(R.layout.item_douban_detail_summary, 100);
-        shareUrl = detail.shareUrl;
+        this.detail = detail;
 
         staffViewModel = new DetailStaffViewModel(title, detail.writers, detail.directors, detail.actors);
         getAdapter().add(staffViewModel);

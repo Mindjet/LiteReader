@@ -7,6 +7,7 @@ import io.mindjet.jetgear.R;
 import io.mindjet.jetgear.databinding.IncludeHeaderRecyclerBinding;
 import io.mindjet.jetgear.mvvm.adapter.ViewModelAdapter;
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
+import io.mindjet.jetgear.mvvm.listener.LoadMoreListener;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
@@ -15,7 +16,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
  * Created by Mindjet on 2017/4/6.
  */
 
-public abstract class HeaderRecyclerViewModel<V extends ViewInterface<IncludeHeaderRecyclerBinding>> extends BaseViewModel<V> {
+public abstract class HeaderRecyclerViewModel<V extends ViewInterface<IncludeHeaderRecyclerBinding>> extends BaseViewModel<V> implements LoadMoreListener {
 
     RecyclerViewModel recyclerViewModel;
 
@@ -41,6 +42,7 @@ public abstract class HeaderRecyclerViewModel<V extends ViewInterface<IncludeHea
     private void initRecyclerView(ViewGroup container) {
         recyclerViewModel = new RecyclerViewModel(true);
         ViewModelBinder.bind(container, recyclerViewModel);
+        recyclerViewModel.setLoadMoreListener(this);
     }
 
     protected void afterComponentBound() {
@@ -59,5 +61,8 @@ public abstract class HeaderRecyclerViewModel<V extends ViewInterface<IncludeHea
         }
     }
 
+    @Override
+    public void onLoadMore() {
 
+    }
 }

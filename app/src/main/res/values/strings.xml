@@ -10,6 +10,9 @@
 
     <!--我的收藏-->
     <string name="my_collection">我的收藏</string>
+    <string name="collect_ing">正在加入我的收藏…</string>
+    <string name="collect_success">成功加入我的收藏</string>
+    <string name="getting_collection">正在获取我的收藏</string>
 
     <!--设置-->
     <string name="setting">设置</string>

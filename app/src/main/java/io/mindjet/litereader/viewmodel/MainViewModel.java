@@ -27,6 +27,7 @@ import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
 import io.mindjet.litereader.entity.ChannelCode;
 import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.ui.activity.ChannelSubscribeActivity;
+import io.mindjet.litereader.ui.activity.CollectActivity;
 import io.mindjet.litereader.ui.activity.SettingActivity;
 import io.mindjet.litereader.util.ChannelUtil;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
@@ -179,7 +180,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         return new Action0() {
             @Override
             public void call() {
-
+                getContext().startActivity(CollectActivity.intentFor(getContext()));
             }
         };
     }

@@ -22,10 +22,15 @@ import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
+import io.mindjet.litereader.reactivex.RxLoadingView;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
+import io.mindjet.litereader.util.CollectionManager;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryArticleViewModel;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * 知乎日报 文章 view model
@@ -135,7 +140,8 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
                     new ShareDialog(getContext(), detail.title + " " + detail.shareUrl, false).show();
                 break;
             case R.id.item_collect:
-
+                if (detail != null)
+                    collect();
                 break;
             case R.id.item_more:
                 if (detail != null)
@@ -144,4 +150,20 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
         }
         return true;
     }
+
+    private void collect() {
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe(RxLoadingView.show(getContext(), R.string.collect_ing))
+                .observeOn(Schedulers.io())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
+                .doOnUnsubscribe(RxLoadingView.dismiss())
+                .subscribe(new SimpleHttpSubscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        CollectionManager.getInstance(getContext()).collect(detail);
+                    }
+                });
+    }
+
 }

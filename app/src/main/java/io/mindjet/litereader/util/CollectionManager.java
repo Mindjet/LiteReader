@@ -2,17 +2,18 @@ package io.mindjet.litereader.util;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.mindjet.litereader.database.OpenDBHelper;
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
 import io.mindjet.litereader.model.item.DoubanMovieItem;
+import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.douban.Images;
 import io.mindjet.litereader.model.item.douban.Rating;
 import rx.functions.Func1;
@@ -27,7 +28,7 @@ public class CollectionManager {
 
     public final static String COLLECTION_TYPE_DOUBAN_MOVIE = "collection_type_douban_movie";
     public final static String COLLECTION_TYPE_ZHIHU_STORY = "collection_type_zhihu_story";
-    public static CollectionManager manager;
+    private static CollectionManager manager;
     private OpenDBHelper dbHelper;
 
     private CollectionManager(Context context) {
@@ -74,15 +75,16 @@ public class CollectionManager {
         });
     }
 
-    public List<ZhihuStoryDetail> getZhihuStoryList() {
-        return dbHelper.getList(COLLECTION_TYPE_ZHIHU_STORY, new Func1<Cursor, ZhihuStoryDetail>() {
+    public List<ZhihuStoryItem> getZhihuStoryList() {
+        return dbHelper.getList(COLLECTION_TYPE_ZHIHU_STORY, new Func1<Cursor, ZhihuStoryItem>() {
             @Override
-            public ZhihuStoryDetail call(Cursor cursor) {
-                ZhihuStoryDetail detail = new ZhihuStoryDetail();
-                detail.id = cursor.getString(1);
-                detail.title = cursor.getString(2);
-                detail.image = cursor.getString(3);
-                return detail;
+            public ZhihuStoryItem call(Cursor cursor) {
+                ZhihuStoryItem item = new ZhihuStoryItem();
+                item.id = cursor.getString(1);
+                item.title = cursor.getString(2);
+                item.images = new ArrayList<>();
+                item.images.add(cursor.getString(3));
+                return item;
             }
         });
     }

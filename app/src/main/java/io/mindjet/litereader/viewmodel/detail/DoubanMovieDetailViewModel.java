@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.concurrent.TimeUnit;
-
 import io.mindjet.jetgear.databinding.IncludeCoordinatorCollapseLayoutBinding;
 import io.mindjet.jetgear.mvvm.adapter.ViewModelAdapter;
 import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
@@ -27,7 +25,7 @@ import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
 import io.mindjet.litereader.model.item.douban.Review;
-import io.mindjet.litereader.reactivex.RxLoadingView;
+import io.mindjet.litereader.reactivex.RxToaster;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.ui.activity.DoubanMovieMoreReviewActivity;
 import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
@@ -183,7 +181,6 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private void collect() {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(RxLoadingView.show(getContext(),R.string.collect_ing))
                 .observeOn(Schedulers.io())
                 .doOnNext(new Action1<String>() {
                     @Override
@@ -191,13 +188,14 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
                         CollectionManager.getInstance(getContext()).collect(detail);
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(RxLoadingView.showAction1(getContext(),R.string.collect_success))
-                .delay(2000, TimeUnit.MILLISECONDS)
                 .unsubscribeOn(AndroidSchedulers.mainThread())
-                .doOnUnsubscribe(RxLoadingView.dismiss())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .doOnUnsubscribe(RxToaster.show(getContext(), R.string.collect_success))
+                .subscribe(new SimpleHttpSubscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+
+                    }
+                });
     }
 
     private ViewModelAdapter getAdapter() {

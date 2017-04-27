@@ -33,6 +33,7 @@
 
     <string name="loading">正在加载…</string>
     <string name="load_fail">加载失败</string>
+    <string name="deleting">正在删除</string>
 
     <!--知乎日报-->
     <string name="column_zhihu_daily">知乎日报</string>

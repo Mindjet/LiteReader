@@ -1,10 +1,10 @@
 package io.mindjet.litereader.viewmodel.list;
 
 import android.content.Intent;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.mindjet.jetgear.databinding.IncludeHeaderRecyclerBinding;
 import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
@@ -21,14 +21,13 @@ import io.mindjet.litereader.reactivex.RxLoadingView;
 import io.mindjet.litereader.ui.activity.DoubanMovieDetailActivity;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.CollectionManager;
-import io.mindjet.litereader.viewmodel.item.DoubanMovieItemViewModel;
 import io.mindjet.litereader.viewmodel.item.MovieCollectItemViewModel;
 import io.mindjet.litereader.viewmodel.item.StoryCollectItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
-import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Action3;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -45,6 +44,10 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
 
     private Action1<DoubanMovieItem> onMovieItemClick;
     private Action1<ZhihuStoryItem> onStoryItemClick;
+    private Action3<String, String, Integer> onUncollect;
+
+    private int movieSize = 0;
+    private int storySize = 0;
 
     @Override
     protected void afterViewAttached() {
@@ -65,14 +68,6 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
     @Override
     protected void afterComponentBound() {
         getRecyclerViewModel().disableLoadMore();
-        getRecyclerViewModel().getRecyclerView().setLayoutManager(new GridLayoutManager(getContext(), 3));
-        ((GridLayoutManager) getRecyclerViewModel().getRecyclerView().getLayoutManager())
-                .setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return getAdapter().get(position) instanceof DoubanMovieItemViewModel ? 1 : 3;
-                    }
-                });
         initActions();
         addItems();
     }
@@ -98,6 +93,48 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                 getContext().startActivity(intent);
             }
         };
+        onUncollect = new Action3<String, String, Integer>() {
+            @Override
+            public void call(final String id, final String type, final Integer position) {
+                Observable.just("")
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .doOnSubscribe(RxLoadingView.show(getContext(), R.string.deleting))
+                        .doOnNext(new Action1<String>() {
+                            @Override
+                            public void call(String s) {
+                                CollectionManager.getInstance(getContext()).remove(id, type);
+                            }
+                        })
+                        .delay(600, TimeUnit.MILLISECONDS)
+                        .unsubscribeOn(AndroidSchedulers.mainThread())
+                        .doOnUnsubscribe(RxLoadingView.dismiss())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SimpleHttpSubscriber<String>() {
+                            @Override
+                            public void onNext(String s) {
+                                getAdapter().remove(position.intValue());
+                                getAdapter().notifyItemRemoved(position);
+
+                                //如果该类型的收藏为空，则需要把头部信息也删掉
+                                if (type.equals(CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE)) {
+                                    movieSize -= 1;
+                                    if (movieSize == 0) {
+                                        getAdapter().remove(0);
+                                        getAdapter().notifyItemRemoved(0);
+                                    }
+                                }
+                                if (type.equals(CollectionManager.COLLECTION_TYPE_ZHIHU_STORY)) {
+                                    storySize -= 1;
+                                    if (storySize == 0) {
+                                        getAdapter().remove(position - 1);
+                                        getAdapter().notifyItemRemoved(position - 1);
+                                    }
+                                }
+                            }
+                        });
+            }
+        };
     }
 
     private void addItems() {
@@ -120,7 +157,7 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                 .map(new Func1<DoubanMovieItem, MovieCollectItemViewModel>() {
                     @Override
                     public MovieCollectItemViewModel call(DoubanMovieItem doubanMovieItem) {
-                        return new MovieCollectItemViewModel(doubanMovieItem, onMovieItemClick);
+                        return new MovieCollectItemViewModel(doubanMovieItem, onMovieItemClick, onUncollect);
                     }
                 })
                 .toList()
@@ -145,7 +182,7 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                 .map(new Func1<ZhihuStoryItem, StoryCollectItemViewModel>() {
                     @Override
                     public StoryCollectItemViewModel call(ZhihuStoryItem item) {
-                        return new StoryCollectItemViewModel(item, onStoryItemClick);
+                        return new StoryCollectItemViewModel(item, onStoryItemClick, onUncollect);
                     }
                 })
                 .toList()
@@ -161,11 +198,22 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                 .subscribe(new SimpleHttpSubscriber<List<StoryCollectItemViewModel>>() {
                     @Override
                     public void onNext(List<StoryCollectItemViewModel> list) {
-                        getAdapter().add(new ZhihuDateItemViewModel(R.string.column_douban_movie));
+                        int sum = 0;
+                        if (movieItems.size() != 0) {
+                            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_douban_movie));
+                            sum++;
+                        }
                         getAdapter().addAll(movieItems);
-                        getAdapter().add(new ZhihuDateItemViewModel(R.string.column_zhihu_daily));
+                        sum += movieItems.size();
+                        if (storyItems.size() != 0) {
+                            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_zhihu_daily));
+                            sum++;
+                        }
                         getAdapter().addAll(storyItems);
-                        getAdapter().notifyItemRangeInserted(0, movieItems.size() + storyItems.size() + 2);
+                        sum += storyItems.size();
+                        movieSize = movieItems.size();
+                        storySize = storyItems.size();
+                        getAdapter().notifyItemRangeInserted(0, sum);
                     }
                 });
     }

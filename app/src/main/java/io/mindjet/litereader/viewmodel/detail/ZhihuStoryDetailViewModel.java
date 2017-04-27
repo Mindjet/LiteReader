@@ -15,6 +15,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutVi
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetutil.anim.RevealUtil;
+import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
@@ -22,7 +23,7 @@ import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
-import io.mindjet.litereader.reactivex.RxLoadingView;
+import io.mindjet.litereader.reactivex.RxToaster;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.util.CollectionManager;
@@ -30,6 +31,7 @@ import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryArticleViewModel;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -154,14 +156,19 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     private void collect() {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(RxLoadingView.show(getContext(), R.string.collect_ing))
                 .observeOn(Schedulers.io())
+                .doOnNext(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        CollectionManager.getInstance(getContext()).collect(detail);
+                    }
+                })
                 .unsubscribeOn(AndroidSchedulers.mainThread())
-                .doOnUnsubscribe(RxLoadingView.dismiss())
+                .doOnUnsubscribe(RxToaster.show(getContext(), R.string.collect_success))
                 .subscribe(new SimpleHttpSubscriber<String>() {
                     @Override
                     public void onNext(String s) {
-                        CollectionManager.getInstance(getContext()).collect(detail);
+
                     }
                 });
     }

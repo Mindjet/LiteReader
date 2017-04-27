@@ -40,10 +40,21 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="2"
+                android:padding="@dimen/common_gap_medium"
                 android:text="@{data.item.title}"
                 android:textColor="@color/article_text_color"
-                android:textSize="@dimen/common_text_size_medium"
+                android:textSize="@dimen/common_text_size"
                 tools:text="人为什么会感觉失落？" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="-40dp"
+                android:background="@drawable/ripple_borderless_default"
+                android:clickable="true"
+                android:onClick="@{() -> data.onUncollect()}"
+                android:padding="10dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         </LinearLayout>
 

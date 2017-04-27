@@ -13,6 +13,8 @@
     <string name="collect_ing">正在加入我的收藏…</string>
     <string name="collect_success">成功加入我的收藏</string>
     <string name="getting_collection">正在获取我的收藏</string>
+    <string name="pubdate"><![CDATA[上映时间: %1s]]></string>
+    <string name="douban_rating"><![CDATA[豆瓣评分: %1s/10]]></string>
 
     <!--设置-->
     <string name="setting">设置</string>
@@ -24,6 +26,7 @@
     <string name="check_for_update">检查更新</string>
     <string name="auto_check_for_update">自动检查更新</string>
     <string name="current_version"><![CDATA[当前版本: %1s]]></string>
+    <string name="welcome_to_feedback_on_github_issue">欢迎在 Github 的 Issue 上提出反馈</string>
 
     <!--关于我-->
     <string name="about_me">关于我</string>

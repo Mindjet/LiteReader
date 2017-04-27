@@ -22,11 +22,13 @@ import io.mindjet.litereader.ui.activity.DoubanMovieDetailActivity;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.CollectionManager;
 import io.mindjet.litereader.viewmodel.item.DoubanMovieItemViewModel;
+import io.mindjet.litereader.viewmodel.item.MovieCollectItemViewModel;
+import io.mindjet.litereader.viewmodel.item.StoryCollectItemViewModel;
+import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Action3;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -38,11 +40,11 @@ import rx.schedulers.Schedulers;
 
 public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInterface<IncludeHeaderRecyclerBinding>> {
 
-    private List<DoubanMovieItemViewModel> movieItems;
-    private List<ZhihuStoryItemViewModel> storyItems;
+    private List<MovieCollectItemViewModel> movieItems;
+    private List<StoryCollectItemViewModel> storyItems;
 
     private Action1<DoubanMovieItem> onMovieItemClick;
-    private Action3<String, Integer, Integer> onStoryItemClick;
+    private Action1<ZhihuStoryItem> onStoryItemClick;
 
     @Override
     protected void afterViewAttached() {
@@ -88,13 +90,11 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                 getContext().startActivity(intent);
             }
         };
-        onStoryItemClick = new Action3<String, Integer, Integer>() {
+        onStoryItemClick = new Action1<ZhihuStoryItem>() {
             @Override
-            public void call(String id, Integer touchX, Integer touchY) {
+            public void call(ZhihuStoryItem zhihuStoryItem) {
                 Intent intent = ZhihuStoryDetailActivity.intentFor(getContext());
-                intent.putExtra(Constant.EXTRA_ZHIHU_STORY_ID, id);
-                intent.putExtra(Constant.EXTRA_TOUCH_X, touchX);
-                intent.putExtra(Constant.EXTRA_TOUCH_Y, touchY);
+                intent.putExtra(Constant.EXTRA_ZHIHU_STORY_ID, zhihuStoryItem.id);
                 getContext().startActivity(intent);
             }
         };
@@ -117,22 +117,22 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                         return Observable.from(list);
                     }
                 })
-                .map(new Func1<DoubanMovieItem, DoubanMovieItemViewModel>() {
+                .map(new Func1<DoubanMovieItem, MovieCollectItemViewModel>() {
                     @Override
-                    public DoubanMovieItemViewModel call(DoubanMovieItem doubanMovieItem) {
-                        return new DoubanMovieItemViewModel(doubanMovieItem).onAction(onMovieItemClick);
+                    public MovieCollectItemViewModel call(DoubanMovieItem doubanMovieItem) {
+                        return new MovieCollectItemViewModel(doubanMovieItem, onMovieItemClick);
                     }
                 })
                 .toList()
-                .doOnNext(new Action1<List<DoubanMovieItemViewModel>>() {
+                .doOnNext(new Action1<List<MovieCollectItemViewModel>>() {
                     @Override
-                    public void call(List<DoubanMovieItemViewModel> list) {
+                    public void call(List<MovieCollectItemViewModel> list) {
                         movieItems = list;
                     }
                 })
-                .map(new Func1<List<DoubanMovieItemViewModel>, List<ZhihuStoryItem>>() {
+                .map(new Func1<List<MovieCollectItemViewModel>, List<ZhihuStoryItem>>() {
                     @Override
-                    public List<ZhihuStoryItem> call(List<DoubanMovieItemViewModel> doubanMovieItemViewModels) {
+                    public List<ZhihuStoryItem> call(List<MovieCollectItemViewModel> doubanMovieItemViewModels) {
                         return CollectionManager.getInstance(getContext()).getZhihuStoryList();
                     }
                 })
@@ -142,28 +142,30 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                         return Observable.from(list);
                     }
                 })
-                .map(new Func1<ZhihuStoryItem, ZhihuStoryItemViewModel>() {
+                .map(new Func1<ZhihuStoryItem, StoryCollectItemViewModel>() {
                     @Override
-                    public ZhihuStoryItemViewModel call(ZhihuStoryItem item) {
-                        return new ZhihuStoryItemViewModel(item).onAction(onStoryItemClick);
+                    public StoryCollectItemViewModel call(ZhihuStoryItem item) {
+                        return new StoryCollectItemViewModel(item, onStoryItemClick);
                     }
                 })
                 .toList()
-                .doOnNext(new Action1<List<ZhihuStoryItemViewModel>>() {
+                .doOnNext(new Action1<List<StoryCollectItemViewModel>>() {
                     @Override
-                    public void call(List<ZhihuStoryItemViewModel> list) {
+                    public void call(List<StoryCollectItemViewModel> list) {
                         storyItems = list;
                     }
                 })
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnUnsubscribe(RxLoadingView.dismiss())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleHttpSubscriber<List<ZhihuStoryItemViewModel>>() {
+                .subscribe(new SimpleHttpSubscriber<List<StoryCollectItemViewModel>>() {
                     @Override
-                    public void onNext(List<ZhihuStoryItemViewModel> zhihuStoryItemViewModels) {
+                    public void onNext(List<StoryCollectItemViewModel> list) {
+                        getAdapter().add(new ZhihuDateItemViewModel(R.string.column_douban_movie));
                         getAdapter().addAll(movieItems);
+                        getAdapter().add(new ZhihuDateItemViewModel(R.string.column_zhihu_daily));
                         getAdapter().addAll(storyItems);
-                        getAdapter().notifyItemRangeInserted(0, movieItems.size() + storyItems.size());
+                        getAdapter().notifyItemRangeInserted(0, movieItems.size() + storyItems.size() + 2);
                     }
                 });
     }

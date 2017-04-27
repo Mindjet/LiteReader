@@ -1,11 +1,14 @@
 package io.mindjet.litereader.viewmodel.detail;
 
+import android.content.Intent;
 import android.databinding.Bindable;
+import android.net.Uri;
 import android.view.View;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.jetutil.file.SPUtil;
+import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.litereader.BR;
 import io.mindjet.litereader.BuildConfig;
 import io.mindjet.litereader.R;
@@ -56,7 +59,13 @@ public class IncludeSettingViewModel extends BaseViewModel<ViewInterface<Include
     }
 
     public void onFeedback() {
-        //TODO 跳转到github issue页面
+        Toaster.toast(getContext(), getString(R.string.welcome_to_feedback_on_github_issue), 3000);
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse("https://github.com/Mindjet/LiteReader/issues");
+        intent.setData(content_url);
+        intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
+        getContext().startActivity(intent);
     }
 
 }

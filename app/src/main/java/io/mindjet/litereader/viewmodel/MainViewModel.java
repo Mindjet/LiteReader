@@ -22,6 +22,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewModel;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
+import io.mindjet.jetutil.task.Task;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
 import io.mindjet.litereader.entity.ChannelCode;
@@ -172,6 +173,12 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
             @Override
             public void call() {
                 getContext().startActivity(ChannelSubscribeActivity.intentFor(getContext()));
+                Task.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeDrawer();
+                    }
+                }, 1000);
             }
         };
     }
@@ -181,6 +188,13 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
             @Override
             public void call() {
                 getContext().startActivity(CollectActivity.intentFor(getContext()));
+                Task.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeDrawer();
+                    }
+                }, 1000);
+
             }
         };
     }
@@ -190,6 +204,13 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
             @Override
             public void call() {
                 getContext().startActivity(SettingActivity.intentFor(getContext()));
+                Task.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeDrawer();
+                    }
+                }, 1000);
+
             }
         };
     }
@@ -198,7 +219,12 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         return new Action0() {
             @Override
             public void call() {
-
+                Task.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeDrawer();
+                    }
+                }, 1000);
             }
         };
     }

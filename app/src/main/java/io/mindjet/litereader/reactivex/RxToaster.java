@@ -2,9 +2,13 @@ package io.mindjet.litereader.reactivex;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
+import android.util.Log;
 
 import io.mindjet.jetutil.hint.Toaster;
+import io.mindjet.jetutil.logger.JLogger;
 import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Actions;
 
 /**
  * 适用于 RxJava 的 {@link io.mindjet.jetutil.hint.Toaster}
@@ -14,7 +18,9 @@ import rx.functions.Action0;
 
 public class RxToaster {
 
-    public static Action0 show(final Context context, @StringRes final int stringRes) {
+    private static JLogger jLogger = JLogger.get(RxToaster.class.getClass().getSimpleName());
+
+    public static Action0 showAction0(final Context context, @StringRes final int stringRes) {
         return new Action0() {
             @Override
             public void call() {
@@ -23,5 +29,9 @@ public class RxToaster {
         };
     }
 
+
+    public static <T> Action1<T> showAction1(final Context context, @StringRes final int stringRes) {
+        return Actions.toAction1(showAction0(context, stringRes));
+    }
 
 }

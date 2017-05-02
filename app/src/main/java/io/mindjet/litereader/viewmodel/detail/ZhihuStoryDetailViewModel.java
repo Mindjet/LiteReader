@@ -15,7 +15,6 @@ import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutVi
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetutil.anim.RevealUtil;
-import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
@@ -32,6 +31,7 @@ import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -47,6 +47,10 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     private RecyclerViewModel recyclerViewModel;
     private ZhihuStoryImageViewModel storyImage;
 
+    private Menu menu;
+
+    private String id;
+    private boolean isCollect = false;
     private ZhihuStoryDetail detail;
 
     public ZhihuStoryDetailViewModel() {
@@ -95,8 +99,9 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     protected void afterViewAttached() {
         int centerX = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_X, 0);
         int centerY = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_Y, 0);
+        id = getSelfView().getCompatActivity().getIntent().getStringExtra(Constant.EXTRA_ZHIHU_STORY_ID);
         RevealUtil.revealActivity(getSelfView().getCompatActivity(), 1000, centerX, centerY);
-        service.getStoryDetail(getSelfView().getCompatActivity().getIntent().getStringExtra(Constant.EXTRA_ZHIHU_STORY_ID))
+        service.getStoryDetail(id)
                 .compose(new ThreadDispatcher<ZhihuStoryDetail>())
                 .subscribe(new SimpleHttpSubscriber<ZhihuStoryDetail>() {
                     @Override
@@ -130,8 +135,34 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     @Override
     public boolean onCreateOptionMenu(Menu menu) {
+        this.menu = menu;
         getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_zhihu_story, menu);
+        initCollect();
         return true;
+    }
+
+    private void initCollect() {
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Func1<String, Boolean>() {
+                    @Override
+                    public Boolean call(String s) {
+                        return CollectionManager.getInstance(getContext()).contain(id, CollectionManager.COLLECTION_TYPE_ZHIHU_STORY);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleHttpSubscriber<Boolean>() {
+                    @Override
+                    public void onNext(Boolean isCollect) {
+                        updateCollectIcon(isCollect);
+                    }
+                });
+    }
+
+    private void updateCollectIcon(boolean isCollect) {
+        this.isCollect = isCollect;
+        menu.getItem(1).setIcon(isCollect ? R.drawable.ic_star : R.drawable.ic_star_empty);
     }
 
     @Override
@@ -143,7 +174,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
                 break;
             case R.id.item_collect:
                 if (detail != null)
-                    collect();
+                    manipulateCollect();
                 break;
             case R.id.item_more:
                 if (detail != null)
@@ -153,6 +184,40 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
         return true;
     }
 
+    private void manipulateCollect() {
+        if (isCollect) {
+            disCollect();
+        } else {
+            collect();
+        }
+    }
+
+    /**
+     * 取消收藏
+     */
+    private void disCollect() {
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .doOnNext(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        CollectionManager.getInstance(getContext()).remove(id, CollectionManager.COLLECTION_TYPE_ZHIHU_STORY);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(RxToaster.showAction1(getContext(), R.string.remove_from_my_collection))
+                .subscribe(new SimpleHttpSubscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        updateCollectIcon(false);
+                    }
+                });
+    }
+
+    /**
+     * 加入收藏
+     */
     private void collect() {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
@@ -163,12 +228,13 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
                         CollectionManager.getInstance(getContext()).collect(detail);
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(AndroidSchedulers.mainThread())
-                .doOnUnsubscribe(RxToaster.show(getContext(), R.string.collect_success))
+                .doOnUnsubscribe(RxToaster.showAction0(getContext(), R.string.collect_success))
                 .subscribe(new SimpleHttpSubscriber<String>() {
                     @Override
                     public void onNext(String s) {
-
+                        updateCollectIcon(true);
                     }
                 });
     }

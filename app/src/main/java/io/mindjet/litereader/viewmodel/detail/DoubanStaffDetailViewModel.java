@@ -45,7 +45,6 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
     private String id;
     private String title;
 
-    private String shareUrl;
     private StaffDetail detail;
 
     public DoubanStaffDetailViewModel(String id, String title) {

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.concurrent.TimeUnit;
+
 import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetutil.file.SPUtil;
 import io.mindjet.jetutil.task.Task;
@@ -44,7 +46,6 @@ public class SplashActivity extends AppCompatActivity {
         SPUtil.save(this, Constant.KEY_APP_LAUNCH_MILLISECOND, System.currentTimeMillis());
         if (!showDailyWallpaper && !hasTimeLapsed) {
             startActivity(MainActivity.intentFor(this));
-            finish();
         } else {
             wrapper = (LinearLayout) findViewById(R.id.lly_wrapper);
             copyright = (TextView) findViewById(R.id.tv_copyright);
@@ -53,6 +54,7 @@ public class SplashActivity extends AppCompatActivity {
 
             OtherService service = ServiceGen.create(OtherService.class);
             service.getDailyWallpaper()
+                    .timeout(2000, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Action1<DailyWallpaper>() {
@@ -65,6 +67,7 @@ public class SplashActivity extends AppCompatActivity {
                             Log.e("Tag", adjustResolution(data.data.get(0).url));
                             Glide.with(SplashActivity.this)
                                     .load(adjustResolution(data.data.get(0).url))
+                                    .placeholder(R.drawable.ic_placeholder)
                                     .thumbnail(0.1f)
                                     .into(wallpaper);
                             copyright.setText(breakString(data.data.get(0).copyright));

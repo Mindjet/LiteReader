@@ -40,6 +40,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Action2;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -68,6 +69,9 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private DetailStillViewModel stillViewModel;
 
     private Action2<Boolean, Review> onReviewItemClick;
+
+    private Menu menu;
+    private boolean isCollect;
 
     @Override
     protected void afterViewAttached() {
@@ -155,8 +159,42 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
 
     @Override
     public boolean onCreateOptionMenu(Menu menu) {
+        this.menu = menu;
         getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_douban_movie, menu);
+        initCollect();
         return true;
+    }
+
+    private void initCollect() {
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Func1<String, Boolean>() {
+                    @Override
+                    public Boolean call(String s) {
+                        return CollectionManager.getInstance(getContext()).contain(id, CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleHttpSubscriber<Boolean>() {
+                    @Override
+                    public void onNext(Boolean isCollect) {
+                        updateCollectIcon(isCollect);
+                    }
+                });
+    }
+
+    private void updateCollectIcon(boolean isCollect) {
+        this.isCollect = isCollect;
+        menu.getItem(1).setIcon(isCollect ? R.drawable.ic_star : R.drawable.ic_star_empty);
+    }
+
+    private void manipulateCollect() {
+        if (isCollect) {
+            disCollect();
+        } else {
+            collect();
+        }
     }
 
     @Override
@@ -168,7 +206,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
                 break;
             case R.id.item_collect:
                 if (detail != null)
-                    collect();
+                    manipulateCollect();
                 break;
             case R.id.item_more:
                 if (detail != null)
@@ -176,6 +214,27 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
                 break;
         }
         return true;
+    }
+
+    private void disCollect() {
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .doOnNext(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        CollectionManager.getInstance(getContext()).remove(id, CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnUnsubscribe(RxToaster.showAction0(getContext(), R.string.remove_from_my_collection))
+                .unsubscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleHttpSubscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        updateCollectIcon(false);
+                    }
+                });
     }
 
     private void collect() {
@@ -188,12 +247,13 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
                         CollectionManager.getInstance(getContext()).collect(detail);
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(AndroidSchedulers.mainThread())
-                .doOnUnsubscribe(RxToaster.show(getContext(), R.string.collect_success))
+                .doOnUnsubscribe(RxToaster.showAction0(getContext(), R.string.collect_success))
                 .subscribe(new SimpleHttpSubscriber<String>() {
                     @Override
                     public void onNext(String s) {
-
+                        updateCollectIcon(true);
                     }
                 });
     }

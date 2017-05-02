@@ -53,6 +53,16 @@ public class OpenDBHelper extends SQLiteOpenHelper {
         database.close();
     }
 
+    public boolean contain(String type, String id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "select type, id from tb_collection where type = ? AND id = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{type, id});
+        boolean contain = cursor.getCount() != 0;
+        cursor.close();
+        db.close();
+        return contain;
+    }
+
     public void remove(String type, String id) {
         String sql = "delete from tb_collection where type = ? AND id = ?";
         SQLiteDatabase database = getWritableDatabase();

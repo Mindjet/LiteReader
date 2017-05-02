@@ -58,6 +58,10 @@ public class CollectionManager {
         dbHelper.remove(type, id);
     }
 
+    public boolean contain(String id, @Source String type) {
+        return dbHelper.contain(type, id);
+    }
+
     public List<DoubanMovieItem> getDoubanMovieList() {
         return dbHelper.getList(COLLECTION_TYPE_DOUBAN_MOVIE, new Func1<Cursor, DoubanMovieItem>() {
             @Override

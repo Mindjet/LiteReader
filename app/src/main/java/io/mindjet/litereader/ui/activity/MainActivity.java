@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import io.mindjet.jetgear.mvvm.viewmodel.activity.ViewModelCompatActivity;
+import io.mindjet.jetutil.manager.ActivityManager;
 import io.mindjet.litereader.viewmodel.MainViewModel;
 
 public class MainActivity extends ViewModelCompatActivity<MainViewModel> {
@@ -19,6 +20,6 @@ public class MainActivity extends ViewModelCompatActivity<MainViewModel> {
 
     @Override
     public void onViewAttached(MainViewModel viewModel) {
-
+        ActivityManager.finishActivity(SplashActivity.class);
     }
 }

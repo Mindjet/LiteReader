@@ -3,6 +3,7 @@ package io.mindjet.litereader.service;
 import io.mindjet.litereader.model.list.DailyArticle;
 import io.mindjet.litereader.model.other.DailyWallpaper;
 import io.mindjet.litereader.model.other.Imdb;
+import io.mindjet.litereader.model.other.Me;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -13,6 +14,9 @@ import rx.Observable;
  */
 
 public interface OtherService {
+
+    @GET("")
+    Observable<Me> getMe();
 
     @GET("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1")
     Observable<DailyWallpaper> getDailyWallpaper();

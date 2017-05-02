@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.litereader.ui.dialog.MeDialog" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_corner_10dp"
+        android:orientation="vertical"
+        android:padding="@dimen/common_gap">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/common_gap_small"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/common_text_size_medium"
+            android:typeface="monospace" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_default"
+                    android:clickable="true"
+                    android:lineSpacingExtra="@dimen/common_gap_small"
+                    android:paddingBottom="@dimen/common_gap_small"
+                    android:paddingTop="@dimen/common_gap_small"
+                    android:text="@{data.intro}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_default"
+                    android:clickable="true"
+                    android:paddingBottom="@dimen/common_gap_small"
+                    android:paddingTop="@dimen/common_gap_small"
+                    android:text="@{data.mail}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_default"
+                    android:clickable="true"
+                    android:paddingBottom="@dimen/common_gap_small"
+                    android:paddingTop="@dimen/common_gap_small"
+                    android:text="@{data.website}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_default"
+                    android:clickable="true"
+                    android:paddingBottom="@dimen/common_gap_small"
+                    android:paddingTop="@dimen/common_gap_small"
+                    android:text="@{data.github}" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{!data.intro.get().equals(``)}" />
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+</layout>

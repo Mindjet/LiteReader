@@ -164,7 +164,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         switch (item.getItemId()) {
             case R.id.item_share:
                 if (detail != null)
-                    new ShareDialog(getContext(), detail.shareUrl, false).show();
+                    new ShareDialog(getContext(), detail.title + " " + detail.shareUrl, false).show();
                 break;
             case R.id.item_collect:
                 if (detail != null)
@@ -172,7 +172,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
                 break;
             case R.id.item_more:
                 if (detail != null)
-                    ShareManager.with(getContext()).shareAll(detail.shareUrl);
+                    ShareManager.with(getContext()).shareAll(detail.title + " " + detail.shareUrl);
                 break;
         }
         return true;

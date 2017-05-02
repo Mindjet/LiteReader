@@ -46,6 +46,7 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
     private String title;
 
     private String shareUrl;
+    private StaffDetail detail;
 
     public DoubanStaffDetailViewModel(String id, String title) {
         this.id = id;
@@ -65,8 +66,8 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
                         .callback(new IHeaderItemCallback() {
                             @Override
                             public void call() {
-                                if (shareUrl != null)
-                                    new ShareDialog(getContext(), shareUrl, false).show();
+                                if (detail != null)
+                                    new ShareDialog(getContext(), detail.name + " " + detail.mobileUrl, false).show();
                             }
                         }))
                 .build();
@@ -103,7 +104,7 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
     }
 
     private void addItem(StaffDetail detail) {
-        shareUrl = detail.mobileUrl;
+        this.detail = detail;
         //要等到 summary 加载完才关闭 LoadingView
         RxBus.getInstance()
                 .receive(Boolean.class, Constant.LOADING_COMPLETE_SIGNAL)

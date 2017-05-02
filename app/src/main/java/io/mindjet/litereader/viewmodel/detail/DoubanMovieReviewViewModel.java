@@ -44,7 +44,7 @@ public class DoubanMovieReviewViewModel extends HeaderRecyclerViewModel<Activity
                         .callback(new IHeaderItemCallback() {
                             @Override
                             public void call() {
-                                new ShareDialog(getContext(), PREFIX + review.id, false).show();
+                                new ShareDialog(getContext(), review.title + " " + PREFIX + review.id, false).show();
                             }
                         }))
                 .background(R.color.colorPrimary)

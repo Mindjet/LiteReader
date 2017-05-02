@@ -38,7 +38,8 @@
                 android:padding="@dimen/common_gap"
                 android:text="@{data.content}"
                 android:textColor="@{data.textColor}"
-                android:textSize="@{data.textSize}" />
+                android:textSize="@{data.textSize}"
+                android:typeface="@{data.typeface}" />
 
         </LinearLayout>
 

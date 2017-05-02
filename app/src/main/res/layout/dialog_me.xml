@@ -16,14 +16,15 @@
         android:padding="@dimen/common_gap">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/common_gap_small"
+            android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/common_text_size_medium"
-            android:typeface="monospace" />
+            android:textSize="25sp" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -32,44 +33,59 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{!data.visible}">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ripple_default"
-                    android:clickable="true"
                     android:lineSpacingExtra="@dimen/common_gap_small"
                     android:paddingBottom="@dimen/common_gap_small"
                     android:paddingTop="@dimen/common_gap_small"
-                    android:text="@{data.intro}" />
+                    android:text="@{data.intro}"
+                    android:textColor="@color/font_33" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_default"
                     android:clickable="true"
+                    android:drawableLeft="@drawable/ic_mail_gray"
+                    android:drawablePadding="@dimen/common_gap_small"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> data.onSendMail()}"
                     android:paddingBottom="@dimen/common_gap_small"
                     android:paddingTop="@dimen/common_gap_small"
-                    android:text="@{data.mail}" />
+                    android:text='@{"我的邮箱："+data.mail}'
+                    android:textColor="@color/font_33" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_default"
                     android:clickable="true"
+                    android:drawableLeft="@drawable/ic_earth_gray"
+                    android:drawablePadding="@dimen/common_gap_small"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> data.onWebsite()}"
                     android:paddingBottom="@dimen/common_gap_small"
                     android:paddingTop="@dimen/common_gap_small"
-                    android:text="@{data.website}" />
+                    android:text='@{"我的网站："+data.website}'
+                    android:textColor="@color/font_33" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ripple_default"
                     android:clickable="true"
+                    android:drawableLeft="@drawable/ic_code_gray"
+                    android:drawablePadding="@dimen/common_gap_small"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> data.onGithub()}"
                     android:paddingBottom="@dimen/common_gap_small"
                     android:paddingTop="@dimen/common_gap_small"
-                    android:text="@{data.github}" />
+                    android:text='@{"我的Github："+data.github}'
+                    android:textColor="@color/font_33" />
 
             </LinearLayout>
 
@@ -77,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="@{!data.intro.get().equals(``)}" />
+                android:visibility="@{data.visible}" />
 
         </FrameLayout>
 

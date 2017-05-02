@@ -30,7 +30,8 @@
             android:layout_centerInParent="true"
             android:text="@{data.text}"
             android:textColor="@{data.textColor}"
-            android:textSize="@{data.textSize}" />
+            android:textSize="@{data.textSize}"
+            android:typeface="@{data.typeFace}" />
 
     </RelativeLayout>
 

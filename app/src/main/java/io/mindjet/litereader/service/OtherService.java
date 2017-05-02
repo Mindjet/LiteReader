@@ -15,7 +15,7 @@ import rx.Observable;
 
 public interface OtherService {
 
-    @GET("")
+    @GET("https://raw.githubusercontent.com/Mindjet/LiteReader/master/app/src/main/assets/me.json")
     Observable<Me> getMe();
 
     @GET("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1")

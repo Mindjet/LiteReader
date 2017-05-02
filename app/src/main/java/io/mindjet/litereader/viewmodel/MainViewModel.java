@@ -30,6 +30,7 @@ import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.ui.activity.ChannelSubscribeActivity;
 import io.mindjet.litereader.ui.activity.CollectActivity;
 import io.mindjet.litereader.ui.activity.SettingActivity;
+import io.mindjet.litereader.ui.dialog.MeDialog;
 import io.mindjet.litereader.util.ChannelUtil;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
@@ -46,6 +47,7 @@ import rx.functions.Action1;
 public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityCompatInterface<IncludeDrawerCoordinatorLayoutBinding>> {
 
     private ColumnViewPagerAdapter columnViewPagerAdapter;
+    private MeDialog meDialog;
 
     @Override
     protected void afterViewAttached(IncludeDrawerCoordinatorLayoutBinding binding) {
@@ -85,7 +87,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                                 toggleDrawer();
                             }
                         }))
-                .centerViewModel(new HeaderItemViewModel.TitleItemViewModel(getContext().getResources().getString(R.string.app_name)))
+                .centerViewModel(new HeaderItemViewModel.TitleItemViewModel(getContext().getResources().getString(R.string.app_name))
+                        .textSize(R.dimen.common_text_size_xlarge)
+                        .font("Courgette-Regular.ttf"))
                 .build();
         ViewModelBinder.bind(container, header);
     }
@@ -106,6 +110,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                         .icon("")
                         .height(R.dimen.drawer_header_height_medium)
                         .backgroundColor(R.color.colorPrimary)
+                        .font("Courgette-Regular.ttf")
                         .content(getContext().getResources().getString(R.string.app_name))
                         .build())
                 .item(new DrawerItemViewModel()
@@ -219,12 +224,14 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         return new Action0() {
             @Override
             public void call() {
+                meDialog = meDialog == null ? new MeDialog(getContext()) : meDialog;
+                meDialog.show();
                 Task.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         closeDrawer();
                     }
-                }, 1000);
+                }, 200);
             }
         };
     }

@@ -5,5 +5,6 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="article_text_color">#262626</color>
+    <color name="font_33">#333333</color>
 
 </resources>

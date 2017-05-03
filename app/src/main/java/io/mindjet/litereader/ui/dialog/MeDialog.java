@@ -103,10 +103,10 @@ public class MeDialog extends BaseDialog {
     private void browse(String url) {
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
-        Uri contentUrl = Uri.parse(url);
-        intent.setData(contentUrl);
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
         intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
-        getContext().startActivity(intent);
+        getContext().startActivity(Intent.createChooser(intent, "选择打开网页的应用"));
     }
 
 }

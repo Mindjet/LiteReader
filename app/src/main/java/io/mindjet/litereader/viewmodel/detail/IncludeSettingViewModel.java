@@ -65,7 +65,7 @@ public class IncludeSettingViewModel extends BaseViewModel<ViewInterface<Include
         Uri content_url = Uri.parse("https://github.com/Mindjet/LiteReader/issues");
         intent.setData(content_url);
         intent.setClassName("com.android.browser", "com.android.browser.BrowserActivity");
-        getContext().startActivity(intent);
+        getContext().startActivity(Intent.createChooser(intent, "选择打开网页的应用"));
     }
 
 }

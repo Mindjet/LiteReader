@@ -9,6 +9,8 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemBlankBinding;
 
 /**
+ * 占位 view model
+ * <p>
  * Created by Jet on 3/14/17.
  */
 

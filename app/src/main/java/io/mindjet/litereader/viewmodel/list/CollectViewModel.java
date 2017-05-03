@@ -21,6 +21,7 @@ import io.mindjet.litereader.reactivex.RxLoadingView;
 import io.mindjet.litereader.ui.activity.DoubanMovieDetailActivity;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.CollectionManager;
+import io.mindjet.litereader.viewmodel.item.BlankViewModel;
 import io.mindjet.litereader.viewmodel.item.MovieCollectItemViewModel;
 import io.mindjet.litereader.viewmodel.item.StoryCollectItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
@@ -210,10 +211,11 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                             sum++;
                         }
                         getAdapter().addAll(storyItems);
+                        getAdapter().add(new BlankViewModel(R.dimen.common_gap_medium));
                         sum += storyItems.size();
                         movieSize = movieItems.size();
                         storySize = storyItems.size();
-                        getAdapter().notifyItemRangeInserted(0, sum);
+                        getAdapter().notifyItemRangeInserted(0, sum + 1);
                     }
                 });
     }

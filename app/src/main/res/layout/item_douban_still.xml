@@ -19,8 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:clickable="true"
+            android:onClick="@{() -> data.onClick()}"
             android:scaleType="fitXY"
-            app:url="@{data.still.image}" />
+            app:url="@{data.still.cover}" />
 
     </android.support.v7.widget.CardView>
 

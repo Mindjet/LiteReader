@@ -7,6 +7,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanStillBinding;
 import io.mindjet.litereader.model.item.douban.DetailStill;
+import io.mindjet.litereader.ui.dialog.StillDialog;
 
 /**
  * 剧照列表 item view model
@@ -35,4 +36,9 @@ public class DoubanStillItemViewModel extends BaseViewModel<ViewInterface<ItemDo
     public void onViewAttached(View view) {
 
     }
+
+    public void onClick() {
+        new StillDialog(getContext(), detailStill).show();
+    }
+
 }

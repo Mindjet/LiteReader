@@ -25,7 +25,7 @@ public interface DoubanService {
     Observable<DoubanMovieDetail> getMovieDetail(@Path("id") String id);
 
     @GET("https://api.douban.com/v2/movie/subject/{id}/photos?apikey=0b2bdeda43b5688921839c8ecb20399b")
-    Observable<DoubanStillList> getStillList(@Path("id") String id, @Query("start") int start, @Query("count") int perPage);
+    Observable<DoubanStillList> getStillList(@Path("id") String id, @Query("start") int start);
 
     @GET("https://api.douban.com/v2/movie/subject/{id}/comments?apikey=0b2bdeda43b5688921839c8ecb20399b")
     Observable<DoubanCommentList> getCommentList(@Path("id") String id, @Query("start") int start, @Query("count") int perPage);

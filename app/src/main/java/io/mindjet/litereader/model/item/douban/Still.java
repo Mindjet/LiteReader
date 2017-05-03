@@ -5,14 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by Jet on 3/16/17.
- */
-
-/**
  * 剧照实体，在获取影片详情时一并获得。
  * <p>
  * 专门获得的剧照实体是 {@link DetailStill}
+ * Created by Jet on 3/16/17.
  */
+
 public class Still implements Serializable {
     @SerializedName("thumb")        //中图
     public String thumb;

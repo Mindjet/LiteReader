@@ -9,6 +9,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanDetailStillBinding;
 import io.mindjet.litereader.model.item.douban.Still;
+import io.mindjet.litereader.ui.dialog.StillDialog;
 import rx.functions.Action0;
 
 /**
@@ -34,7 +35,11 @@ public class DetailStillItemViewModel extends BaseViewModel<ViewInterface<ItemDo
     }
 
     public void onClick() {
-        if (onMore != null) onMore.call();
+        if (isLastOne() && onMore != null) {
+            onMore.call();
+        } else {
+            new StillDialog(getContext(), still).show();
+        }
     }
 
     public boolean isLastOne() {

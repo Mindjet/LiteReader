@@ -17,7 +17,8 @@
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> data.onClick()}">
 
             <ImageView
                 android:layout_width="@dimen/douban_movie_detail_still_width"
@@ -35,9 +36,7 @@
                 <ImageView
                     android:layout_width="@dimen/douban_movie_detail_still_width"
                     android:layout_height="@dimen/douban_movie_detail_still_height"
-                    android:background="@drawable/ripple_default"
-                    android:clickable="true"
-                    android:onClick="@{() -> data.onClick()}" />
+                    android:background="@drawable/ripple_default" />
 
             </FrameLayout>
 

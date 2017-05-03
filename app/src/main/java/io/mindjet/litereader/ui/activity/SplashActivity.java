@@ -3,7 +3,6 @@ package io.mindjet.litereader.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +25,8 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
+ * 每日壁纸启动页
+ * <p>
  * Created by Jet on 3/15/17.
  */
 
@@ -54,7 +55,7 @@ public class SplashActivity extends AppCompatActivity {
 
             OtherService service = ServiceGen.create(OtherService.class);
             service.getDailyWallpaper()
-                    .timeout(2000, TimeUnit.MILLISECONDS)
+                    .timeout(4000, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Action1<DailyWallpaper>() {
@@ -63,8 +64,6 @@ public class SplashActivity extends AppCompatActivity {
                             gradient.setVisibility(View.VISIBLE);
                             wrapper.setVisibility(View.VISIBLE);
                             copyright.setVisibility(View.VISIBLE);
-//                            ImageLoader.load(wallpaper, adjustResolution(data.data.get(0).url));
-                            Log.e("Tag", adjustResolution(data.data.get(0).url));
                             Glide.with(SplashActivity.this)
                                     .load(adjustResolution(data.data.get(0).url))
                                     .placeholder(R.drawable.ic_placeholder)
@@ -76,7 +75,6 @@ public class SplashActivity extends AppCompatActivity {
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            //TODO 在这里设置默认欢迎界面
                             wallpaper.setImageResource(R.drawable.ic_placeholder);
                             next();
                         }

@@ -1,6 +1,6 @@
 package io.mindjet.litereader.viewmodel.list;
 
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -56,7 +56,8 @@ public class DoubanStillListViewModel extends HeaderSwipeLayoutViewModel<Activit
 
     @Override
     protected void afterComponentsBound() {
-        getRecyclerView().setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        changePbColor(R.color.colorPrimary);
+        getRecyclerView().setLayoutManager(new GridLayoutManager(getContext(), 3));
     }
 
     @Override
@@ -78,11 +79,11 @@ public class DoubanStillListViewModel extends HeaderSwipeLayoutViewModel<Activit
 
     @Override
     protected void onLoadMore() {
-
+        getStillList();
     }
 
     private void getStillList() {
-        service.getStillList(movieId, start, perPage)
+        stillSub = service.getStillList(movieId, start)
                 .compose(new ThreadDispatcher<DoubanStillList>())
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(Schedulers.io())
@@ -119,6 +120,8 @@ public class DoubanStillListViewModel extends HeaderSwipeLayoutViewModel<Activit
                         start += list.size();
                         if (list.size() == 0)
                             getSwipeLayoutViewModel().disableLoadMore();
+                        else
+                            getSwipeLayoutViewModel().enableLoadMore();
                     }
                 });
     }

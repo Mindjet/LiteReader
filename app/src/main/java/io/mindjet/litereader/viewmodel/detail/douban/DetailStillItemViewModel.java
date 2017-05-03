@@ -9,6 +9,7 @@ import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanDetailStillBinding;
 import io.mindjet.litereader.model.item.douban.Still;
+import rx.functions.Action0;
 
 /**
  * 电影详情中 剧照 item view model
@@ -20,14 +21,20 @@ public class DetailStillItemViewModel extends BaseViewModel<ViewInterface<ItemDo
 
     private Still still;
     private boolean lastOne;
+    private Action0 onMore;
 
     public DetailStillItemViewModel(Still still) {
-        this(still, false);
+        this(still, false, null);
     }
 
-    public DetailStillItemViewModel(Still still, boolean lastOne) {
+    public DetailStillItemViewModel(Still still, boolean lastOne, Action0 onMore) {
         this.still = still;
         this.lastOne = lastOne;
+        this.onMore = onMore;
+    }
+
+    public void onClick() {
+        if (onMore != null) onMore.call();
     }
 
     public boolean isLastOne() {

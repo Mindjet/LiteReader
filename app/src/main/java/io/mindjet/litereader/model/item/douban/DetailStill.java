@@ -3,6 +3,8 @@ package io.mindjet.litereader.model.item.douban;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * 详细剧照 实体
+ * <p>
  * Created by Jet on 3/16/17.
  */
 

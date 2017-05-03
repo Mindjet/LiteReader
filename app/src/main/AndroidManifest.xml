@@ -59,6 +59,10 @@
             android:name=".ui.activity.CollectActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
+        <activity
+            android:name=".ui.activity.DoubanStillListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitle" />
     </application>
 
 </manifest>

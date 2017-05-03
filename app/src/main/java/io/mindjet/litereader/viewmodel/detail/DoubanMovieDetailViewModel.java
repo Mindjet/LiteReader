@@ -282,7 +282,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         getAdapter().add(staffViewModel);
         getAdapter().notifyItemInserted(index++);
 
-        stillViewModel = new DetailStillViewModel(detail.photos);
+        stillViewModel = new DetailStillViewModel(detail.photos, detail.id, detail.title);
         getAdapter().add(stillViewModel);
         getAdapter().notifyItemInserted(index++);
 

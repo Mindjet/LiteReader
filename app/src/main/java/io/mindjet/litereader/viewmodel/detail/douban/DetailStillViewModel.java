@@ -7,6 +7,8 @@ import java.util.List;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.litereader.databinding.ItemDoubanDetailStillBinding;
 import io.mindjet.litereader.model.item.douban.Still;
+import io.mindjet.litereader.ui.activity.DoubanStillListActivity;
+import rx.functions.Action0;
 
 /**
  * 电影详情中 剧照列表 view model
@@ -16,11 +18,15 @@ import io.mindjet.litereader.model.item.douban.Still;
 
 public class DetailStillViewModel extends RecyclerViewModel<ItemDoubanDetailStillBinding> {
 
+    private String id;
+    private String title;
     private List<Still> stills;
 
-    public DetailStillViewModel(List<Still> stills) {
+    public DetailStillViewModel(List<Still> stills, String id, String title) {
         super(false);
         this.stills = stills;
+        this.id = id;
+        this.title = title;
     }
 
     @Override
@@ -37,8 +43,13 @@ public class DetailStillViewModel extends RecyclerViewModel<ItemDoubanDetailStil
             getAdapter().add(new DetailStillItemViewModel(still));
         }
         if (stills.size() != 0) {
-            getAdapter().add(new DetailStillItemViewModel(stills.get(0), true));
-            getAdapter().notifyDataSetChanged();
+            getAdapter().add(new DetailStillItemViewModel(stills.get(0), true, new Action0() {
+                @Override
+                public void call() {
+                    getContext().startActivity(DoubanStillListActivity.intentFor(getContext(), id, title));
+                }
+            }));
+            getAdapter().notifyItemRangeInserted(0, stills.size());
         }
     }
 }

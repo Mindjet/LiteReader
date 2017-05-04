@@ -139,7 +139,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     @Override
     public boolean onCreateOptionMenu(Menu menu) {
         this.menu = menu;
-        getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_zhihu_story, menu);
+        getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_common, menu);
         initCollect();
         return true;
     }

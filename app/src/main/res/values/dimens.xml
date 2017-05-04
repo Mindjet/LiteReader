@@ -45,5 +45,8 @@
     <dimen name="douban_movie_staff_detail_avatar_height">200dp</dimen>
     <dimen name="douban_movie_still_height">150dp</dimen>
 
+    <!--ONE影评-->
+    <dimen name="one_review_detail_expanded_title_margin_start">20dp</dimen>
+    <dimen name="one_review_detail_expanded_title_margin_bottom">40dp</dimen>
 
 </resources>

@@ -47,6 +47,9 @@
     <!--每日散文-->
     <string name="column_daily_article">每日散文</string>
 
+    <!--ONE影评-->
+    <string name="column_one_review">ONE影评</string>
+
     <!--豆瓣电影-->
     <string name="column_douban_movie">豆瓣电影</string>
     <string name="douban_checkout_movie_detail">查看电影详情</string>

@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.jetutil.file.SPUtil;
 import io.mindjet.jetutil.logger.JLogger;
 import io.mindjet.litereader.entity.ChannelCode;
-import io.mindjet.litereader.entity.Constant;
 
 /**
  * 频道工具类
@@ -32,6 +30,7 @@ public class ChannelUtil {
         allChannels.add(ChannelCode.ZHIHU);
         allChannels.add(ChannelCode.DAILY);
         allChannels.add(ChannelCode.DOUBAN);
+        allChannels.add(ChannelCode.ONE_REVIEW);
 
         defaultChannels.add(ChannelCode.ZHIHU);
         defaultChannels.add(ChannelCode.DAILY);

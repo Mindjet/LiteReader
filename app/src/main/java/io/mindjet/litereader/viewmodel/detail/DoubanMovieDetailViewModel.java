@@ -162,7 +162,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     @Override
     public boolean onCreateOptionMenu(Menu menu) {
         this.menu = menu;
-        getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_douban_movie, menu);
+        getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_common, menu);
         initCollect();
         return true;
     }

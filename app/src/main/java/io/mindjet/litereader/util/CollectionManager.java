@@ -16,6 +16,7 @@ import io.mindjet.litereader.model.item.DoubanMovieItem;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.douban.Images;
 import io.mindjet.litereader.model.item.douban.Rating;
+import io.mindjet.litereader.model.item.one.Review;
 import rx.functions.Func1;
 
 /**
@@ -28,6 +29,7 @@ public class CollectionManager {
 
     public final static String COLLECTION_TYPE_DOUBAN_MOVIE = "collection_type_douban_movie";
     public final static String COLLECTION_TYPE_ZHIHU_STORY = "collection_type_zhihu_story";
+    public final static String COLLECTION_TYPE_ONE_REVIEW = "collection_type_one_review";
     private static CollectionManager manager;
     private OpenDBHelper dbHelper;
 
@@ -99,7 +101,7 @@ public class CollectionManager {
 
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({COLLECTION_TYPE_DOUBAN_MOVIE, COLLECTION_TYPE_ZHIHU_STORY})
+    @StringDef({COLLECTION_TYPE_DOUBAN_MOVIE, COLLECTION_TYPE_ZHIHU_STORY, COLLECTION_TYPE_ONE_REVIEW})
     public @interface Source {
 
     }

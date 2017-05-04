@@ -84,9 +84,8 @@ public class OpenDBHelper extends SQLiteOpenHelper {
     }
 
     public void clear() {
-        String sql = "delete * from tb_collection";
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL(sql);
+        database.delete("tb_collection", null, null);
         database.close();
     }
 

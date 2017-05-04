@@ -24,6 +24,8 @@
     <string name="feedback">反馈</string>
     <string name="show_daily_wallpaper_every_time">每次启动均显示每日壁纸</string>
     <string name="clear_cache">清除缓存</string>
+    <string name="clearing_cache">正在清除缓存…</string>
+    <string name="clear_cache_success">成功删除缓存</string>
     <string name="check_for_update">检查更新</string>
     <string name="auto_check_for_update">自动检查更新</string>
     <string name="current_version"><![CDATA[当前版本: %1s]]></string>

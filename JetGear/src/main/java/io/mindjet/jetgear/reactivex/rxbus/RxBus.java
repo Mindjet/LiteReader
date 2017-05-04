@@ -14,6 +14,8 @@ import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
 /**
+ * A bus implemented by RxJava.
+ * <p>
  * Created by Mindjet on 2017/4/11.
  */
 

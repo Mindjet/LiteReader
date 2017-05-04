@@ -36,7 +36,6 @@ import rx.schedulers.Schedulers;
 public class DoubanStillListViewModel extends HeaderSwipeLayoutViewModel<ActivityCompatInterface<IncludeHeaderSwipeLayoutBinding>> {
 
     private int start = 0;
-    private int perPage = 10;
 
     private String movieId;
     private String title;

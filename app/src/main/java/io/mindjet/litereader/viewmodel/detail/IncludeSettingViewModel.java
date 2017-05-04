@@ -5,6 +5,8 @@ import android.databinding.Bindable;
 import android.net.Uri;
 import android.view.View;
 
+import java.util.concurrent.TimeUnit;
+
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.jetutil.file.SPUtil;
@@ -14,6 +16,15 @@ import io.mindjet.litereader.BuildConfig;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.IncludeSettingBinding;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.reactivex.RxAction;
+import io.mindjet.litereader.reactivex.RxLoadingView;
+import io.mindjet.litereader.util.CacheUtil;
+import io.mindjet.litereader.util.CollectionManager;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Actions;
+import rx.schedulers.Schedulers;
 
 /**
  * 设置 view model
@@ -55,7 +66,24 @@ public class IncludeSettingViewModel extends BaseViewModel<ViewInterface<Include
     }
 
     public void onClearCache() {
-        //TODO 清除缓存
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .doOnSubscribe(RxLoadingView.show(getContext(), R.string.clearing_cache))
+                .doOnNext(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        CacheUtil.clearSharedPreferences(getContext());
+                        CollectionManager.getInstance(getContext()).clear();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(RxLoadingView.showAction1(getContext(), R.string.clear_cache_success))
+                .delay(400, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
+                .doOnUnsubscribe(RxLoadingView.dismiss())
+                .subscribe(Actions.empty(), RxAction.onError());
     }
 
     public void onFeedback() {

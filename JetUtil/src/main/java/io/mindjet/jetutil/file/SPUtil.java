@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import java.util.Set;
 
 /**
- * SharedPreference Utility
+ * SharedPreferences Utility
  * <p>
  * Created by Mindjet on 2017/4/11.
  */
@@ -14,7 +14,7 @@ import java.util.Set;
 public class SPUtil {
 
     /**
-     * Get SharedPreference
+     * Get SharedPreferences.
      *
      * @param context context
      */
@@ -24,6 +24,17 @@ public class SPUtil {
 
     private static SharedPreferences.Editor getEditor(Context context) {
         return getSP(context).edit();
+    }
+
+    /**
+     * Clean up the SharedPreferences.
+     *
+     * @param context context
+     */
+    public static void clear(Context context) {
+        SharedPreferences.Editor editor = getEditor(context);
+        editor.clear();
+        editor.commit();
     }
 
     /**

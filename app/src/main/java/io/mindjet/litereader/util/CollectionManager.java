@@ -62,6 +62,10 @@ public class CollectionManager {
         return dbHelper.contain(type, id);
     }
 
+    public void clear() {
+        dbHelper.clear();
+    }
+
     public List<DoubanMovieItem> getDoubanMovieList() {
         return dbHelper.getList(COLLECTION_TYPE_DOUBAN_MOVIE, new Func1<Cursor, DoubanMovieItem>() {
             @Override

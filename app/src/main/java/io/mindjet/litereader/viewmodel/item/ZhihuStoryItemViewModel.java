@@ -13,7 +13,7 @@ import rx.functions.Action3;
 /**
  * 知乎日报 item view model
  * <p>
- * Created by Jet on 3/13/17.
+ * Created by Mindjet on 3/13/17.
  */
 
 public class ZhihuStoryItemViewModel extends BaseViewModel<AdapterInterface<ItemZhihuStoryBinding>> {

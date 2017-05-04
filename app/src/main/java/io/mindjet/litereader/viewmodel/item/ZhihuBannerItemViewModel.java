@@ -12,7 +12,7 @@ import rx.functions.Action3;
 /**
  * 知乎日报首页 banner item view model
  * <p>
- * Created by Jet on 3/14/17.
+ * Created by Mindjet on 3/14/17.
  */
 
 public class ZhihuBannerItemViewModel extends BaseViewModel<ViewInterface<ItemZhihuBannerBinding>> {

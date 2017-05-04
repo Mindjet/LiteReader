@@ -10,7 +10,9 @@ import io.mindjet.litereader.model.item.douban.Review;
 import rx.functions.Action1;
 
 /**
- * Created by Jet on 3/22/17.
+ * 豆瓣电影 长影评 view model
+ * <p>
+ * Created by Mindjet on 3/22/17.
  */
 
 public class DoubanReviewItemViewModel extends BaseViewModel<ViewInterface<ItemDoubanReviewBinding>> {

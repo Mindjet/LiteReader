@@ -23,6 +23,8 @@ import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action3;
 
 /**
@@ -67,15 +69,17 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
         getAdapter().clear();
         service.getSectionDetail(id)
                 .compose(new ThreadDispatcher<ZhihuDailyList>())
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        hideRefreshing();
+                    }
+                })
+                .unsubscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SimpleHttpSubscriber<ZhihuDailyList>() {
                     @Override
                     public void onNext(ZhihuDailyList list) {
                         initArticles(list.stories);
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        hideRefreshing();
                     }
                 });
     }

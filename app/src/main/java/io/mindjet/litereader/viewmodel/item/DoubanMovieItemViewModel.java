@@ -11,7 +11,9 @@ import io.mindjet.litereader.ui.dialog.MovieItemDialog;
 import rx.functions.Action1;
 
 /**
- * Created by Jet on 3/16/17.
+ * 豆瓣电影 item view model
+ * <p>
+ * Created by Mindjet on 3/16/17.
  */
 
 public class DoubanMovieItemViewModel extends BaseViewModel<ViewInterface<ItemDoubanMovieBinding>> {

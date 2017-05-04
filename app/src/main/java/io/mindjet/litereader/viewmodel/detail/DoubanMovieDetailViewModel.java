@@ -16,7 +16,10 @@ import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
+import io.mindjet.jetgear.reactivex.RxTask;
+import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.jetutil.anim.RevealUtil;
+import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
@@ -25,7 +28,6 @@ import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
 import io.mindjet.litereader.model.item.douban.Review;
-import io.mindjet.litereader.reactivex.RxToaster;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.ui.activity.DoubanMovieMoreReviewActivity;
 import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
@@ -36,12 +38,11 @@ import io.mindjet.litereader.viewmodel.detail.douban.DetailReviewItemViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStaffViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStillViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailSummaryViewModel;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Subscription;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Action2;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * 豆瓣电影详情 view model
@@ -69,6 +70,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     private DetailStillViewModel stillViewModel;
 
     private Action2<Boolean, Review> onReviewItemClick;
+    private Subscription detailSub;
 
     private Menu menu;
     private boolean isCollect;
@@ -166,22 +168,17 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     }
 
     private void initCollect() {
-        Observable.just("")
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .map(new Func1<String, Boolean>() {
-                    @Override
-                    public Boolean call(String s) {
-                        return CollectionManager.getInstance(getContext()).contain(id, CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleHttpSubscriber<Boolean>() {
-                    @Override
-                    public void onNext(Boolean isCollect) {
-                        updateCollectIcon(isCollect);
-                    }
-                });
+        RxTask.asyncMap(new Func1<String, Boolean>() {
+            @Override
+            public Boolean call(String s) {
+                return CollectionManager.getInstance(getContext()).contain(id, CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE);
+            }
+        }, new Action1<Boolean>() {
+            @Override
+            public void call(Boolean isCollect) {
+                updateCollectIcon(isCollect);
+            }
+        });
     }
 
     private void updateCollectIcon(boolean isCollect) {
@@ -217,45 +214,33 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     }
 
     private void disCollect() {
-        Observable.just("")
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .doOnNext(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        CollectionManager.getInstance(getContext()).remove(id, CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnUnsubscribe(RxToaster.showAction0(getContext(), R.string.remove_from_my_collection))
-                .unsubscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleHttpSubscriber<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        updateCollectIcon(false);
-                    }
-                });
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).remove(id, CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.remove_from_my_collection);
+                updateCollectIcon(false);
+            }
+        });
     }
 
     private void collect() {
-        Observable.just("")
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .doOnNext(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        CollectionManager.getInstance(getContext()).collect(detail);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(AndroidSchedulers.mainThread())
-                .doOnUnsubscribe(RxToaster.showAction0(getContext(), R.string.collect_success))
-                .subscribe(new SimpleHttpSubscriber<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        updateCollectIcon(true);
-                    }
-                });
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).collect(detail);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.collect_success);
+                updateCollectIcon(true);
+            }
+        });
     }
 
     private ViewModelAdapter getAdapter() {
@@ -263,7 +248,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
     }
 
     private void getMovieDetail() {
-        service.getMovieDetail(id)
+        detailSub = service.getMovieDetail(id)
                 .compose(new ThreadDispatcher<DoubanMovieDetail>())
                 .subscribe(new SimpleHttpSubscriber<DoubanMovieDetail>() {
                     @Override
@@ -301,4 +286,8 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         }
     }
 
+    @Override
+    public void onDestroy() {
+        RxBus.unSubscribe(detailSub);
+    }
 }

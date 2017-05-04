@@ -9,7 +9,7 @@ import rx.functions.Action1;
 import rx.functions.Actions;
 
 /**
- * 适用于RxJava的{@link io.mindjet.jetwidget.LoadingView}
+ * {@link io.mindjet.jetwidget.LoadingView} for RxJava.
  * <p>
  * Created by Mindjet on 2017/4/26.
  */

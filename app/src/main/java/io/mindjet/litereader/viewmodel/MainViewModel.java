@@ -103,7 +103,6 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void initDrawer(ViewGroup container) {
-        //TODO 渲染Drawer，item详情需再确定
         DrawerViewModel drawer = new DrawerViewModel.Builder()
                 .width(R.dimen.drawer_width_large)
                 .item(new DrawerHeaderViewModel.Builder()

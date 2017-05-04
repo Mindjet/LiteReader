@@ -10,7 +10,9 @@ import io.mindjet.litereader.model.list.DailyArticle;
 import rx.functions.Action0;
 
 /**
- * Created by Jet on 3/16/17.
+ * 每日一文 item view model
+ * <p>
+ * Created by Mindjet on 3/16/17.
  */
 
 public class DailyArticleItemViewModel extends BaseViewModel<ViewInterface<ItemDailyArticleBinding>> {

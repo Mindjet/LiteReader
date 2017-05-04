@@ -8,7 +8,7 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemChannelUsageBinding;
 
 /**
- * 频道订阅说明 item view movel
+ * 频道订阅说明 item view model
  * <p>
  * Created by Mindjet on 2017/4/16.
  */

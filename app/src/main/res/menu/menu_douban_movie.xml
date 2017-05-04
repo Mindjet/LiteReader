@@ -8,7 +8,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/item_collect"
-        android:icon="@drawable/ic_star"
+        android:icon="@drawable/ic_star_empty"
         android:title="@string/menu_collect"
         app:showAsAction="always" />
     <item

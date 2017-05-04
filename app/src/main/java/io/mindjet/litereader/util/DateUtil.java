@@ -5,7 +5,7 @@ import android.text.format.DateFormat;
 import java.util.Date;
 
 /**
- * 时间工具类
+ * Date Utility
  * <p>
  * Created by Jet on 3/14/17.
  */

@@ -2,7 +2,6 @@ package io.mindjet.litereader.reactivex;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
-import android.util.Log;
 
 import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.logger.JLogger;
@@ -11,7 +10,7 @@ import rx.functions.Action1;
 import rx.functions.Actions;
 
 /**
- * 适用于 RxJava 的 {@link io.mindjet.jetutil.hint.Toaster}
+ * {@link io.mindjet.jetutil.hint.Toaster} for RxJava.
  * <p>
  * Created by Mindjet on 2017/4/27.
  */

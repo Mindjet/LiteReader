@@ -6,8 +6,6 @@ package io.mindjet.litereader.entity;
 
 public class Constant {
 
-    public final static String KEY_CHANNEL = "key_channel";
-
     public final static String EXTRA_ZHIHU_STORY_ID = "extra_zhihu_story_id";
     public final static String EXTRA_ZHIHU_SECTION_ID = "extra_zhihu_section_id";
     public final static String EXTRA_ZHIHU_SECTION_NAME = "extra_zhihu_section_name";

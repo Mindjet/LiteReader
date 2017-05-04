@@ -47,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
         SPUtil.save(this, Constant.KEY_APP_LAUNCH_MILLISECOND, System.currentTimeMillis());
         if (!showDailyWallpaper && !hasTimeLapsed) {
             startActivity(MainActivity.intentFor(this));
+            finish();
         } else {
             wrapper = (LinearLayout) findViewById(R.id.lly_wrapper);
             copyright = (TextView) findViewById(R.id.tv_copyright);

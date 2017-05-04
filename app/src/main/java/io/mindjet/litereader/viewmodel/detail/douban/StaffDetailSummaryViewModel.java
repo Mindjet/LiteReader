@@ -13,6 +13,7 @@ import org.jsoup.nodes.Element;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
+import io.mindjet.jetgear.reactivex.RxTask;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemDoubanStaffDetailSummaryBinding;
@@ -20,6 +21,7 @@ import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -52,28 +54,45 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
     public void onViewAttached(View view) {
         if (!hasAttach) {
             hasAttach = true;
-            Observable.just("")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .map(new Func1<String, String>() {
-                        @Override
-                        public String call(String s) {
-                            return extractContent(prefix + id);
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SimpleHttpSubscriber<String>() {
-                        @Override
-                        public void onNext(String summary) {
-                            if (summary.length() == 2) {
-                                getSelfView().getBinding().tvSummary.setText(getString(R.string.douban_staff_no_introduce));
-                                getSelfView().getBinding().ivToggle.setVisibility(View.GONE);
-                            } else {
-                                initText(summary);
-                            }
-                            RxBus.getInstance().send(true, Constant.LOADING_COMPLETE_SIGNAL);       //通知已经加载完毕
-                        }
-                    });
+            RxTask.asyncMap(new Func1<String, String>() {
+                @Override
+                public String call(String s) {
+                    return extractContent(prefix + id);
+                }
+            }, new Action1<String>() {
+                @Override
+                public void call(String summary) {
+                    if (summary.length() == 2) {
+                        getSelfView().getBinding().tvSummary.setText(getString(R.string.douban_staff_no_introduce));
+                        getSelfView().getBinding().ivToggle.setVisibility(View.GONE);
+                    } else {
+                        initText(summary);
+                    }
+                    RxBus.getInstance().send(true, Constant.LOADING_COMPLETE_SIGNAL);       //通知已经加载完毕
+                }
+            });
+//            Observable.just("")
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(Schedulers.io())
+//                    .map(new Func1<String, String>() {
+//                        @Override
+//                        public String call(String s) {
+//                            return extractContent(prefix + id);
+//                        }
+//                    })
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new SimpleHttpSubscriber<String>() {
+//                        @Override
+//                        public void onNext(String summary) {
+//                            if (summary.length() == 2) {
+//                                getSelfView().getBinding().tvSummary.setText(getString(R.string.douban_staff_no_introduce));
+//                                getSelfView().getBinding().ivToggle.setVisibility(View.GONE);
+//                            } else {
+//                                initText(summary);
+//                            }
+//                            RxBus.getInstance().send(true, Constant.LOADING_COMPLETE_SIGNAL);       //通知已经加载完毕
+//                        }
+//                    });
         }
     }
 

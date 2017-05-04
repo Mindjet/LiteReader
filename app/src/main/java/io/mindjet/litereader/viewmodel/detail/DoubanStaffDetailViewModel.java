@@ -23,6 +23,7 @@ import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailSummaryViewModel
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailTopInfoViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.StaffDetailWorkViewModel;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
@@ -107,6 +108,7 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
         //要等到 summary 加载完才关闭 LoadingView
         RxBus.getInstance()
                 .receive(Boolean.class, Constant.LOADING_COMPLETE_SIGNAL)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean aBoolean) {

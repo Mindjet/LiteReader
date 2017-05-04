@@ -9,7 +9,9 @@ import io.mindjet.litereader.databinding.ItemDoubanCommentBinding;
 import io.mindjet.litereader.model.item.douban.Comment;
 
 /**
- * Created by Jet on 3/22/17.
+ * 豆瓣电影 短影评 item view model
+ * <p>
+ * Created by Mindjet on 3/22/17.
  */
 
 public class DoubanCommentItemViewModel extends BaseViewModel<ViewInterface<ItemDoubanCommentBinding>> {

@@ -11,14 +11,12 @@ import java.io.IOException;
 
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
+import io.mindjet.jetgear.reactivex.RxTask;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.IncludeDoubanReviewBinding;
-import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.model.item.douban.Review;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * 通用长影评详情 view model
@@ -52,23 +50,17 @@ public class IncludeDoubanMovieReviewViewModel extends BaseViewModel<ViewInterfa
     }
 
     private void decodeHtml(final String id) {
-        Observable.just("")
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .map(new Func1<String, String>() {
-                    @Override
-                    public String call(String s) {
-                        return extractContent(id);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleHttpSubscriber<String>() {
-                    @Override
-                    public void onNext(String html) {
-                        content.set(html);
-                    }
-                });
-
+        RxTask.asyncMap(new Func1<String, String>() {
+            @Override
+            public String call(String s) {
+                return extractContent(id);
+            }
+        }, new Action1<String>() {
+            @Override
+            public void call(String html) {
+                content.set(html);
+            }
+        });
     }
 
     private String extractContent(String id) {

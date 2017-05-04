@@ -14,7 +14,10 @@ import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
+import io.mindjet.jetgear.reactivex.RxTask;
+import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.jetutil.anim.RevealUtil;
+import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
@@ -22,17 +25,15 @@ import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.detail.ZhihuStoryDetail;
-import io.mindjet.litereader.reactivex.RxToaster;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.util.CollectionManager;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryArticleViewModel;
 import io.mindjet.litereader.viewmodel.detail.zhihu.ZhihuStoryImageViewModel;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Subscription;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * 知乎日报 文章 view model
@@ -46,6 +47,8 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     private RecyclerViewModel recyclerViewModel;
     private ZhihuStoryImageViewModel storyImage;
+
+    private Subscription detailSub;
 
     private Menu menu;
 
@@ -101,7 +104,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
         int centerY = getSelfView().getCompatActivity().getIntent().getIntExtra(Constant.EXTRA_TOUCH_Y, 0);
         id = getSelfView().getCompatActivity().getIntent().getStringExtra(Constant.EXTRA_ZHIHU_STORY_ID);
         RevealUtil.revealActivity(getSelfView().getCompatActivity(), 1000, centerX, centerY);
-        service.getStoryDetail(id)
+        detailSub = service.getStoryDetail(id)
                 .compose(new ThreadDispatcher<ZhihuStoryDetail>())
                 .subscribe(new SimpleHttpSubscriber<ZhihuStoryDetail>() {
                     @Override
@@ -142,22 +145,17 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     }
 
     private void initCollect() {
-        Observable.just("")
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .map(new Func1<String, Boolean>() {
-                    @Override
-                    public Boolean call(String s) {
-                        return CollectionManager.getInstance(getContext()).contain(id, CollectionManager.COLLECTION_TYPE_ZHIHU_STORY);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleHttpSubscriber<Boolean>() {
-                    @Override
-                    public void onNext(Boolean isCollect) {
-                        updateCollectIcon(isCollect);
-                    }
-                });
+        RxTask.asyncMap(new Func1<String, Boolean>() {
+            @Override
+            public Boolean call(String s) {
+                return CollectionManager.getInstance(getContext()).contain(id, CollectionManager.COLLECTION_TYPE_ZHIHU_STORY);
+            }
+        }, new Action1<Boolean>() {
+            @Override
+            public void call(Boolean isCollect) {
+                updateCollectIcon(isCollect);
+            }
+        });
     }
 
     private void updateCollectIcon(boolean isCollect) {
@@ -196,47 +194,40 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
      * 取消收藏
      */
     private void disCollect() {
-        Observable.just("")
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .doOnNext(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        CollectionManager.getInstance(getContext()).remove(id, CollectionManager.COLLECTION_TYPE_ZHIHU_STORY);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(RxToaster.showAction1(getContext(), R.string.remove_from_my_collection))
-                .subscribe(new SimpleHttpSubscriber<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        updateCollectIcon(false);
-                    }
-                });
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).remove(id, CollectionManager.COLLECTION_TYPE_ZHIHU_STORY);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.remove_from_my_collection);
+                updateCollectIcon(false);
+            }
+        });
     }
 
     /**
      * 加入收藏
      */
     private void collect() {
-        Observable.just("")
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .doOnNext(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        CollectionManager.getInstance(getContext()).collect(detail);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(AndroidSchedulers.mainThread())
-                .doOnUnsubscribe(RxToaster.showAction0(getContext(), R.string.collect_success))
-                .subscribe(new SimpleHttpSubscriber<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        updateCollectIcon(true);
-                    }
-                });
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).collect(detail);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.collect_success);
+                updateCollectIcon(true);
+            }
+        });
     }
 
+    @Override
+    public void onDestroy() {
+        RxBus.unSubscribe(detailSub);
+    }
 }

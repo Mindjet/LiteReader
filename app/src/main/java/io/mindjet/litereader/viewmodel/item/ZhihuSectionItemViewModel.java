@@ -12,7 +12,7 @@ import rx.functions.Action2;
 /**
  * 知乎专栏 item view model
  * <p>
- * Created by Jet on 3/15/17.
+ * Created by Mindjet on 3/15/17.
  */
 
 public class ZhihuSectionItemViewModel extends BaseViewModel<ViewInterface<ItemZhihuSectionBinding>> {

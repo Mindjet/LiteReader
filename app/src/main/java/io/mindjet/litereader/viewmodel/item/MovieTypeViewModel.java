@@ -10,7 +10,7 @@ import io.mindjet.litereader.databinding.ItemMovieTypeBinding;
 /**
  * 电影类型（标签） view model
  * <p>
- * Created by Jet on 3/20/17.
+ * Created by Mindjet on 3/20/17.
  */
 
 public class MovieTypeViewModel extends BaseViewModel<ViewInterface<ItemMovieTypeBinding>> {

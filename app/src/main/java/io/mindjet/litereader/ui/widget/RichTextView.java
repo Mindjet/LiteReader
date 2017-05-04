@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
+import org.xml.sax.XMLReader;
 
 import java.lang.ref.WeakReference;
 

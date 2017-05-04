@@ -21,7 +21,7 @@ public class OpenDBHelper extends SQLiteOpenHelper {
     private final static String DB_NAME = "db_litereader";
 
     public OpenDBHelper(Context context) {
-        this(context, DB_NAME, null, 1);
+        this(context, DB_NAME, null, 2);
     }
 
     public OpenDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -37,7 +37,10 @@ public class OpenDBHelper extends SQLiteOpenHelper {
                 "title text," +
                 "poster text," +
                 "pubdate text," +
-                "rating text);";
+                "rating text," +
+                "forward text," +
+                "subtitle text," +
+                "shareUrl text);";
         sqLiteDatabase.execSQL(sql);
     }
 
@@ -45,9 +48,10 @@ public class OpenDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+    ////id, title, forward, image, avatar, name, pubdate, shareUrl, likeCount.
 
-    public void add(String type, String id, String title, String poster, String pubdate, String rating) {
-        String sql = "insert into tb_collection (type,id,title,poster,pubdate,rating) values(?,?,?,?,?,?);";
+    public void add(String type, String id, String title, String poster, String pubdate, String rating, String forward, String subtitle, String shareUrl) {
+        String sql = "insert into tb_collection (type,id,title,poster,pubdate,rating,forward,subtitle,shareUrl) values(?,?,?,?,?,?,?,?,?);";
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL(sql, new Object[]{type, id, title, poster, pubdate, rating});
         database.close();
@@ -72,7 +76,7 @@ public class OpenDBHelper extends SQLiteOpenHelper {
 
     public <T> List<T> getList(String type, Func1<Cursor, T> mapper) {
         List<T> list = new ArrayList<>();
-        String sql = "select type,id,title,poster,pubdate,rating from tb_collection where type = ?";
+        String sql = "select type,id,title,poster,pubdate,rating,forward,subtitle,shareUrl from tb_collection where type = ?";
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor = database.rawQuery(sql, new String[]{type});
         while (cursor.moveToNext()) {

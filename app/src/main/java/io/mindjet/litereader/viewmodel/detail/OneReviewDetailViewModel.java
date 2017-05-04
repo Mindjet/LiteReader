@@ -12,13 +12,19 @@ import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
 import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
+import io.mindjet.jetgear.reactivex.RxTask;
+import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.model.item.one.Review;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
+import io.mindjet.litereader.util.CollectionManager;
 import io.mindjet.litereader.viewmodel.detail.one.OneReviewContentViewModel;
 import io.mindjet.litereader.viewmodel.detail.one.OneReviewImageViewModel;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * ONE 影评详情 view model
@@ -92,11 +98,22 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
     public boolean onCreateOptionMenu(Menu menu) {
         this.menu = menu;
         getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_common, menu);
+        initCollect();
         return true;
     }
 
     private void initCollect() {
-
+        RxTask.asyncMap(new Func1<String, Boolean>() {
+            @Override
+            public Boolean call(String s) {
+                return CollectionManager.getInstance(getContext()).contain(review.id, CollectionManager.COLLECTION_TYPE_ONE_REVIEW);
+            }
+        }, new Action1<Boolean>() {
+            @Override
+            public void call(Boolean isCollect) {
+                updateCollectIcon(isCollect);
+            }
+        });
     }
 
     private void updateCollectIcon(boolean isCollect) {
@@ -112,11 +129,33 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
     }
 
     private void disCollect() {
-
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).remove(review.id, CollectionManager.COLLECTION_TYPE_ONE_REVIEW);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.collect_success);
+                updateCollectIcon(false);
+            }
+        });
     }
 
     private void collect() {
-
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).collect(review);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.collect_success);
+                updateCollectIcon(true);
+            }
+        });
     }
 
     @Override

@@ -60,7 +60,8 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_like"
                     android:drawablePadding="@dimen/common_gap_small"
-                    android:text="@{data.review.likeCount}" />
+                    android:text="@{data.likeCount}"
+                    android:visibility="@{data.likeVisible}" />
 
             </LinearLayout>
 
@@ -69,13 +70,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/common_gap"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="@{data.authorVisible}">
 
                 <ImageView
                     android:layout_width="@dimen/douban_movie_detail_review_avatar_width"
                     android:layout_height="@dimen/douban_movie_detail_review_avatar_height"
                     android:scaleType="centerCrop"
-                    app:circle="@{data.review.author.avatar}"
+                    app:circle="@{data.avatar}"
                     app:placeHolder="@{@drawable/ic_placeholder}" />
 
                 <LinearLayout
@@ -88,7 +90,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{data.review.author.name}"
+                        android:text="@{data.name}"
                         android:textColor="@color/article_text_color"
                         android:textSize="@dimen/common_text_size"
                         tools:text="我叫用户名" />
@@ -96,7 +98,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{data.review.author.signature}"
+                        android:text="@{data.signature}"
                         android:visibility="@{data.visible}"
                         tools:text="我是用户的签名档啊" />
 
@@ -110,7 +112,7 @@
                 android:lineSpacingExtra="@dimen/common_gap_medium"
                 android:textColor="@color/article_text_color"
                 android:textSize="@dimen/common_text_size"
-                app:richText="@{data.review.shareInfo.content}" />
+                app:richText="@{data.content}" />
 
         </LinearLayout>
 

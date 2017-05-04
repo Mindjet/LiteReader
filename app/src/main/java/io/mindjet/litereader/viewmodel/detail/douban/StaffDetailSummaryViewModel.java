@@ -71,28 +71,6 @@ public class StaffDetailSummaryViewModel extends BaseViewModel<ViewInterface<Ite
                     RxBus.getInstance().send(true, Constant.LOADING_COMPLETE_SIGNAL);       //通知已经加载完毕
                 }
             });
-//            Observable.just("")
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(Schedulers.io())
-//                    .map(new Func1<String, String>() {
-//                        @Override
-//                        public String call(String s) {
-//                            return extractContent(prefix + id);
-//                        }
-//                    })
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new SimpleHttpSubscriber<String>() {
-//                        @Override
-//                        public void onNext(String summary) {
-//                            if (summary.length() == 2) {
-//                                getSelfView().getBinding().tvSummary.setText(getString(R.string.douban_staff_no_introduce));
-//                                getSelfView().getBinding().ivToggle.setVisibility(View.GONE);
-//                            } else {
-//                                initText(summary);
-//                            }
-//                            RxBus.getInstance().send(true, Constant.LOADING_COMPLETE_SIGNAL);       //通知已经加载完毕
-//                        }
-//                    });
         }
     }
 

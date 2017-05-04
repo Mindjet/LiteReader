@@ -49,11 +49,15 @@ public class CollectionManager {
     }
 
     public void collect(ZhihuStoryDetail detail) {
-        dbHelper.add(COLLECTION_TYPE_ZHIHU_STORY, detail.id, detail.title, detail.image, " ", " ");
+        dbHelper.add(COLLECTION_TYPE_ZHIHU_STORY, detail.id, detail.title, detail.image, " ", " ", " ", " ", " ");
     }
 
     public void collect(DoubanMovieDetail detail) {
-        dbHelper.add(COLLECTION_TYPE_DOUBAN_MOVIE, detail.id, detail.title, detail.images.large, detail.pubdate, detail.rating.average);
+        dbHelper.add(COLLECTION_TYPE_DOUBAN_MOVIE, detail.id, detail.title, detail.images.large, detail.pubdate, detail.rating.average, " ", " ", " ");
+    }
+
+    public void collect(Review review) {
+        dbHelper.add(COLLECTION_TYPE_ONE_REVIEW, review.id, review.title, review.imgUrl, review.postDate, " ", review.forward, review.subtitle, review.shareUrl);
     }
 
     public void remove(String id, @Source String type) {
@@ -66,6 +70,23 @@ public class CollectionManager {
 
     public void clear() {
         dbHelper.clear();
+    }
+
+    public List<Review> getOneReviewList() {
+        return dbHelper.getList(COLLECTION_TYPE_ONE_REVIEW, new Func1<Cursor, Review>() {
+            @Override
+            public Review call(Cursor cursor) {
+                Review review = new Review();
+                review.id = cursor.getString(1);
+                review.title = cursor.getString(2);
+                review.imgUrl = cursor.getString(3);
+                review.postDate = cursor.getString(4);
+                review.forward = cursor.getString(6);
+                review.subtitle = cursor.getString(7);
+                review.shareUrl = cursor.getString(8);
+                return review;
+            }
+        });
     }
 
     public List<DoubanMovieItem> getDoubanMovieList() {

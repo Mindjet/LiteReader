@@ -143,6 +143,12 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(RxLoadingView.show(getContext(), R.string.getting_collection))
                 .observeOn(Schedulers.io())
+                .doOnNext(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        jLogger.e(CollectionManager.getInstance(getContext()).getOneReviewList().size());
+                    }
+                })
                 .map(new Func1<String, List<DoubanMovieItem>>() {
                     @Override
                     public List<DoubanMovieItem> call(String s) {

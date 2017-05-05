@@ -34,6 +34,7 @@ import io.mindjet.litereader.ui.dialog.MeDialog;
 import io.mindjet.litereader.util.ChannelUtil;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
+import io.mindjet.litereader.viewmodel.list.OneArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.OneReviewListViewModel;
 import io.mindjet.litereader.viewmodel.list.ZhihuDailyListViewModel;
 import rx.functions.Action0;
@@ -159,14 +160,23 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
      */
     private void addChannel(List<String> channelList) {
         for (String channel : channelList) {
-            if (channel.equals(ChannelCode.ZHIHU))
-                columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getString(R.string.column_zhihu_daily));
-            else if (channel.equals(ChannelCode.DAILY))
-                columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getString(R.string.column_daily_article));
-            else if (channel.equals(ChannelCode.DOUBAN))
-                columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getString(R.string.column_douban_movie));
-            else if (channel.equals(ChannelCode.ONE_REVIEW))
-                columnViewPagerAdapter.addWithTitle(new OneReviewListViewModel(), getString(R.string.column_one_review));
+            switch (channel) {
+                case ChannelCode.ZHIHU:
+                    columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getString(R.string.column_zhihu_daily));
+                    break;
+                case ChannelCode.DAILY:
+                    columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getString(R.string.column_daily_article));
+                    break;
+                case ChannelCode.DOUBAN:
+                    columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getString(R.string.column_douban_movie));
+                    break;
+                case ChannelCode.ONE_REVIEW:
+                    columnViewPagerAdapter.addWithTitle(new OneReviewListViewModel(), getString(R.string.column_one_review));
+                    break;
+                case ChannelCode.ONE_ARTICLE:
+                    columnViewPagerAdapter.addWithTitle(new OneArticleListViewModel(), getString(R.string.column_one_article));
+                    break;
+            }
         }
     }
 

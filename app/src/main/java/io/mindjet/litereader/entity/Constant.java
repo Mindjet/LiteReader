@@ -1,6 +1,8 @@
 package io.mindjet.litereader.entity;
 
 /**
+ * 常量
+ * <p>
  * Created by Jet on 3/14/17.
  */
 
@@ -19,6 +21,8 @@ public class Constant {
     public final static String EXTRA_DOUBAN_STAFF_ID = "extra_douban_staff_id";
 
     public final static String EXTRA_ONE_REVIEW = "extra_one_review";
+    public final static String EXTRA_ONE_ARTICLE_ID = "extra_one_article_id";
+    public final static String EXTRA_ONE_ARTICLE_IMAGE = "extra_one_article_image";
 
     public final static String EXTRA_TOUCH_X = "extra_touch_x";
     public final static String EXTRA_TOUCH_Y = "extra_touch_y";

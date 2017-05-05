@@ -31,6 +31,7 @@ public class ChannelUtil {
         allChannels.add(ChannelCode.DAILY);
         allChannels.add(ChannelCode.DOUBAN);
         allChannels.add(ChannelCode.ONE_REVIEW);
+        allChannels.add(ChannelCode.ONE_ARTICLE);
 
         defaultChannels.add(ChannelCode.ZHIHU);
         defaultChannels.add(ChannelCode.DAILY);

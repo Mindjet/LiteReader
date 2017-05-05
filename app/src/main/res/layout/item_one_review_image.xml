@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="io.mindjet.litereader.viewmodel.detail.one.OneReviewImageViewModel" />
+            type="io.mindjet.litereader.viewmodel.detail.one.OneCommonImageViewModel" />
     </data>
 
     <FrameLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            app:url="@{data.review.imgUrl}" />
+            app:url="@{data.imgUrl}" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{"电影："+data.review.subtitle}'
+                android:text="@{data.content}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_text_size_medium" />
 

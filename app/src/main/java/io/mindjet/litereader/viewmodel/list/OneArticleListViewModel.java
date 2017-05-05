@@ -4,31 +4,28 @@ import java.util.List;
 
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
-import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.http.ThreadDispatcher;
-import io.mindjet.litereader.model.item.one.Review;
+import io.mindjet.litereader.model.item.one.Article;
 import io.mindjet.litereader.model.list.OneDataList;
 import io.mindjet.litereader.service.OneService;
-import io.mindjet.litereader.viewmodel.item.OneReviewItemViewModel;
+import io.mindjet.litereader.viewmodel.item.OneArticleItemViewModel;
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * ONE 影评列表 view model
+ * ONE文章 列表 view model
  * <p>
- * Created by Mindjet on 5/4/17.
+ * Created by Mindjet on 5/5/17.
  */
 
-public class OneReviewListViewModel extends SwipeRecyclerViewModel {
+public class OneArticleListViewModel extends SwipeRecyclerViewModel {
 
     private OneService service;
-    private Subscription reviewSub;
 
     @Override
     protected void afterViewAttached() {
@@ -45,27 +42,26 @@ public class OneReviewListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     public void onRefresh() {
-        getReviewList();
+        getArticleList();
     }
 
-    private void getReviewList() {
-        reviewSub = service.getReviewList()
-                .compose(new ThreadDispatcher<OneDataList<Review>>())
+    private void getArticleList() {
+        service.getArticleList()
+                .compose(new ThreadDispatcher<OneDataList<Article>>())
                 .observeOn(Schedulers.io())
-                .flatMap(new Func1<OneDataList<Review>, Observable<Review>>() {
+                .flatMap(new Func1<OneDataList<Article>, Observable<Article>>() {
                     @Override
-                    public Observable<Review> call(OneDataList<Review> oneDataList) {
-                        return Observable.from(oneDataList.data);
+                    public Observable<Article> call(OneDataList<Article> list) {
+                        return Observable.from(list.data);
                     }
                 })
-                .map(new Func1<Review, OneReviewItemViewModel>() {
+                .map(new Func1<Article, OneArticleItemViewModel>() {
                     @Override
-                    public OneReviewItemViewModel call(Review review) {
-                        return new OneReviewItemViewModel(review);
+                    public OneArticleItemViewModel call(Article article) {
+                        return new OneArticleItemViewModel(article);
                     }
                 })
                 .toList()
-                .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnUnsubscribe(new Action0() {
                     @Override
@@ -73,20 +69,17 @@ public class OneReviewListViewModel extends SwipeRecyclerViewModel {
                         hideRefreshing();
                     }
                 })
-                .subscribe(new SimpleHttpSubscriber<List<OneReviewItemViewModel>>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleHttpSubscriber<List<OneArticleItemViewModel>>() {
                     @Override
-                    public void onNext(List<OneReviewItemViewModel> vmList) {
-                        int size = getAdapter().size();
+                    public void onNext(List<OneArticleItemViewModel> viewModelList) {
                         getAdapter().clear();
-                        getAdapter().notifyItemRangeRemoved(0, size);
-                        getAdapter().addAll(vmList);
-                        getAdapter().notifyItemRangeInserted(0, vmList.size());
+                        getAdapter().notifyDataSetChanged();
+
+                        getAdapter().addAll(viewModelList);
+                        getAdapter().notifyItemRangeInserted(0, viewModelList.size());
                     }
                 });
     }
 
-    @Override
-    public void onDestroy() {
-        RxBus.unSubscribe(reviewSub);
-    }
 }

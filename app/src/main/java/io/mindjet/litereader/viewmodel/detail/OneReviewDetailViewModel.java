@@ -20,8 +20,9 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.model.item.one.Review;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.util.CollectionManager;
+import io.mindjet.litereader.viewmodel.ICollection;
+import io.mindjet.litereader.viewmodel.detail.one.OneCommonImageViewModel;
 import io.mindjet.litereader.viewmodel.detail.one.OneReviewContentViewModel;
-import io.mindjet.litereader.viewmodel.detail.one.OneReviewImageViewModel;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -32,7 +33,7 @@ import rx.functions.Func1;
  * Created by Mindjet on 5/4/17.
  */
 
-public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel<ActivityCompatInterface<IncludeCoordinatorCollapseLayoutBinding>> {
+public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel<ActivityCompatInterface<IncludeCoordinatorCollapseLayoutBinding>> implements ICollection {
 
     private Review review;
 
@@ -62,7 +63,7 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
 
     @Override
     protected void initCollapsingContent(ViewGroup container) {
-        ViewModelBinder.bind(container, new OneReviewImageViewModel(review));
+        ViewModelBinder.bind(container, new OneCommonImageViewModel(review.subtitle, review.imgUrl));
     }
 
     @Override
@@ -102,7 +103,8 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
         return true;
     }
 
-    private void initCollect() {
+    @Override
+    public void initCollect() {
         RxTask.asyncMap(new Func1<String, Boolean>() {
             @Override
             public Boolean call(String s) {
@@ -116,20 +118,23 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
         });
     }
 
-    private void updateCollectIcon(boolean isCollect) {
+    @Override
+    public void updateCollectIcon(boolean isCollect) {
         this.isCollect = isCollect;
         menu.getItem(1).setIcon(isCollect ? R.drawable.ic_star : R.drawable.ic_star_empty);
         menu.getItem(1).setTitle(isCollect ? R.string.menu_discollect : R.string.menu_collect);
     }
 
-    private void manipulateCollect() {
+    @Override
+    public void manipulateCollect() {
         if (isCollect)
             disCollect();
         else
             collect();
     }
 
-    private void disCollect() {
+    @Override
+    public void disCollect() {
         RxTask.asyncTask(new Action0() {
             @Override
             public void call() {
@@ -144,7 +149,8 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
         });
     }
 
-    private void collect() {
+    @Override
+    public void collect() {
         RxTask.asyncTask(new Action0() {
             @Override
             public void call() {

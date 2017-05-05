@@ -33,6 +33,7 @@ import io.mindjet.litereader.ui.activity.DoubanMovieMoreReviewActivity;
 import io.mindjet.litereader.ui.activity.DoubanMovieReviewActivity;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
 import io.mindjet.litereader.util.CollectionManager;
+import io.mindjet.litereader.viewmodel.ICollection;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailImageViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailReviewItemViewModel;
 import io.mindjet.litereader.viewmodel.detail.douban.DetailStaffViewModel;
@@ -50,7 +51,7 @@ import rx.functions.Func1;
  * Created by Jet on 3/17/17.
  */
 
-public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewModel<ActivityCompatInterface<IncludeCoordinatorCollapseLayoutBinding>> {
+public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewModel<ActivityCompatInterface<IncludeCoordinatorCollapseLayoutBinding>> implements ICollection {
 
     private String id;
     private String title;
@@ -167,7 +168,8 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         return true;
     }
 
-    private void initCollect() {
+    @Override
+    public void initCollect() {
         RxTask.asyncMap(new Func1<String, Boolean>() {
             @Override
             public Boolean call(String s) {
@@ -181,13 +183,15 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         });
     }
 
-    private void updateCollectIcon(boolean isCollect) {
+    @Override
+    public void updateCollectIcon(boolean isCollect) {
         this.isCollect = isCollect;
         menu.getItem(1).setIcon(isCollect ? R.drawable.ic_star : R.drawable.ic_star_empty);
         menu.getItem(1).setTitle(isCollect ? R.string.menu_discollect : R.string.menu_collect);
     }
 
-    private void manipulateCollect() {
+    @Override
+    public void manipulateCollect() {
         if (isCollect) {
             disCollect();
         } else {
@@ -214,7 +218,8 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         return true;
     }
 
-    private void disCollect() {
+    @Override
+    public void disCollect() {
         RxTask.asyncTask(new Action0() {
             @Override
             public void call() {
@@ -229,7 +234,8 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         });
     }
 
-    private void collect() {
+    @Override
+    public void collect() {
         RxTask.asyncTask(new Action0() {
             @Override
             public void call() {

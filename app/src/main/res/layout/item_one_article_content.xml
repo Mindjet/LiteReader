@@ -7,14 +7,13 @@
 
         <variable
             name="data"
-            type="io.mindjet.litereader.viewmodel.detail.one.OneReviewContentViewModel" />
+            type="io.mindjet.litereader.viewmodel.detail.one.OneArticleContentViewModel" />
     </data>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/common_gap_medium"
-        android:background="@color/white"
         app:cardCornerRadius="@dimen/cardview_default_radius">
 
         <LinearLayout
@@ -28,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/common_gap_small"
                 android:layout_marginTop="@dimen/common_gap_medium"
-                android:text="@{data.review.title}"
+                android:text="@{data.title}"
                 android:textColor="@color/article_text_color"
                 android:textSize="@dimen/common_text_size_large"
                 tools:text="我敢说，每个追《人民的名义》的人都会喜欢这部剧" />
@@ -37,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/common_gap"
-                android:text="@{data.review.forward}"
+                android:text="@{data.guideWord}"
                 android:textSize="@dimen/common_text_size"
                 tools:text="警察版《半泽直树》来了，卡司强到刺眼睛" />
 
@@ -52,7 +51,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{data.review.postDate}"
+                    android:text="@{data.time}"
                     tools:text="2017-02-20" />
 
                 <TextView
@@ -60,8 +59,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_like"
                     android:drawablePadding="@dimen/common_gap_small"
-                    android:text="@{data.likeCount}"
-                    android:visibility="@{data.likeVisible}" />
+                    android:text="@{data.praiseNum}" />
 
             </LinearLayout>
 
@@ -101,7 +99,7 @@
                         android:ellipsize="end"
                         android:lines="1"
                         android:text="@{data.signature}"
-                        android:visibility="@{data.visible}"
+                        android:visibility="@{data.signatureVisible}"
                         tools:text="我是用户的签名档啊" />
 
                 </LinearLayout>

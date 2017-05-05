@@ -30,9 +30,10 @@ public class Author implements Serializable {
     public String name;
     @SerializedName("desc")
     public String signature;
-    @SerializedName("fans_total")
-    public String fanNum;
     @SerializedName("web_url")
     public String avatar;
-
+    @SerializedName("fans_total")
+    public String fanNum;
+    @SerializedName("wb_name")
+    public String WbName;
 }

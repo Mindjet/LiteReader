@@ -31,6 +31,7 @@ public class CollectionManager {
     public final static String COLLECTION_TYPE_DOUBAN_MOVIE = "collection_type_douban_movie";
     public final static String COLLECTION_TYPE_ZHIHU_STORY = "collection_type_zhihu_story";
     public final static String COLLECTION_TYPE_ONE_REVIEW = "collection_type_one_review";
+    public final static String COLLECTION_TYPE_ONE_ARTICLE = "collection_type_one_article";
     private static CollectionManager manager;
     private OpenDBHelper dbHelper;
 
@@ -125,7 +126,7 @@ public class CollectionManager {
 
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({COLLECTION_TYPE_DOUBAN_MOVIE, COLLECTION_TYPE_ZHIHU_STORY, COLLECTION_TYPE_ONE_REVIEW})
+    @StringDef({COLLECTION_TYPE_DOUBAN_MOVIE, COLLECTION_TYPE_ZHIHU_STORY, COLLECTION_TYPE_ONE_REVIEW, COLLECTION_TYPE_ONE_ARTICLE})
     public @interface Source {
 
     }

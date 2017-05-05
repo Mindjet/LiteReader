@@ -55,7 +55,7 @@
                         android:paddingRight="@dimen/common_gap_small"
                         android:text="@{data.review.title}"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/common_text_size_large" />
+                        android:textSize="@dimen/common_text_size_medium" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                         android:paddingRight="@dimen/common_gap_small"
                         android:text="@{data.review.forward}"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/common_text_size" />
+                        android:textSize="@dimen/common_text_size_small" />
 
                 </LinearLayout>
 

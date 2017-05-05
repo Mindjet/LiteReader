@@ -17,6 +17,7 @@ import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.douban.Images;
 import io.mindjet.litereader.model.item.douban.Rating;
 import io.mindjet.litereader.model.item.one.Review;
+import io.mindjet.litereader.model.item.one.ShareInfo;
 import rx.functions.Func1;
 
 /**
@@ -57,7 +58,7 @@ public class CollectionManager {
     }
 
     public void collect(Review review) {
-        dbHelper.add(COLLECTION_TYPE_ONE_REVIEW, review.id, review.title, review.imgUrl, review.postDate, " ", review.forward, review.subtitle, review.shareUrl);
+        dbHelper.add(COLLECTION_TYPE_ONE_REVIEW, review.id, review.title, review.imgUrl, review.postDate, review.shareInfo.title, review.forward, review.subtitle, review.shareUrl);
     }
 
     public void remove(String id, @Source String type) {
@@ -81,6 +82,8 @@ public class CollectionManager {
                 review.title = cursor.getString(2);
                 review.imgUrl = cursor.getString(3);
                 review.postDate = cursor.getString(4);
+                review.shareInfo = new ShareInfo();
+                review.shareInfo.title = cursor.getString(5);
                 review.forward = cursor.getString(6);
                 review.subtitle = cursor.getString(7);
                 review.shareUrl = cursor.getString(8);

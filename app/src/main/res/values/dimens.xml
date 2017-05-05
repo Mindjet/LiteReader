@@ -48,5 +48,5 @@
     <!--ONE影评-->
     <dimen name="one_review_detail_expanded_title_margin_start">20dp</dimen>
     <dimen name="one_review_detail_expanded_title_margin_bottom">40dp</dimen>
-
+    <dimen name="one_review_collect_item_height">100dp</dimen>
 </resources>

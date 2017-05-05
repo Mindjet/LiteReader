@@ -119,6 +119,7 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
     private void updateCollectIcon(boolean isCollect) {
         this.isCollect = isCollect;
         menu.getItem(1).setIcon(isCollect ? R.drawable.ic_star : R.drawable.ic_star_empty);
+        menu.getItem(1).setTitle(isCollect ? R.string.menu_discollect : R.string.menu_collect);
     }
 
     private void manipulateCollect() {
@@ -137,7 +138,7 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
         }, new Action0() {
             @Override
             public void call() {
-                Toaster.toast(getContext(), R.string.collect_success);
+                Toaster.toast(getContext(), R.string.remove_from_my_collection);
                 updateCollectIcon(false);
             }
         });

@@ -36,7 +36,7 @@ public class OneReviewContentViewModel extends BaseViewModel<ViewInterface<ItemO
     }
 
     public boolean getVisible() {
-        return !review.author.signature.equals("");
+        return review.author != null && !review.author.signature.equals("");
     }
 
     public boolean getAuthorVisible() {

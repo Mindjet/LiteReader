@@ -161,6 +161,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     private void updateCollectIcon(boolean isCollect) {
         this.isCollect = isCollect;
         menu.getItem(1).setIcon(isCollect ? R.drawable.ic_star : R.drawable.ic_star_empty);
+        menu.getItem(1).setTitle(isCollect ? R.string.menu_discollect : R.string.menu_collect);
     }
 
     @Override

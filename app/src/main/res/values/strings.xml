@@ -67,6 +67,7 @@
     <!--顶部菜单-->
     <string name="menu_share">分享</string>
     <string name="menu_collect">收藏</string>
+    <string name="menu_discollect">取消收藏</string>
     <string name="menu_more">更多</string>
 
     <!--分享-->

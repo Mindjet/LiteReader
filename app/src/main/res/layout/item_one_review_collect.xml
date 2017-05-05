@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="io.mindjet.litereader.viewmodel.item.OneReviewCollectItemViewModel" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/common_gap_medium"
+        android:layout_marginRight="@dimen/common_gap_medium"
+        android:layout_marginTop="@dimen/common_gap_medium"
+        app:cardCornerRadius="@dimen/cardview_default_radius">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_review_collect_item_height"
+            android:clickable="true"
+            android:onClick="@{() -> data.onClick()}">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:url="@{data.review.imgUrl}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/common_gap"
+                android:layout_marginRight="@dimen/common_gap"
+                android:background="@color/black_translucent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/common_gap_medium"
+                android:paddingRight="@dimen/common_gap_medium"
+                android:text="@{data.review.title}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_text_size_medium"
+                tools:text="这是一篇ONE影评的收藏" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|top"
+                android:background="@drawable/ripple_borderless_white"
+                android:clickable="true"
+                android:onClick="@{() -> data.onUnCollect()}"
+                android:padding="10dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+        </FrameLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>

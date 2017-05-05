@@ -48,12 +48,11 @@ public class OpenDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
-    ////id, title, forward, image, avatar, name, pubdate, shareUrl, likeCount.
 
     public void add(String type, String id, String title, String poster, String pubdate, String rating, String forward, String subtitle, String shareUrl) {
         String sql = "insert into tb_collection (type,id,title,poster,pubdate,rating,forward,subtitle,shareUrl) values(?,?,?,?,?,?,?,?,?);";
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL(sql, new Object[]{type, id, title, poster, pubdate, rating});
+        database.execSQL(sql, new Object[]{type, id, title, poster, pubdate, rating, forward, subtitle, shareUrl});
         database.close();
     }
 

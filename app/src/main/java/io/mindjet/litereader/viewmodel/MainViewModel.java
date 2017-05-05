@@ -33,6 +33,7 @@ import io.mindjet.litereader.ui.activity.SettingActivity;
 import io.mindjet.litereader.ui.dialog.MeDialog;
 import io.mindjet.litereader.util.ChannelUtil;
 import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
+import io.mindjet.litereader.viewmodel.list.DoubanBookListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
 import io.mindjet.litereader.viewmodel.list.OneArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.OneReviewListViewModel;
@@ -167,7 +168,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                 case ChannelCode.DAILY:
                     columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getString(R.string.column_daily_article));
                     break;
-                case ChannelCode.DOUBAN:
+                case ChannelCode.DOUBAN_MOVIE:
                     columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getString(R.string.column_douban_movie));
                     break;
                 case ChannelCode.ONE_REVIEW:
@@ -175,6 +176,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                     break;
                 case ChannelCode.ONE_ARTICLE:
                     columnViewPagerAdapter.addWithTitle(new OneArticleListViewModel(), getString(R.string.column_one_article));
+                    break;
+                case ChannelCode.DOUBAN_BOOK:
+                    columnViewPagerAdapter.addWithTitle(new DoubanBookListViewModel(), getString(R.string.column_douban_book));
                     break;
             }
         }

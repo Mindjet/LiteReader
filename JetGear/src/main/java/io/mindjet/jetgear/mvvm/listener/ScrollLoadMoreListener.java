@@ -42,6 +42,7 @@ public abstract class ScrollLoadMoreListener extends RecyclerView.OnScrollListen
             }
         } else if (layoutManager instanceof StaggeredGridLayoutManager) {
             StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) layoutManager;
+            manager.invalidateSpanAssignments();
             int spanCount = manager.getSpanCount();
             int itemCount = recyclerView.getAdapter().getItemCount();
             lastVisibleItemPos = manager.findLastCompletelyVisibleItemPositions(null)[spanCount - 1];

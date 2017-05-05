@@ -1,6 +1,7 @@
 package io.mindjet.litereader.service;
 
 import io.mindjet.litereader.model.detail.DoubanMovieDetail;
+import io.mindjet.litereader.model.item.book.BookList;
 import io.mindjet.litereader.model.item.douban.StaffDetail;
 import io.mindjet.litereader.model.list.DoubanCommentList;
 import io.mindjet.litereader.model.list.DoubanMovieList;
@@ -12,6 +13,8 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 /**
+ * 豆瓣接口
+ * <p>
  * Created by Jet on 3/13/17.
  */
 
@@ -35,5 +38,11 @@ public interface DoubanService {
 
     @GET("http://api.douban.com/v2/movie/celebrity/{id}")
     Observable<StaffDetail> getStaffDetail(@Path("id") String id);
+
+    @GET("https://api.douban.com/v2/book/search")
+    Observable<BookList> getBookList(@Query("tag") String tag, @Query("start") int start, @Query("count") int count);
+
+//    @GET("https://api.douban.com/v2/book/{id}")
+
 
 }

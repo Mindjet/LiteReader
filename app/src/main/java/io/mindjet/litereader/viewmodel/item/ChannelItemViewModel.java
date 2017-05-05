@@ -32,12 +32,14 @@ public class ChannelItemViewModel extends BaseViewModel<ViewInterface<ItemChanne
                 return getString(R.string.column_zhihu_daily);
             case ChannelCode.DAILY:
                 return getString(R.string.column_daily_article);
-            case ChannelCode.DOUBAN:
+            case ChannelCode.DOUBAN_MOVIE:
                 return getString(R.string.column_douban_movie);
             case ChannelCode.ONE_REVIEW:
                 return getString(R.string.column_one_review);
             case ChannelCode.ONE_ARTICLE:
                 return getString(R.string.column_one_article);
+            case ChannelCode.DOUBAN_BOOK:
+                return getString(R.string.column_douban_book);
             default:
                 return getString(R.string.column_zhihu_daily);
         }

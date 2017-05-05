@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ImageView">
+        <attr name="url" format="string" />
+        <attr name="circle" format="string" />
+        <attr name="placeHolder" format="reference" />
+    </declare-styleable>
+</resources>

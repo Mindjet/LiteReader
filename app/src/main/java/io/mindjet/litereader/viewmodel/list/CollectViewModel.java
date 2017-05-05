@@ -14,7 +14,6 @@ import io.mindjet.jetgear.mvvm.viewmodel.integrated.HeaderRecyclerViewModel;
 import io.mindjet.jetgear.reactivex.RxTask;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.entity.Constant;
-import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.model.item.DoubanMovieItem;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.one.Article;
@@ -78,7 +77,7 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
     protected void afterComponentBound() {
         getRecyclerViewModel().disableLoadMore();
         initActions();
-        addItems();
+        getData();
     }
 
     private void initActions() {
@@ -145,152 +144,148 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
         };
     }
 
-    private void addItems() {
+    private void getData() {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(RxLoadingView.show(getContext(), R.string.getting_collection))
                 .observeOn(Schedulers.io())
-                .map(new Func1<String, List<DoubanMovieItem>>() {
+                .compose(data2ViewModel(new Func1<String, List<DoubanMovieItem>>() {
                     @Override
                     public List<DoubanMovieItem> call(String s) {
                         return CollectionManager.getInstance(getContext()).getDoubanMovieList();
                     }
-                })
-                .flatMap(new Func1<List<DoubanMovieItem>, Observable<DoubanMovieItem>>() {
+                }, new Func1<DoubanMovieItem, MovieCollectItemViewModel>() {
                     @Override
-                    public Observable<DoubanMovieItem> call(List<DoubanMovieItem> list) {
-                        return Observable.from(list);
+                    public MovieCollectItemViewModel call(DoubanMovieItem item) {
+                        return new MovieCollectItemViewModel(item, onMovieItemClick, onUnCollect);
                     }
-                })
-                .map(new Func1<DoubanMovieItem, MovieCollectItemViewModel>() {
-                    @Override
-                    public MovieCollectItemViewModel call(DoubanMovieItem doubanMovieItem) {
-                        return new MovieCollectItemViewModel(doubanMovieItem, onMovieItemClick, onUnCollect);
-                    }
-                })
-                .toList()
+                }))
                 .doOnNext(new Action1<List<MovieCollectItemViewModel>>() {
                     @Override
                     public void call(List<MovieCollectItemViewModel> list) {
                         movieItems = list;
                     }
                 })
-                .map(new Func1<List<MovieCollectItemViewModel>, List<ZhihuStoryItem>>() {
+                .compose(data2ViewModel(new Func1<String, List<ZhihuStoryItem>>() {
                     @Override
-                    public List<ZhihuStoryItem> call(List<MovieCollectItemViewModel> doubanMovieItemViewModels) {
+                    public List<ZhihuStoryItem> call(String s) {
                         return CollectionManager.getInstance(getContext()).getZhihuStoryList();
                     }
-                })
-                .flatMap(new Func1<List<ZhihuStoryItem>, Observable<ZhihuStoryItem>>() {
-                    @Override
-                    public Observable<ZhihuStoryItem> call(List<ZhihuStoryItem> list) {
-                        return Observable.from(list);
-                    }
-                })
-                .map(new Func1<ZhihuStoryItem, StoryCollectItemViewModel>() {
+                }, new Func1<ZhihuStoryItem, StoryCollectItemViewModel>() {
                     @Override
                     public StoryCollectItemViewModel call(ZhihuStoryItem item) {
                         return new StoryCollectItemViewModel(item, onStoryItemClick, onUnCollect);
                     }
-                })
-                .toList()
+                }))
                 .doOnNext(new Action1<List<StoryCollectItemViewModel>>() {
                     @Override
                     public void call(List<StoryCollectItemViewModel> list) {
                         storyItems = list;
                     }
                 })
-                .map(new Func1<List<StoryCollectItemViewModel>, List<Review>>() {
+                .compose(data2ViewModel(new Func1<String, List<Review>>() {
                     @Override
-                    public List<Review> call(List<StoryCollectItemViewModel> storyCollectItemViewModels) {
+                    public List<Review> call(String s) {
                         return CollectionManager.getInstance(getContext()).getOneReviewList();
                     }
-                })
-                .flatMap(new Func1<List<Review>, Observable<Review>>() {
-                    @Override
-                    public Observable<Review> call(List<Review> reviews) {
-                        return Observable.from(reviews);
-                    }
-                })
-                .map(new Func1<Review, OneCommonCollectItemViewModel>() {
+                }, new Func1<Review, OneCommonCollectItemViewModel>() {
                     @Override
                     public OneCommonCollectItemViewModel call(Review review) {
                         return new OneCommonCollectItemViewModel(review, onUnCollect);
                     }
-                })
-                .toList()
+                }))
                 .doOnNext(new Action1<List<OneCommonCollectItemViewModel>>() {
                     @Override
                     public void call(List<OneCommonCollectItemViewModel> list) {
                         oneReviewItems = list;
                     }
                 })
-                .map(new Func1<List<OneCommonCollectItemViewModel>, List<Article>>() {
+                .compose(data2ViewModel(new Func1<String, List<Article>>() {
                     @Override
-                    public List<Article> call(List<OneCommonCollectItemViewModel> vms) {
+                    public List<Article> call(String s) {
                         return CollectionManager.getInstance(getContext()).getOneArticleList();
                     }
-                })
-                .flatMap(new Func1<List<Article>, Observable<Article>>() {
-                    @Override
-                    public Observable<Article> call(List<Article> articles) {
-                        return Observable.from(articles);
-                    }
-                })
-                .map(new Func1<Article, OneCommonCollectItemViewModel>() {
+                }, new Func1<Article, OneCommonCollectItemViewModel>() {
                     @Override
                     public OneCommonCollectItemViewModel call(Article article) {
                         return new OneCommonCollectItemViewModel(article.id, article.imgUrl, article.title, onUnCollect);
                     }
-                })
-                .toList()
+                }))
                 .doOnNext(new Action1<List<OneCommonCollectItemViewModel>>() {
                     @Override
-                    public void call(List<OneCommonCollectItemViewModel> viewModels) {
-                        oneArticleItems = viewModels;
+                    public void call(List<OneCommonCollectItemViewModel> list) {
+                        oneArticleItems = list;
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnUnsubscribe(RxLoadingView.dismiss())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleHttpSubscriber<List<OneCommonCollectItemViewModel>>() {
+                .subscribe(new Action1<List<OneCommonCollectItemViewModel>>() {
                     @Override
-                    public void onNext(List<OneCommonCollectItemViewModel> list) {
-                        int sum = 0;
-                        if (movieItems.size() != 0) {
-                            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_douban_movie));
-                            sum++;
-                        }
-                        getAdapter().addAll(movieItems);
-                        sum += movieItems.size();
-                        if (storyItems.size() != 0) {
-                            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_zhihu_daily));
-                            sum++;
-                        }
-                        getAdapter().addAll(storyItems);
-                        sum += storyItems.size();
-                        if (oneReviewItems.size() != 0) {
-                            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_one_review));
-                            sum++;
-                        }
-                        getAdapter().addAll(oneReviewItems);
-                        sum += oneReviewItems.size();
-                        if (oneArticleItems.size() != 0) {
-                            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_one_article));
-                            sum++;
-                        }
-                        getAdapter().addAll(oneArticleItems);
-                        sum += oneArticleItems.size();
-
-                        getAdapter().add(new BlankViewModel(R.dimen.common_gap_medium));
-                        sum++;
-                        movieSize = movieItems.size();
-                        storySize = storyItems.size();
-                        oneReviewSize = oneReviewItems.size();
-                        oneArticleSize = oneArticleItems.size();
-                        getAdapter().notifyItemRangeInserted(0, sum);
+                    public void call(List<OneCommonCollectItemViewModel> viewModels) {
+                        addItems();
                     }
                 });
+    }
+
+    private void addItems() {
+        int sum = 0;
+        if (movieItems.size() != 0) {
+            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_douban_movie));
+            sum++;
+        }
+        getAdapter().addAll(movieItems);
+        sum += movieItems.size();
+        if (storyItems.size() != 0) {
+            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_zhihu_daily));
+            sum++;
+        }
+        getAdapter().addAll(storyItems);
+        sum += storyItems.size();
+        if (oneReviewItems.size() != 0) {
+            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_one_review));
+            sum++;
+        }
+        getAdapter().addAll(oneReviewItems);
+        sum += oneReviewItems.size();
+        if (oneArticleItems.size() != 0) {
+            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_one_article));
+            sum++;
+        }
+        getAdapter().addAll(oneArticleItems);
+        sum += oneArticleItems.size();
+
+        getAdapter().add(new BlankViewModel(R.dimen.common_gap_medium));
+        sum++;
+        movieSize = movieItems.size();
+        storySize = storyItems.size();
+        oneReviewSize = oneReviewItems.size();
+        oneArticleSize = oneArticleItems.size();
+        getAdapter().notifyItemRangeInserted(0, sum);
+    }
+
+    private <T, S, O> Observable.Transformer<T, List<O>> data2ViewModel(final Func1<String, List<S>> mapper1, final Func1<S, O> mapper2) {
+        return new Observable.Transformer<T, List<O>>() {
+            @Override
+            public Observable<List<O>> call(Observable<T> tObservable) {
+                return tObservable
+                        .map(new Func1<T, String>() {
+                            @Override
+                            public String call(T t) {
+                                return "";
+                            }
+                        })
+                        .map(mapper1)
+                        .flatMap(new Func1<List<S>, Observable<S>>() {
+                            @Override
+                            public Observable<S> call(List<S> ses) {
+                                return Observable.from(ses);
+                            }
+                        })
+                        .map(mapper2)
+                        .toList();
+            }
+        };
     }
 
 }

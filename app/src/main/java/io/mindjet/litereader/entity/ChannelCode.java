@@ -12,8 +12,9 @@ public class ChannelCode {
 
     public final static String ZHIHU = "ZHIHU";
     public final static String DAILY = "DAILY";
-    public final static String DOUBAN = "DOUBAN";
+    public final static String DOUBAN_MOVIE = "DOUBAN_MOVIE";
     public final static String ONE_REVIEW = "ONE_REVIEW";
     public final static String ONE_ARTICLE = "ONE_ARTICLE";
+    public final static String DOUBAN_BOOK = "DOUBAN_BOOK";
 
 }

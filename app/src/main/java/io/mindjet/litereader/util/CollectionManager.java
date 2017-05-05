@@ -16,6 +16,8 @@ import io.mindjet.litereader.model.item.DoubanMovieItem;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.item.douban.Images;
 import io.mindjet.litereader.model.item.douban.Rating;
+import io.mindjet.litereader.model.item.one.Article;
+import io.mindjet.litereader.model.item.one.ArticleDetail;
 import io.mindjet.litereader.model.item.one.Review;
 import io.mindjet.litereader.model.item.one.ShareInfo;
 import rx.functions.Func1;
@@ -62,6 +64,10 @@ public class CollectionManager {
         dbHelper.add(COLLECTION_TYPE_ONE_REVIEW, review.id, review.title, review.imgUrl, review.postDate, review.shareInfo.title, review.forward, review.subtitle, review.shareUrl);
     }
 
+    public void collect(ArticleDetail detail, String image) {
+        dbHelper.add(COLLECTION_TYPE_ONE_ARTICLE, detail.id, detail.title, image, " ", " ", " ", " ", " ");
+    }
+
     public void remove(String id, @Source String type) {
         dbHelper.remove(type, id);
     }
@@ -72,6 +78,19 @@ public class CollectionManager {
 
     public void clear() {
         dbHelper.clear();
+    }
+
+    public List<Article> getOneArticleList() {
+        return dbHelper.getList(COLLECTION_TYPE_ONE_ARTICLE, new Func1<Cursor, Article>() {
+            @Override
+            public Article call(Cursor cursor) {
+                Article article = new Article();
+                article.id = cursor.getString(1);
+                article.title = cursor.getString(2);
+                article.imgUrl = cursor.getString(3);
+                return article;
+            }
+        });
     }
 
     public List<Review> getOneReviewList() {

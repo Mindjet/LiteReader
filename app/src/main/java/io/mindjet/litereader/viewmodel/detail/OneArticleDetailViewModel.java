@@ -13,7 +13,9 @@ import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.coordinator.CoordinatorCollapseLayoutViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
+import io.mindjet.jetgear.reactivex.RxTask;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
+import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.manager.ShareManager;
 import io.mindjet.jetwidget.JToolBar;
 import io.mindjet.litereader.R;
@@ -23,10 +25,13 @@ import io.mindjet.litereader.model.item.one.ArticleDetail;
 import io.mindjet.litereader.model.list.OneData;
 import io.mindjet.litereader.service.OneService;
 import io.mindjet.litereader.ui.dialog.ShareDialog;
+import io.mindjet.litereader.util.CollectionManager;
 import io.mindjet.litereader.viewmodel.ICollection;
 import io.mindjet.litereader.viewmodel.detail.one.OneArticleContentViewModel;
 import io.mindjet.litereader.viewmodel.detail.one.OneCommonImageViewModel;
 import rx.Subscription;
+import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
@@ -157,7 +162,17 @@ public class OneArticleDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     @Override
     public void initCollect() {
-
+        RxTask.asyncMap(new Func1<String, Boolean>() {
+            @Override
+            public Boolean call(String s) {
+                return CollectionManager.getInstance(getContext()).contain(articleId, CollectionManager.COLLECTION_TYPE_ONE_ARTICLE);
+            }
+        }, new Action1<Boolean>() {
+            @Override
+            public void call(Boolean isCollect) {
+                updateCollectIcon(isCollect);
+            }
+        });
     }
 
     @Override
@@ -178,12 +193,34 @@ public class OneArticleDetailViewModel extends CoordinatorCollapseLayoutViewMode
 
     @Override
     public void disCollect() {
-
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).remove(articleId, CollectionManager.COLLECTION_TYPE_ONE_ARTICLE);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.remove_from_my_collection);
+                updateCollectIcon(false);
+            }
+        });
     }
 
     @Override
     public void collect() {
-
+        RxTask.asyncTask(new Action0() {
+            @Override
+            public void call() {
+                CollectionManager.getInstance(getContext()).collect(detail, image);
+            }
+        }, new Action0() {
+            @Override
+            public void call() {
+                Toaster.toast(getContext(), R.string.collect_success);
+                updateCollectIcon(true);
+            }
+        });
     }
 
     @Override

@@ -21,6 +21,7 @@ import io.mindjet.litereader.model.item.ZhihuStoryItem;
 import io.mindjet.litereader.model.list.ZhihuDailyList;
 import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
+import io.mindjet.litereader.viewmodel.item.BlankViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import rx.android.schedulers.AndroidSchedulers;
@@ -102,6 +103,7 @@ public class ZhihuSectionDetailViewModel extends HeaderSwipeLayoutViewModel<Acti
                             getContext().startActivity(intent);
                         }
                     }));
+        getAdapter().add(new BlankViewModel(R.dimen.common_gap));
         getAdapter().notifyDataSetChanged();
 
     }

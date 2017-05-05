@@ -17,6 +17,7 @@ import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.http.SimpleHttpSubscriber;
 import io.mindjet.litereader.model.item.DoubanMovieItem;
 import io.mindjet.litereader.model.item.ZhihuStoryItem;
+import io.mindjet.litereader.model.item.one.Article;
 import io.mindjet.litereader.model.item.one.Review;
 import io.mindjet.litereader.reactivex.RxLoadingView;
 import io.mindjet.litereader.ui.activity.DoubanMovieDetailActivity;
@@ -24,7 +25,7 @@ import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.CollectionManager;
 import io.mindjet.litereader.viewmodel.item.BlankViewModel;
 import io.mindjet.litereader.viewmodel.item.MovieCollectItemViewModel;
-import io.mindjet.litereader.viewmodel.item.OneReviewCollectItemViewModel;
+import io.mindjet.litereader.viewmodel.item.OneCommonCollectItemViewModel;
 import io.mindjet.litereader.viewmodel.item.StoryCollectItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
 import rx.Observable;
@@ -45,7 +46,8 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
 
     private List<MovieCollectItemViewModel> movieItems;
     private List<StoryCollectItemViewModel> storyItems;
-    private List<OneReviewCollectItemViewModel> oneReviewItems;
+    private List<OneCommonCollectItemViewModel> oneReviewItems;
+    private List<OneCommonCollectItemViewModel> oneArticleItems;
 
     private Action1<DoubanMovieItem> onMovieItemClick;
     private Action1<ZhihuStoryItem> onStoryItemClick;
@@ -54,6 +56,7 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
     private int movieSize = 0;
     private int storySize = 0;
     private int oneReviewSize = 0;
+    private int oneArticleSize = 0;
 
     @Override
     protected void afterViewAttached() {
@@ -113,50 +116,31 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                         getAdapter().remove(position.intValue());
                         getAdapter().notifyItemRemoved(position);
 
-                        //如果该类型的收藏为空，则需要把头部信息也删掉
-                        if (type.equals(CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE)) {
-                            movieSize -= 1;
-                            if (movieSize == 0) {
-                                getAdapter().remove(0);
-                                getAdapter().notifyItemRemoved(0);
-                            }
+                        boolean sectionEmpty = false;
+                        switch (type) {
+                            case CollectionManager.COLLECTION_TYPE_DOUBAN_MOVIE:
+                                movieSize -= 1;
+                                sectionEmpty = movieSize == 0;
+                                break;
+                            case CollectionManager.COLLECTION_TYPE_ZHIHU_STORY:
+                                storySize -= 1;
+                                sectionEmpty = storySize == 0;
+                                break;
+                            case CollectionManager.COLLECTION_TYPE_ONE_REVIEW:
+                                oneReviewSize -= 1;
+                                sectionEmpty = oneReviewSize == 0;
+                                break;
+                            case CollectionManager.COLLECTION_TYPE_ONE_ARTICLE:
+                                oneArticleSize -= 1;
+                                sectionEmpty = oneArticleSize == 0;
+                                break;
                         }
-                        if (type.equals(CollectionManager.COLLECTION_TYPE_ZHIHU_STORY)) {
-                            storySize -= 1;
-                            if (storySize == 0) {
-                                getAdapter().remove(position - 1);
-                                getAdapter().notifyItemRemoved(position - 1);
-                            }
-                        }
-                        if (type.equals(CollectionManager.COLLECTION_TYPE_ONE_REVIEW)) {
-                            oneReviewSize -= 1;
-                            if (oneReviewSize == 0) {
-                                getAdapter().remove(position - 1);
-                                getAdapter().notifyItemRemoved(position - 1);
-                            }
+                        if (sectionEmpty) {
+                            getAdapter().remove(position - 1);
+                            getAdapter().notifyItemRemoved(position - 1);
                         }
                     }
                 });
-//                Observable.just("")
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(Schedulers.io())
-//                        .doOnSubscribe(RxLoadingView.show(getContext(), R.string.deleting))
-//                        .doOnNext(new Action1<String>() {
-//                            @Override
-//                            public void call(String s) {
-//                                CollectionManager.getInstance(getContext()).remove(id, type);
-//                            }
-//                        })
-//                        .delay(600, TimeUnit.MILLISECONDS)
-//                        .unsubscribeOn(AndroidSchedulers.mainThread())
-//                        .doOnUnsubscribe(RxLoadingView.dismiss())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new SimpleHttpSubscriber<String>() {
-//                            @Override
-//                            public void onNext(String s) {
-//
-//                            }
-//                        });
             }
         };
     }
@@ -228,25 +212,50 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                         return Observable.from(reviews);
                     }
                 })
-                .map(new Func1<Review, OneReviewCollectItemViewModel>() {
+                .map(new Func1<Review, OneCommonCollectItemViewModel>() {
                     @Override
-                    public OneReviewCollectItemViewModel call(Review review) {
-                        return new OneReviewCollectItemViewModel(review, onUnCollect);
+                    public OneCommonCollectItemViewModel call(Review review) {
+                        return new OneCommonCollectItemViewModel(review, onUnCollect);
                     }
                 })
                 .toList()
-                .doOnNext(new Action1<List<OneReviewCollectItemViewModel>>() {
+                .doOnNext(new Action1<List<OneCommonCollectItemViewModel>>() {
                     @Override
-                    public void call(List<OneReviewCollectItemViewModel> list) {
+                    public void call(List<OneCommonCollectItemViewModel> list) {
                         oneReviewItems = list;
+                    }
+                })
+                .map(new Func1<List<OneCommonCollectItemViewModel>, List<Article>>() {
+                    @Override
+                    public List<Article> call(List<OneCommonCollectItemViewModel> vms) {
+                        return CollectionManager.getInstance(getContext()).getOneArticleList();
+                    }
+                })
+                .flatMap(new Func1<List<Article>, Observable<Article>>() {
+                    @Override
+                    public Observable<Article> call(List<Article> articles) {
+                        return Observable.from(articles);
+                    }
+                })
+                .map(new Func1<Article, OneCommonCollectItemViewModel>() {
+                    @Override
+                    public OneCommonCollectItemViewModel call(Article article) {
+                        return new OneCommonCollectItemViewModel(article.id, article.imgUrl, article.title, onUnCollect);
+                    }
+                })
+                .toList()
+                .doOnNext(new Action1<List<OneCommonCollectItemViewModel>>() {
+                    @Override
+                    public void call(List<OneCommonCollectItemViewModel> viewModels) {
+                        oneArticleItems = viewModels;
                     }
                 })
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnUnsubscribe(RxLoadingView.dismiss())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleHttpSubscriber<List<OneReviewCollectItemViewModel>>() {
+                .subscribe(new SimpleHttpSubscriber<List<OneCommonCollectItemViewModel>>() {
                     @Override
-                    public void onNext(List<OneReviewCollectItemViewModel> list) {
+                    public void onNext(List<OneCommonCollectItemViewModel> list) {
                         int sum = 0;
                         if (movieItems.size() != 0) {
                             getAdapter().add(new ZhihuDateItemViewModel(R.string.column_douban_movie));
@@ -266,12 +275,19 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
                         }
                         getAdapter().addAll(oneReviewItems);
                         sum += oneReviewItems.size();
+                        if (oneArticleItems.size() != 0) {
+                            getAdapter().add(new ZhihuDateItemViewModel(R.string.column_one_article));
+                            sum++;
+                        }
+                        getAdapter().addAll(oneArticleItems);
+                        sum += oneArticleItems.size();
 
                         getAdapter().add(new BlankViewModel(R.dimen.common_gap_medium));
                         sum++;
                         movieSize = movieItems.size();
                         storySize = storyItems.size();
                         oneReviewSize = oneReviewItems.size();
+                        oneArticleSize = oneArticleItems.size();
                         getAdapter().notifyItemRangeInserted(0, sum);
                     }
                 });

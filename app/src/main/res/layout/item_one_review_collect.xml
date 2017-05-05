@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="io.mindjet.litereader.viewmodel.item.OneReviewCollectItemViewModel" />
+            type="io.mindjet.litereader.viewmodel.item.OneCommonCollectItemViewModel" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:url="@{data.review.imgUrl}" />
+                app:url="@{data.imgUrl}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                 android:gravity="center"
                 android:paddingLeft="@dimen/common_gap_medium"
                 android:paddingRight="@dimen/common_gap_medium"
-                android:text="@{data.review.title}"
+                android:text="@{data.title}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_text_size_medium"
                 tools:text="这是一篇ONE影评的收藏" />

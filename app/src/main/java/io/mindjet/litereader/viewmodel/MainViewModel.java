@@ -109,7 +109,7 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         DrawerViewModel drawer = new DrawerViewModel.Builder()
                 .width(R.dimen.drawer_width_large)
                 .item(new DrawerHeaderViewModel.Builder()
-                        .icon("")
+                        .icon("https://raw.githubusercontent.com/Mindjet/LiteReader/master/app/src/main/res/drawable-xxhdpi/ic_launcher.png")
                         .height(R.dimen.drawer_header_height_medium)
                         .backgroundColor(R.color.colorPrimary)
                         .font("Courgette-Regular.ttf")

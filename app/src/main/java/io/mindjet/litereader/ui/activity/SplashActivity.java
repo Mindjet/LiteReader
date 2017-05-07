@@ -1,14 +1,16 @@
 package io.mindjet.litereader.ui.activity;
 
+import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,31 +18,34 @@ import io.mindjet.jetgear.network.ServiceGen;
 import io.mindjet.jetutil.file.SPUtil;
 import io.mindjet.jetutil.task.Task;
 import io.mindjet.litereader.R;
+import io.mindjet.litereader.databinding.ActivitySplashBinding;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.http.ThreadDispatcher;
 import io.mindjet.litereader.model.other.DailyWallpaper;
 import io.mindjet.litereader.service.OtherService;
 import io.mindjet.litereader.util.DateUtil;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * 每日壁纸启动页
  * <p>
- * Created by Jet on 3/15/17.
+ * Created by Mindjet on 3/15/17.
  */
 
 public class SplashActivity extends AppCompatActivity {
 
-    private LinearLayout wrapper;
-    private TextView copyright;
-    private ImageView wallpaper;
-    private ImageView gradient;
+    private ActivitySplashBinding mBinding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
+        setContentView(mBinding.getRoot());
+        mBinding.setData(this);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Courgette-Regular.ttf");
+        mBinding.ivAppName.setTypeface(typeface);
+        mBinding.ivAppName2.setTypeface(typeface);
 
         boolean showDailyWallpaper = SPUtil.getBoolean(this, Constant.KEY_SETTING_SHOW_WALLPAPER);
         boolean hasTimeLapsed = DateUtil.timeLapsed(SPUtil.getLong(this, Constant.KEY_APP_LAUNCH_MILLISECOND), 60);
@@ -49,35 +54,32 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(MainActivity.intentFor(this));
             finish();
         } else {
-            wrapper = (LinearLayout) findViewById(R.id.lly_wrapper);
-            copyright = (TextView) findViewById(R.id.tv_copyright);
-            wallpaper = (ImageView) findViewById(R.id.iv_wallpaper);
-            gradient = (ImageView) findViewById(R.id.iv_gradient);
-
             OtherService service = ServiceGen.create(OtherService.class);
             service.getDailyWallpaper()
-                    .timeout(4000, TimeUnit.MILLISECONDS)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .timeout(3000, TimeUnit.MILLISECONDS)
+                    .compose(new ThreadDispatcher<DailyWallpaper>())
                     .subscribe(new Action1<DailyWallpaper>() {
                         @Override
-                        public void call(DailyWallpaper data) {
-                            gradient.setVisibility(View.VISIBLE);
-                            wrapper.setVisibility(View.VISIBLE);
-                            copyright.setVisibility(View.VISIBLE);
+                        public void call(final DailyWallpaper data) {
                             Glide.with(SplashActivity.this)
                                     .load(adjustResolution(data.data.get(0).url))
+                                    .asBitmap()
                                     .placeholder(R.drawable.ic_placeholder)
                                     .thumbnail(0.1f)
-                                    .into(wallpaper);
-                            copyright.setText(breakString(data.data.get(0).copyright));
-                            next();
+                                    .into(new SimpleTarget<Bitmap>() {
+                                        @Override
+                                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                            mBinding.ivWallpaper.setImageBitmap(resource);
+                                            mBinding.tvCopyright.setText(breakString(data.data.get(0).copyright));
+                                            mBinding.flyWallpaper.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+                            next(3000);
                         }
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            wallpaper.setImageResource(R.drawable.ic_placeholder);
-                            next();
+                            next(1000);
                         }
                     });
         }
@@ -96,7 +98,7 @@ public class SplashActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private void next() {
+    private void next(long time) {
         Task.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -104,7 +106,7 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
-        }, 4000);
+        }, time);
     }
 
 }

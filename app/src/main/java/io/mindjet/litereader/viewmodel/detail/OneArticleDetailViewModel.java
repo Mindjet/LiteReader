@@ -138,6 +138,7 @@ public class OneArticleDetailViewModel extends CoordinatorCollapseLayoutViewMode
     public boolean onCreateOptionMenu(Menu menu) {
         this.menu = menu;
         getSelfView().getCompatActivity().getMenuInflater().inflate(R.menu.menu_common, menu);
+        initCollect();
         return true;
     }
 

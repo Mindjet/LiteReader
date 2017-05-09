@@ -72,9 +72,9 @@ public class SplashActivity extends AppCompatActivity {
                                             mBinding.ivWallpaper.setImageBitmap(resource);
                                             mBinding.tvCopyright.setText(breakString(data.data.get(0).copyright));
                                             mBinding.flyWallpaper.setVisibility(View.VISIBLE);
+                                            next(3000);
                                         }
                                     });
-                            next(3000);
                         }
                     }, new Action1<Throwable>() {
                         @Override

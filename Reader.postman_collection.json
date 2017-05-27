@@ -1,0 +1,357 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Reader",
+		"_postman_id": "e3ffa481-b41b-75ac-977c-4ee0dcff132f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ONE - 获取文章列表",
+			"request": {
+				"url": "http://v3.wufazhuce.com:8000/api/channel/reading/more/0",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ONE - 获取文章详情",
+			"request": {
+				"url": "http://v3.wufazhuce.com:8000/api/essay/2356",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "其中id为文章列表中的item_id"
+			},
+			"response": []
+		},
+		{
+			"name": "ONE - 获取影评列表",
+			"request": {
+				"url": "http://v3.wufazhuce.com:8000/api/channel/movie/more/0",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ONE - 获取影评详情",
+			"request": {
+				"url": "http://v3.wufazhuce.com:8000/api/movie/detail/750?channel=wdj&source=channel_movie&source_id=9240&version=4.0.2&uuid=ffffffff-a90e-706a-63f7-ccf973aae5ee&platform=android",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "id为影片资讯的item_id\n"
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取地区列表",
+			"request": {
+				"url": "https://api-m.mtime.cn/Showtime/HotCitiesByCinema.api",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取正在上映影片列表",
+			"request": {
+				"url": "https://api-m.mtime.cn/PageSubArea/HotPlayMovies.api?locationId=290",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "后面的路由参数是地区id"
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取即将上映影片列表",
+			"request": {
+				"url": "https://api-m.mtime.cn/Movie/MovieComingNew.api?locationId=290",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取影片详情",
+			"request": {
+				"url": "https://ticket-api-m.mtime.cn/movie/detail.api?locationId=290&movieId=235579",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取影评演职员表",
+			"request": {
+				"url": "https://api-m.mtime.cn/Movie/MovieCreditsWithTypes.api?movieId=235579",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取影片评论列表",
+			"request": {
+				"url": "https://ticket-api-m.mtime.cn/movie/hotComment.api?movieId=235579",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取影片剧照和预告片",
+			"request": {
+				"url": "https://api-m.mtime.cn/Movie/Video.api?pageIndex=1&movieId=209688",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "TIME - 获取影片剧照",
+			"request": {
+				"url": "https://api-m.mtime.cn/Movie/ImageAll.api?movieId=235579",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DOUBAN - 获取正在上映影片列表（可分页）",
+			"request": {
+				"url": "https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b&city=广州&start=0&count=10",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DOUBAN - 获取影片详情",
+			"request": {
+				"url": "http://api.douban.com/v2/movie/subject/25900945?apikey=0b2bdeda43b5688921839c8ecb20399b",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DOUBAN - 获取影片剧照（大量，可分页）",
+			"request": {
+				"url": "https://api.douban.com/v2/movie/subject/25900945/photos?apikey=0b2bdeda43b5688921839c8ecb20399b&start=0&count=3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DOUBAN - 获取长影评（可分页）",
+			"request": {
+				"url": "https://api.douban.com/v2/movie/subject/25900945/reviews?apikey=0b2bdeda43b5688921839c8ecb20399b&start=0&count=10",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DOUBAN - 获取短影评（可分页）",
+			"request": {
+				"url": "https://api.douban.com/v2/movie/subject/25900945/comments?apikey=0b2bdeda43b5688921839c8ecb20399b&start=0&count=5",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DOUBAN - 获取影人资料",
+			"request": {
+				"url": "http://api.douban.com/v2/movie/celebrity/1054395?apikey=0b2bdeda43b5688921839c8ecb20399b",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "OTHER - 随机散文",
+			"request": {
+				"url": "https://interface.meiriyiwen.com/article/random?dev=1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "OTHER - 每日一文",
+			"request": {
+				"url": "https://interface.meiriyiwen.com/article/today?dev=1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "OTHER - 每日壁纸",
+			"request": {
+				"url": "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ZHIHU - 获取最新文章",
+			"request": {
+				"url": "http://news-at.zhihu.com/api/4/news/latest",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ZHIHU - 获取文章详情",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"{\r",
+							"    \"body\": \"<div class=\\\"main-wrap content-wrap\\\"></div>\",\r",
+							"    \"image_source\": \"Yestone.com 版权图片库\",\r",
+							"    \"title\": \"好看归好看，但开放式厨房可能要告别燃气了\",\r",
+							"    \"image\": \"https://pic3.zhimg.com/v2-b9e9ef1ff694a33a13ee4ef63e554362.jpg\",\r",
+							"    \"share_url\": \"http://daily.zhihu.com/story/9397729\",\r",
+							"    \"js\": [],\r",
+							"    \"ga_prefix\": \"050320\",\r",
+							"    \"images\": [\r",
+							"        \"https://pic3.zhimg.com/v2-315c0e68ccfd96ed0d59fce08e1b46aa.jpg\"\r",
+							"    ],\r",
+							"    \"type\": 0,\r",
+							"    \"id\": 9397729,\r",
+							"    \"css\": [\r",
+							"        \"http://news-at.zhihu.com/css/news_qa.auto.css?v=4b3e3\"\r",
+							"    ]\r",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://news-at.zhihu.com/api/4/news/9397729",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ZHIHU - 获取分栏列表",
+			"request": {
+				"url": "http://news-at.zhihu.com/api/4/sections",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ZHIHU - 获取专栏详情",
+			"request": {
+				"url": "http://news-at.zhihu.com/api/4/section/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ZHIHU - 查看文章推荐者",
+			"request": {
+				"url": "http://news-at.zhihu.com/api/4/story/7101963/recommenders",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ZHIHU - 获取过往文章",
+			"request": {
+				"url": "http://news-at.zhihu.com/api/4/news/before/20170504",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "获取图书详情",
+			"request": {
+				"url": "https://api.douban.com/v2/book/1867642",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "获取某标签下的图书列表",
+			"request": {
+				"url": "https://api.douban.com/v2/book/search?tag=热门&start=0&count=2",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

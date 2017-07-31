@@ -40,3 +40,6 @@ captures/
 # FreeLine
 *.py
 freeline/
+
+# Raw files
+raw/

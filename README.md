@@ -1,6 +1,8 @@
 # LiteReader
 
 [![Build Status](https://travis-ci.org/Mindjet/LiteReader.svg?branch=master)](https://travis-ci.org/Mindjet/LiteReader)
+[![Author](https://img.shields.io/badge/author-mindjet-yellow.svg)](https://mindjet.github.io)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 **LiteReader** is a native Android app featured with Material Design. You are welcome to download it from [here](https://www.pgyer.com/FQ75).
 

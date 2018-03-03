@@ -57,6 +57,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
             @Override
             public void call(DoubanMovieList movieList) {
                 getAdapter().clear();
+                getAdapter().notifyDataSetChanged();
                 addMovieList(movieList.movies);
                 start += perPage;
                 hideRefreshing();
@@ -102,14 +103,6 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
     }
 
     private void addMovieList(List<DoubanMovieItem> movies) {
-//        if (movies.size() == 0) {
-//            getAdapter().onFinishLoadMore(true);
-//        } else {
-//            for (DoubanMovieItem movie : movies) {
-//                getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
-//            }
-//            getAdapter().notifyDataSetChanged();
-//        }
         for (DoubanMovieItem movie : movies) {
             getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
         }

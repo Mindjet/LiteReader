@@ -34,8 +34,8 @@ public abstract class BaseViewModel<V extends ViewInterface> extends BaseObserva
     public void onAttach(V selfView) {
         this.selfView = selfView;
         attachData(selfView.getBinding());
-        onViewAttached();                                       //notify anything listens to it.
         onViewAttached(selfView.getBinding().getRoot());        //notify the ViewModel itself.
+        onViewAttached();                                       //notify anything listens to it.
     }
 
     /**

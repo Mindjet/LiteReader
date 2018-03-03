@@ -3,16 +3,19 @@ package io.mindjet.litereader.viewmodel.list;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.format.DateFormat;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.mindjet.jetgear.mvvm.base.BaseViewModel;
+import io.mindjet.jetgear.mvvm.listener.ViewAttachedListener;
 import io.mindjet.jetgear.mvvm.viewmodel.BannerViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
-import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.databinding.ItemZhihuSectionBinding;
 import io.mindjet.litereader.entity.Constant;
@@ -28,13 +31,14 @@ import io.mindjet.litereader.service.ZhihuDailyService;
 import io.mindjet.litereader.ui.activity.ZhihuSectionDetailActivity;
 import io.mindjet.litereader.ui.activity.ZhihuStoryDetailActivity;
 import io.mindjet.litereader.util.DateUtil;
-import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuBannerItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuDateItemViewModel;
 import io.mindjet.litereader.viewmodel.item.ZhihuSectionItemViewModel;
+import io.mindjet.litereader.viewmodel.item.ZhihuStoryItemViewModel;
 import rx.functions.Action1;
 import rx.functions.Action2;
 import rx.functions.Action3;
+import rx.functions.Func2;
 
 /**
  * 知乎日报 首页 view model
@@ -46,14 +50,16 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private ZhihuDailyService service;
 
-    private BannerViewModel banner;
-    private RecyclerViewModel<ItemZhihuSectionBinding> section = new RecyclerViewModel<>(false);
+    private BannerViewModel bannerVM;
+    private RecyclerViewModel<ItemZhihuSectionBinding> sectionVM = new RecyclerViewModel<>(false);
     private Date date = new Date();
 
-    private Action1<ZhihuDailyList> onLoadLatestNews;
-    private Action1<ZhihuDailyList> onRefreshLatestNews;
     private Action3<String, Integer, Integer> onDailyItemClick;
     private Action2<String, String> onSectionItemClick;
+
+    private Action2<ZhihuDailyList, ZhihuSectionList> onRefreshFinished;
+
+    private int mainIndex = 0;
 
     @Override
     protected void afterViewAttached() {
@@ -69,35 +75,6 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
     }
 
     private void initActions() {
-        onLoadLatestNews = new Action1<ZhihuDailyList>() {
-            @Override
-            public void call(ZhihuDailyList list) {
-                initBanner(list.topStories);
-                getAdapter().add(new ZhihuDateItemViewModel(R.string.special_section));
-                getAdapter().add(section);
-                getAdapter().add(new ZhihuDateItemViewModel(R.string.latest_daily));
-                initNews(list.stories);
-                hideRefreshing();
-                loadSections();
-                getAdapter().onFinishLoadMore(false);
-            }
-        };
-        onRefreshLatestNews = new Action1<ZhihuDailyList>() {
-            @Override
-            public void call(ZhihuDailyList list) {
-                getAdapter().clear();
-                getAdapter().add(banner);
-                getAdapter().add(new ZhihuDateItemViewModel(R.string.special_section));
-                getAdapter().add(section);
-                updateBanner(list.topStories);
-                getAdapter().add(new ZhihuDateItemViewModel(R.string.latest_daily));
-                initNews(list.stories);
-                hideRefreshing();
-                loadSections();
-                getAdapter().onFinishLoadMore(false);
-                date = new Date();          //重置日期
-            }
-        };
         onDailyItemClick = new Action3<String, Integer, Integer>() {
             @Override
             public void call(String id, Integer touchX, Integer touchY) {
@@ -117,38 +94,48 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 getContext().startActivity(intent);
             }
         };
+
+        onRefreshFinished = new Action2<ZhihuDailyList, ZhihuSectionList>() {
+            @Override
+            public void call(ZhihuDailyList zhihuDailyList, ZhihuSectionList zhihuSectionList) {
+                getAdapter().clear();
+                mainIndex = 0;
+                getAdapter().notifyDataSetChanged();
+                addBannerVM(zhihuDailyList.topStories);   //notify inside
+                getAdapter().add(new ZhihuDateItemViewModel(R.string.special_section));
+                getAdapter().notifyItemInserted(mainIndex++);
+                addSectionVM(zhihuSectionList.data);  //notify inside
+                getAdapter().add(new ZhihuDateItemViewModel(R.string.latest_daily));
+                getAdapter().notifyItemInserted(mainIndex++);
+                addNewsVM(zhihuDailyList.stories);    //notify inside
+                hideRefreshing();
+                getAdapter().onFinishLoadMore(false);
+            }
+        };
     }
 
     @Override
     public void onRefresh() {
-        // 这里存在两种情况:
-        // 一种是一开始断网没有banner然后再刷新，这种情况要处理的操作跟第一次加载一样；
-        // 另一种情况是已经有了banner，这时候只要再拿到新数据在填充到banner就可以。
-        if (banner != null)
-            fetchLatestNews(onRefreshLatestNews);
-        else
-            fetchLatestNews(onLoadLatestNews);
+        fetchLatestNews(onRefreshFinished);
     }
 
     @Override
     public void onLoadMore() {
-        if (banner != null) {
-            loadBeforeNews();
-        } else {
-            fetchLatestNews(onLoadLatestNews);
-        }
+        fetchBeforeNews();
     }
 
-    private void loadBeforeNews() {
+    private void fetchBeforeNews() {
         service.getBefore(DateFormat.format("yyyyMMdd", date).toString())
+                .delay(500, TimeUnit.MILLISECONDS)
                 .compose(new ThreadDispatcher<ZhihuDailyList>())
                 .subscribe(new SimpleHttpSubscriber<ZhihuDailyList>() {
                     @Override
-                    public void onNext(ZhihuDailyList zhihuDailyList) {
+                    public void onNext(ZhihuDailyList list) {
                         date = DateUtil.yesterday(date);
-                        getAdapter().onFinishLoadMore(false);
                         getAdapter().add(new ZhihuDateItemViewModel(date));
-                        initNews(zhihuDailyList.stories);
+                        getAdapter().notifyItemInserted(mainIndex++);
+                        addNewsVM(list.stories);
+                        getAdapter().onFinishLoadMore(list.stories.size() == 0);
                     }
 
                     @Override
@@ -158,10 +145,21 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 });
     }
 
-    private void fetchLatestNews(Action1<ZhihuDailyList> onNext) {
+    private void fetchLatestNews(final Action2<ZhihuDailyList, ZhihuSectionList> onRefreshFinished) {
         service.getLatest()
-                .compose(new ThreadDispatcher<ZhihuDailyList>())
-                .subscribe(onNext, new ActionHttpError() {
+                .zipWith(service.getSections(), new Func2<ZhihuDailyList, ZhihuSectionList, Pair<ZhihuDailyList, ZhihuSectionList>>() {
+                    @Override
+                    public Pair<ZhihuDailyList, ZhihuSectionList> call(ZhihuDailyList zhihuDailyList, ZhihuSectionList zhihuSectionList) {
+                        return new Pair<>(zhihuDailyList, zhihuSectionList);
+                    }
+                })
+                .compose(new ThreadDispatcher<Pair<ZhihuDailyList, ZhihuSectionList>>())
+                .subscribe(new Action1<Pair<ZhihuDailyList, ZhihuSectionList>>() {
+                    @Override
+                    public void call(Pair<ZhihuDailyList, ZhihuSectionList> pair) {
+                        onRefreshFinished.call(pair.first, pair.second);
+                    }
+                }, new ActionHttpError() {
                     @Override
                     protected void onError() {
                         hideRefreshing();
@@ -170,54 +168,45 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 });
     }
 
-    private void loadSections() {
-        service.getSections()
-                .compose(new ThreadDispatcher<ZhihuSectionList>())
-                .subscribe(new SimpleHttpSubscriber<ZhihuSectionList>() {
-                    @Override
-                    public void onNext(ZhihuSectionList sections) {
-                        initSection(sections.data);
-                    }
-                });
+    private void addSectionVM(final List<ZhihuSectionItem> sections) {
+        sectionVM = new RecyclerViewModel<>(false);
+        sectionVM.setViewAttachedListener(new ViewAttachedListener() {
+            @Override
+            public void onViewAttached(BaseViewModel viewModel) {
+                sectionVM.getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                sectionVM.getAdapter().disableLoadMore();
+                for (ZhihuSectionItem item : sections)
+                    sectionVM.getAdapter().add(new ZhihuSectionItemViewModel(item).onAction(onSectionItemClick));
+                sectionVM.getAdapter().notifyDataSetChanged();
+            }
+        });
+        getAdapter().add(sectionVM);
+        getAdapter().notifyItemInserted(mainIndex++);
     }
 
-    private void initSection(List<ZhihuSectionItem> sections) {
-        section.getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        section.getAdapter().disableLoadMore();
-        section.getAdapter().clear();
-        for (ZhihuSectionItem item : sections)
-            section.getAdapter().add(new ZhihuSectionItemViewModel(item).onAction(onSectionItemClick));
-        section.getAdapter().notifyDataSetChanged();
-    }
-
-    private void initNews(List<ZhihuStoryItem> newsList) {
+    private void addNewsVM(List<ZhihuStoryItem> newsList) {
         List<ZhihuStoryItemViewModel> vmList = new ArrayList<>(newsList.size());
         for (ZhihuStoryItem news : newsList)
             vmList.add(new ZhihuStoryItemViewModel(news).onAction(onDailyItemClick));
         getAdapter().addAll(vmList);
-        getAdapter().notifyDataSetChanged();
+        int nowIndex = mainIndex;
+        mainIndex += newsList.size();
+        getAdapter().notifyItemRangeInserted(nowIndex, newsList.size());
     }
 
     @SuppressWarnings("unchecked")
-    private void initBanner(List<ZhihuTopStoryItem> topStories) {
+    private void addBannerVM(List<ZhihuTopStoryItem> topStories) {
         List<ZhihuBannerItemViewModel> vmList = new ArrayList<>(topStories.size());
         for (ZhihuTopStoryItem topStory : topStories)
             vmList.add(new ZhihuBannerItemViewModel(topStory).onAction(onDailyItemClick));
-        banner = new BannerViewModel.Builder()
+        bannerVM = new BannerViewModel.Builder()
                 .dotSpace(R.dimen.view_pager_dot_space_small)
                 .dotAreaHeight(R.dimen.view_pager_dot_area_height_small)
                 .height(R.dimen.view_pager_small_height)
                 .vmList(vmList)
-                .interval(4000)
+                .interval(0)
                 .build();
-        getAdapter().add(banner);
+        getAdapter().add(bannerVM);
+        getAdapter().notifyItemInserted(mainIndex++);
     }
-
-    private void updateBanner(List<ZhihuTopStoryItem> topStories) {
-        List<ZhihuBannerItemViewModel> vmList = new ArrayList<>(topStories.size());
-        for (ZhihuTopStoryItem topStory : topStories)
-            vmList.add(new ZhihuBannerItemViewModel(topStory).onAction(onDailyItemClick));
-        banner.updateViewModelList(vmList);
-    }
-
 }

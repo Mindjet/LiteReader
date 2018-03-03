@@ -10,6 +10,7 @@ import io.mindjet.jetgear.R;
 import io.mindjet.jetgear.databinding.IncludeRecyclerViewBinding;
 import io.mindjet.jetgear.mvvm.adapter.ViewModelAdapter;
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
+import io.mindjet.jetgear.mvvm.listener.ViewAttachedListener;
 import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 
 /**

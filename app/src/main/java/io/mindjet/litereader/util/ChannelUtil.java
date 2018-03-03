@@ -28,14 +28,14 @@ public class ChannelUtil {
     //TODO 注意后期更新频道数目
     static {
         allChannels.add(ChannelCode.ZHIHU);
-        allChannels.add(ChannelCode.DAILY);
+//        allChannels.add(ChannelCode.DAILY);
         allChannels.add(ChannelCode.DOUBAN_MOVIE);
         allChannels.add(ChannelCode.ONE_REVIEW);
         allChannels.add(ChannelCode.ONE_ARTICLE);
-        allChannels.add(ChannelCode.DOUBAN_BOOK);
+//        allChannels.add(ChannelCode.DOUBAN_BOOK);
 
         defaultChannels.add(ChannelCode.ZHIHU);
-        defaultChannels.add(ChannelCode.DAILY);
+//        defaultChannels.add(ChannelCode.DAILY);
         defaultChannels.add(ChannelCode.DOUBAN_MOVIE);
     }
 

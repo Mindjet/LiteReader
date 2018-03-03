@@ -42,7 +42,4 @@ public interface DoubanService {
     @GET("https://api.douban.com/v2/book/search")
     Observable<BookList> getBookList(@Query("tag") String tag, @Query("start") int start, @Query("count") int count);
 
-//    @GET("https://api.douban.com/v2/book/{id}")
-
-
 }

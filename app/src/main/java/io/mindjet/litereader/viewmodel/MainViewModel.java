@@ -165,9 +165,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                 case ChannelCode.ZHIHU:
                     columnViewPagerAdapter.addWithTitle(new ZhihuDailyListViewModel(), getString(R.string.column_zhihu_daily));
                     break;
-                case ChannelCode.DAILY:
-                    columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getString(R.string.column_daily_article));
-                    break;
+//                case ChannelCode.DAILY:
+//                    columnViewPagerAdapter.addWithTitle(new DailyArticleListViewModel(), getString(R.string.column_daily_article));
+//                    break;
                 case ChannelCode.DOUBAN_MOVIE:
                     columnViewPagerAdapter.addWithTitle(new DoubanMovieListViewModel(), getString(R.string.column_douban_movie));
                     break;
@@ -177,9 +177,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
                 case ChannelCode.ONE_ARTICLE:
                     columnViewPagerAdapter.addWithTitle(new OneArticleListViewModel(), getString(R.string.column_one_article));
                     break;
-                case ChannelCode.DOUBAN_BOOK:
-                    columnViewPagerAdapter.addWithTitle(new DoubanBookListViewModel(), getString(R.string.column_douban_book));
-                    break;
+//                case ChannelCode.DOUBAN_BOOK:
+//                    columnViewPagerAdapter.addWithTitle(new DoubanBookListViewModel(), getString(R.string.column_douban_book));
+//                    break;
             }
         }
     }

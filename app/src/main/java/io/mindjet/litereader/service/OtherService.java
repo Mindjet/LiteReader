@@ -21,7 +21,7 @@ public interface OtherService {
     @GET("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1")
     Observable<DailyWallpaper> getDailyWallpaper();
 
-    @GET("https://interface.meiriyiwen.com/article/today?dev=1")
+    @GET("http://interface.meiriyiwen.com/article/today?dev=1")
     Observable<DailyArticle> getDailyArticle();
 
     @GET("https://interface.meiriyiwen.com/article/random?dev=1")

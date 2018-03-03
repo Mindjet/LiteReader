@@ -81,7 +81,7 @@ public class DoubanStaffDetailViewModel extends HeaderRecyclerViewModel<Activity
 
     @Override
     protected void afterComponentBound() {
-        getRecyclerViewModel().disableLoadMore();
+        getAdapter().disableLoadMore();
         subscription = service.getStaffDetail(id)
                 .compose(new ThreadDispatcher<StaffDetail>())
                 .doOnSubscribe(new Action0() {

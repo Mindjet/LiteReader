@@ -89,7 +89,7 @@ public class OneArticleDetailViewModel extends CoordinatorCollapseLayoutViewMode
     protected void initContent(ViewGroup container) {
         RecyclerViewModel recyclerViewModel = new RecyclerViewModel(false);
         ViewModelBinder.bind(container, recyclerViewModel);
-        recyclerViewModel.disableLoadMore();
+        recyclerViewModel.getAdapter().disableLoadMore();
         contentViewModel = new OneArticleContentViewModel();
         recyclerViewModel.getAdapter().add(contentViewModel);
         recyclerViewModel.getAdapter().notifyItemInserted(0);

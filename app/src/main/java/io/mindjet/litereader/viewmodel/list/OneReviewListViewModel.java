@@ -37,7 +37,7 @@ public class OneReviewListViewModel extends SwipeRecyclerViewModel {
 
     @Override
     protected void afterComponentsBound() {
-        disableLoadMore();
+        getAdapter().disableLoadMore();
         changePbColor(R.color.colorPrimary);
         getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
         getSwipeLayout().setDistanceToTriggerSync(500);

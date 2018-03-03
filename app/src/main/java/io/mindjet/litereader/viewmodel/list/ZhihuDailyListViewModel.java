@@ -79,8 +79,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 initNews(list.stories);
                 hideRefreshing();
                 loadSections();
-                setIsLoadingMore(false);
-                enableLoadMore();
+                getAdapter().onFinishLoadMore(false);
             }
         };
         onRefreshLatestNews = new Action1<ZhihuDailyList>() {
@@ -95,8 +94,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                 initNews(list.stories);
                 hideRefreshing();
                 loadSections();
-                setIsLoadingMore(false);
-                enableLoadMore();
+                getAdapter().onFinishLoadMore(false);
                 date = new Date();          //重置日期
             }
         };
@@ -148,14 +146,14 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                     @Override
                     public void onNext(ZhihuDailyList zhihuDailyList) {
                         date = DateUtil.yesterday(date);
-                        setIsLoadingMore(false);
+                        getAdapter().onFinishLoadMore(false);
                         getAdapter().add(new ZhihuDateItemViewModel(date));
                         initNews(zhihuDailyList.stories);
                     }
 
                     @Override
                     protected void onFailed() {
-                        setIsLoadingMore(false);
+                        getAdapter().onFinishLoadMore(false);
                     }
                 });
     }
@@ -167,7 +165,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
                     @Override
                     protected void onError() {
                         hideRefreshing();
-                        setIsLoadingMore(false);
+                        getAdapter().onFinishLoadMore(false);
                     }
                 });
     }
@@ -185,7 +183,7 @@ public class ZhihuDailyListViewModel extends SwipeRecyclerViewModel {
 
     private void initSection(List<ZhihuSectionItem> sections) {
         section.getRecyclerView().setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        section.disableLoadMore();
+        section.getAdapter().disableLoadMore();
         section.getAdapter().clear();
         for (ZhihuSectionItem item : sections)
             section.getAdapter().add(new ZhihuSectionItemViewModel(item).onAction(onSectionItemClick));

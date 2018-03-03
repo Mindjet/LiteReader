@@ -70,7 +70,7 @@ public class OneReviewDetailViewModel extends CoordinatorCollapseLayoutViewModel
     protected void initContent(ViewGroup container) {
         RecyclerViewModel recyclerViewModel = new RecyclerViewModel(false);
         ViewModelBinder.bind(container, recyclerViewModel);
-        recyclerViewModel.disableLoadMore();
+        recyclerViewModel.getAdapter().disableLoadMore();
         recyclerViewModel.getAdapter().add(new OneReviewContentViewModel(review));
         recyclerViewModel.getAdapter().notifyItemInserted(0);
     }

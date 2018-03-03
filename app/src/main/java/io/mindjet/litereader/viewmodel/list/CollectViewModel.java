@@ -75,7 +75,7 @@ public class CollectViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
 
     @Override
     protected void afterComponentBound() {
-        getRecyclerViewModel().disableLoadMore();
+        getAdapter().disableLoadMore();
         initActions();
         getData();
     }

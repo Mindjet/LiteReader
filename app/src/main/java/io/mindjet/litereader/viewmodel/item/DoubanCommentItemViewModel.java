@@ -35,4 +35,9 @@ public class DoubanCommentItemViewModel extends BaseViewModel<ViewInterface<Item
     public void onViewAttached(View view) {
 
     }
+
+    public int getRating() {
+        String rating = comment.rating.value;
+        return (int) Float.valueOf(rating).floatValue();
+    }
 }

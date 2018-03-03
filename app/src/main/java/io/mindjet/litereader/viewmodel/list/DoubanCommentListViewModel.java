@@ -11,10 +11,8 @@ import io.mindjet.litereader.model.list.DoubanCommentList;
 import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.viewmodel.item.DoubanCommentItemViewModel;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * 短影评列表 view model
@@ -50,10 +48,8 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
         onLoadMore = new Action1<List<Comment>>() {
             @Override
             public void call(List<Comment> comments) {
-                setIsLoadingMore(false);
                 addItems(comments);
                 start += perPage;
-                hideRefreshing();
             }
         };
 
@@ -64,7 +60,6 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
                 addItems(comments);
                 start += perPage;
                 hideRefreshing();
-                enableLoadMore();
             }
         };
     }
@@ -92,7 +87,7 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
                 .subscribe(onNext, new ActionHttpError() {
                     @Override
                     protected void onError() {
-                        setIsLoadingMore(false);
+                        getAdapter().onFinishLoadMore(false);
                         hideRefreshing();
                     }
                 });
@@ -104,9 +99,8 @@ public class DoubanCommentListViewModel extends SwipeRecyclerViewModel {
                 getAdapter().add(new DoubanCommentItemViewModel(comment));
             }
             getAdapter().notifyDataSetChanged();
-        } else {
-            disableLoadMore();
         }
+        getAdapter().onFinishLoadMore(comments.size() == 0);
     }
 
 }

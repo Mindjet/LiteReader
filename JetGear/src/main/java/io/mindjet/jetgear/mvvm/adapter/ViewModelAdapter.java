@@ -10,10 +10,10 @@ import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 /**
  * Adapter for RecyclerView for binding View Model.
  * <p>
- * Created by Jet on 2/17/17.
+ * Created by Mindjet on 2/17/17.
  */
 
-public class ViewModelAdapter<V extends ViewDataBinding> extends ListAdapter<BaseViewModel, V> {
+public class ViewModelAdapter<V extends ViewDataBinding> extends LoadMoreAdapter<BaseViewModel, V> {
 
     private Context context;
 

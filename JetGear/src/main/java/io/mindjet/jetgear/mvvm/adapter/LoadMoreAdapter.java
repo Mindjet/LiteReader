@@ -9,19 +9,17 @@ import io.mindjet.jetgear.R;
 import io.mindjet.jetgear.databinding.ItemProgressBinding;
 import io.mindjet.jetgear.mvvm.base.BaseViewHolder;
 import io.mindjet.jetgear.mvvm.listener.LoadMoreListener;
-import io.mindjet.jetutil.task.Task;
 
 /**
- * RecyclerView Adapter, provides load more feature.
+ * Load more adapter for RecyclerView.
  * <p>
- * Created by Jet on 2/16/17.
+ * Created by Mindjet on 2/16/17.
  */
 
-@Deprecated
 public abstract class LoadMoreAdapter<T, V extends ViewDataBinding> extends ListAdapter<T, V> {
 
     public LoadMoreListener loadMoreListener;
-    private boolean loadMore = true;
+    private boolean loadMore = false;
     private ItemProgressBinding progressBinding;
 
     public LoadMoreAdapter(Context context) {
@@ -60,6 +58,10 @@ public abstract class LoadMoreAdapter<T, V extends ViewDataBinding> extends List
         return super.getItemViewType(position);
     }
 
+    public void setLoadMoreListener(LoadMoreListener loadMoreListener) {
+        this.loadMoreListener = loadMoreListener;
+    }
+
     public void enableLoadMore() {
         loadMore = true;
     }
@@ -68,26 +70,23 @@ public abstract class LoadMoreAdapter<T, V extends ViewDataBinding> extends List
         loadMore = false;
     }
 
-    public void finishLoadMore(boolean lastPage) {
-        progressBinding.getRoot().setVisibility(View.GONE);
-        if (lastPage) loadMore = false;
-    }
-
-    /**
-     * This method is used to refresh the new-added items and continue loading more (Basically it triggers the method {@link #onBindViewHolder(BaseViewHolder, int)}).
-     */
-    public void updateAndContinue() {
-        notifyItemInserted(size());
+    public void onFinishLoadMore(boolean lastPage) {
+        if (progressBinding != null)
+            progressBinding.getRoot().setVisibility(View.GONE);
+        if (lastPage) {
+            if (loadMore) {
+                disableLoadMore();
+                notifyItemRemoved(getItemCount());
+            }
+        } else {
+            enableLoadMore();
+            notifyItemChanged(getItemCount() - 1);
+        }
     }
 
     private void loadMore() {
         if (loadMoreListener != null) {
-            Task.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    loadMoreListener.onLoadMore();
-                }
-            }, 500);
+            loadMoreListener.onLoadMore();
         }
     }
 

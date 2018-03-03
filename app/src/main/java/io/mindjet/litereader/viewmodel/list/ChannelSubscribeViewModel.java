@@ -57,7 +57,7 @@ public class ChannelSubscribeViewModel extends HeaderRecyclerViewModel<ActivityC
     @SuppressWarnings("unchecked")
     @Override
     protected void afterComponentBound() {
-        getRecyclerViewModel().disableLoadMore();
+        getAdapter().disableLoadMore();
         List<String> channels = ChannelUtil.getSortedChannels(getContext());        //获取排序好的所有频道
         subscribedChannels = ChannelUtil.getChannels(getContext());                 //获得订阅的频道
         for (String channel : channels) {

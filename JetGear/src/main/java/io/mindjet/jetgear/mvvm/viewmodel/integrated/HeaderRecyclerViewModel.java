@@ -42,7 +42,7 @@ public abstract class HeaderRecyclerViewModel<V extends ViewInterface<IncludeHea
     private void initRecyclerView(ViewGroup container) {
         recyclerViewModel = new RecyclerViewModel(true);
         ViewModelBinder.bind(container, recyclerViewModel);
-        recyclerViewModel.setLoadMoreListener(this);
+        recyclerViewModel.getAdapter().setLoadMoreListener(this);
     }
 
     protected void afterComponentBound() {

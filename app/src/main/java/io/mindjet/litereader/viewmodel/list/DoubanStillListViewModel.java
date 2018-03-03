@@ -103,7 +103,7 @@ public class DoubanStillListViewModel extends HeaderSwipeLayoutViewModel<Activit
                 .doOnNext(new Action1<List<DoubanStillItemViewModel>>() {
                     @Override
                     public void call(List<DoubanStillItemViewModel> list) {
-                        getSwipeLayoutViewModel().setIsLoadingMore(false);
+                        getAdapter().onFinishLoadMore(false);
                         getSwipeLayoutViewModel().hideRefreshing();
                     }
                 })
@@ -117,10 +117,7 @@ public class DoubanStillListViewModel extends HeaderSwipeLayoutViewModel<Activit
                         getAdapter().addAll(list);
                         getAdapter().notifyItemRangeInserted(start, list.size());
                         start += list.size();
-                        if (list.size() == 0)
-                            getSwipeLayoutViewModel().disableLoadMore();
-                        else
-                            getSwipeLayoutViewModel().enableLoadMore();
+                        getAdapter().onFinishLoadMore(list.size() == 0);
                     }
                 });
     }

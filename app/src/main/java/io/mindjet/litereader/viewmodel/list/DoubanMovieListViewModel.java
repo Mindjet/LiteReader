@@ -16,9 +16,7 @@ import io.mindjet.litereader.reactivex.ActionHttpError;
 import io.mindjet.litereader.service.DoubanService;
 import io.mindjet.litereader.ui.activity.DoubanMovieDetailActivity;
 import io.mindjet.litereader.viewmodel.item.DoubanMovieItemViewModel;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * 豆瓣电影列表 view model
@@ -31,8 +29,8 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
     private DoubanService service;
     private int start = 0;
     private int perPage = 9;
-    private Action1<DoubanMovieList> onLoadMore;
-    private Action1<DoubanMovieList> onRefresh;
+    private Action1<DoubanMovieList> onLoadMoreFinished;
+    private Action1<DoubanMovieList> onRefreshFinished;
     private Action1<DoubanMovieItem> onItemClick;
 
     @Override
@@ -47,24 +45,21 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
         getRecyclerView().setLayoutManager(new GridLayoutManager(getContext(), 3));
         getSwipeLayout().setDistanceToTriggerSync(500);
 
-        onLoadMore = new Action1<DoubanMovieList>() {
+        onLoadMoreFinished = new Action1<DoubanMovieList>() {
             @Override
             public void call(DoubanMovieList movieList) {
-                setIsLoadingMore(false);        //一定要在load more完成时调用该方法，不然RecyclerView不能再次load more
                 addMovieList(movieList.movies);
                 start += movieList.movies.size();
-                hideRefreshing();
             }
         };
 
-        onRefresh = new Action1<DoubanMovieList>() {
+        onRefreshFinished = new Action1<DoubanMovieList>() {
             @Override
             public void call(DoubanMovieList movieList) {
                 getAdapter().clear();
                 addMovieList(movieList.movies);
                 start += perPage;
                 hideRefreshing();
-                enableLoadMore();           //允许load more
             }
         };
 
@@ -86,7 +81,7 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
     @Override
     public void onRefresh() {
         start = 0;
-        getMovieList(onRefresh);
+        getMovieList(onRefreshFinished);
     }
 
     private void getMovieList(Action1<DoubanMovieList> onNext) {
@@ -96,25 +91,30 @@ public class DoubanMovieListViewModel extends SwipeRecyclerViewModel {
                     @Override
                     protected void onError() {
                         hideRefreshing();
-                        setIsLoadingMore(false);
+                        getAdapter().onFinishLoadMore(false);
                     }
                 });
     }
 
     @Override
     public void onLoadMore() {
-        getMovieList(onLoadMore);
+        getMovieList(onLoadMoreFinished);
     }
 
     private void addMovieList(List<DoubanMovieItem> movies) {
-        if (movies.size() == 0) {
-            disableLoadMore();          //禁止load more
-        } else {
-            for (DoubanMovieItem movie : movies) {
-                getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
-            }
-            getAdapter().notifyDataSetChanged();
+//        if (movies.size() == 0) {
+//            getAdapter().onFinishLoadMore(true);
+//        } else {
+//            for (DoubanMovieItem movie : movies) {
+//                getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
+//            }
+//            getAdapter().notifyDataSetChanged();
+//        }
+        for (DoubanMovieItem movie : movies) {
+            getAdapter().add(new DoubanMovieItemViewModel(movie).onAction(onItemClick));
         }
+        getAdapter().notifyItemRangeInserted(start, movies.size());
+        getAdapter().onFinishLoadMore(movies.size() == 0);
     }
 
 }

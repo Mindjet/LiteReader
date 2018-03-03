@@ -18,7 +18,7 @@ import io.mindjet.jetutil.task.Task;
 /**
  * SwipeRefreshLayout+RecyclerView ViewModel, provides refresh and load more features.
  * <p>
- * Created by Jet on 3/2/17.
+ * Created by Mindjet on 3/2/17.
  */
 
 public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInterface<IncludeSwipeRecyclerViewBinding>> extends BaseViewModel<V> implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
@@ -41,7 +41,7 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
             public void run() {
                 onRefresh();
             }
-        }, 1000);
+        }, 600);
     }
 
     private void initSwipeLayout() {
@@ -51,10 +51,8 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
     @SuppressWarnings("unchecked")
     private void initRecyclerView() {
         recyclerViewModel = new RecyclerViewModel(true);
-        recyclerViewModel.setLoadMoreListener(this);
-        //一开始不允许load more，虽然进入时不会load more，但是当refresh失败时，如果触碰屏幕就会自动load more，所以应该在refresh成功后才允许load more
-        recyclerViewModel.disableLoadMore();
         ViewModelBinder.bind(swipeLayout, recyclerViewModel);
+        getAdapter().setLoadMoreListener(this);
     }
 
     /**
@@ -81,7 +79,11 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
      * @return adapter of the RecyclerView.
      */
     public ViewModelAdapter<S> getAdapter() {
-        return recyclerViewModel.getAdapter();
+        if (recyclerViewModel != null) {
+            return recyclerViewModel.getAdapter();
+        } else {
+            throw new NullPointerException("The RecyclerViewModel is NULL");
+        }
     }
 
     protected void afterViewAttached() {
@@ -93,21 +95,6 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
      */
     protected void afterComponentsBound() {
 
-    }
-
-    /**
-     * @see RecyclerViewModel#setIsLoadingMore(boolean)
-     */
-    public void setIsLoadingMore(boolean isLoadingMore) {
-        recyclerViewModel.setIsLoadingMore(isLoadingMore);
-    }
-
-    public void disableLoadMore() {
-        recyclerViewModel.disableLoadMore();
-    }
-
-    public void enableLoadMore() {
-        recyclerViewModel.enableLoadMore();
     }
 
     @Override
@@ -123,10 +110,20 @@ public class SwipeRecyclerViewModel<S extends ViewDataBinding, V extends ViewInt
         swipeLayout.setRefreshing(true);
     }
 
+    /**
+     * Change the progress color in progress bar.
+     *
+     * @param draggingColor progress color.
+     */
     public void changePbColor(@ColorRes int... draggingColor) {
         swipeLayout.setColorSchemeResources(draggingColor);
     }
 
+    /**
+     * Change the background color of the progress bar.
+     *
+     * @param background color resource.
+     */
     public void changePbBackground(@ColorRes int background) {
         swipeLayout.setProgressBackgroundColorSchemeResource(background);
     }

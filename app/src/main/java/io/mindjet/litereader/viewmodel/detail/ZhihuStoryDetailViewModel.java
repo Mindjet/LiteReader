@@ -78,7 +78,7 @@ public class ZhihuStoryDetailViewModel extends CoordinatorCollapseLayoutViewMode
     protected void initContent(ViewGroup container) {
         recyclerViewModel = new RecyclerViewModel();
         ViewModelBinder.bind(container, recyclerViewModel);
-        recyclerViewModel.disableLoadMore();
+        recyclerViewModel.getAdapter().disableLoadMore();
         recyclerViewModel.getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
     }
 

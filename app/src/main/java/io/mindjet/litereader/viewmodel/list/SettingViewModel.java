@@ -37,7 +37,7 @@ public class SettingViewModel extends HeaderRecyclerViewModel<ActivityCompatInte
 
     @Override
     protected void afterComponentBound() {
-        getRecyclerViewModel().disableLoadMore();
+        getAdapter().disableLoadMore();
         getRecyclerViewModel().getRecyclerView().setBackgroundResource(R.color.gray_translucent);
         getAdapter().add(new IncludeSettingViewModel());
     }

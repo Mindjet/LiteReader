@@ -83,7 +83,6 @@ public class DoubanBookListViewModel extends SwipeRecyclerViewModel {
                 .subscribe(new SimpleHttpSubscriber<List<DoubanBookItemViewModel>>() {
                     @Override
                     public void onNext(List<DoubanBookItemViewModel> list) {
-                        setIsLoadingMore(false);
                         if (start == 0) {
                             getAdapter().clear();
                             getAdapter().notifyDataSetChanged();
@@ -91,11 +90,7 @@ public class DoubanBookListViewModel extends SwipeRecyclerViewModel {
                         getAdapter().addAll(list);
                         getAdapter().notifyItemRangeInserted(start, list.size());
                         start += list.size();
-                        if (list.size() == 0) {
-                            disableLoadMore();
-                        } else {
-                            enableLoadMore();
-                        }
+                        getAdapter().onFinishLoadMore(list.size() == 0);
                     }
                 });
     }

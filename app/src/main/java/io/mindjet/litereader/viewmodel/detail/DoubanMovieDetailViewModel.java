@@ -134,7 +134,7 @@ public class DoubanMovieDetailViewModel extends CoordinatorCollapseLayoutViewMod
         recyclerViewModel = new RecyclerViewModel(true);
         ViewModelBinder.bind(container, recyclerViewModel);
         recyclerViewModel.getRecyclerView().setBackgroundColor(getContext().getResources().getColor(R.color.gray_light_translucent));
-        recyclerViewModel.disableLoadMore();
+        getAdapter().disableLoadMore();
         getMovieDetail();
     }
 

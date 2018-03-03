@@ -52,10 +52,8 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
         onLoadMore = new Action1<List<Review>>() {
             @Override
             public void call(List<Review> reviews) {
-                setIsLoadingMore(false);
                 addItems(reviews);
                 start += perPage;
-                hideRefreshing();
             }
         };
 
@@ -66,7 +64,6 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                 addItems(reviews);
                 start += perPage;
                 hideRefreshing();
-                enableLoadMore();
             }
         };
 
@@ -105,7 +102,7 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                     @Override
                     protected void onError() {
                         hideRefreshing();
-                        setIsLoadingMore(false);
+                        getAdapter().onFinishLoadMore(false);
                     }
                 });
     }
@@ -116,9 +113,8 @@ public class DoubanReviewListViewModel extends SwipeRecyclerViewModel {
                 getAdapter().add(new DoubanReviewItemViewModel(review, onItemClick));
             }
             getAdapter().notifyDataSetChanged();
-        } else {
-            disableLoadMore();
         }
+        getAdapter().onFinishLoadMore(reviews.size() == 0);
     }
 
 

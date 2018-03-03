@@ -41,7 +41,7 @@ public class StaffDetailWorkViewModel extends RecyclerViewModel<ItemDoubanMovieB
     @Override
     public void onViewAttached(View view) {
         super.onViewAttached(view);
-        disableLoadMore();
+        getAdapter().disableLoadMore();
         if (!hasUpdate) {
             update(workList);
             hasUpdate = true;

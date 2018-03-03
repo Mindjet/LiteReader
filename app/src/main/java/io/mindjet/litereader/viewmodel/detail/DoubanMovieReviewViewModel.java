@@ -54,7 +54,7 @@ public class DoubanMovieReviewViewModel extends HeaderRecyclerViewModel<Activity
 
     @Override
     protected void afterComponentBound() {
-        getRecyclerViewModel().disableLoadMore();
+        getAdapter().disableLoadMore();
         getRecyclerViewModel().getRecyclerView().setBackgroundResource(R.color.gray_light_translucent);
         getAdapter().add(new IncludeDoubanMovieReviewViewModel(review));
     }

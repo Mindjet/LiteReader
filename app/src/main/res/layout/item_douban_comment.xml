@@ -74,7 +74,7 @@
                     android:isIndicator="true"
                     android:max="5"
                     android:numStars="5"
-                    android:progress="@{Integer.valueOf(data.comment.rating.value)}"
+                    android:progress="@{(int)Float.valueOf(data.comment.rating.value).floatValue()}"
                     android:stepSize="1" />
 
                 <TextView

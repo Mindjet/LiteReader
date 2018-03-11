@@ -2,6 +2,7 @@ package io.mindjet.litereader.viewmodel;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -22,6 +23,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewModel;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
+import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.task.Task;
 import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
@@ -32,8 +34,6 @@ import io.mindjet.litereader.ui.activity.CollectActivity;
 import io.mindjet.litereader.ui.activity.SettingActivity;
 import io.mindjet.litereader.ui.dialog.MeDialog;
 import io.mindjet.litereader.util.ChannelUtil;
-import io.mindjet.litereader.viewmodel.list.DailyArticleListViewModel;
-import io.mindjet.litereader.viewmodel.list.DoubanBookListViewModel;
 import io.mindjet.litereader.viewmodel.list.DoubanMovieListViewModel;
 import io.mindjet.litereader.viewmodel.list.OneArticleListViewModel;
 import io.mindjet.litereader.viewmodel.list.OneReviewListViewModel;
@@ -51,6 +51,9 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     private ColumnViewPagerAdapter columnViewPagerAdapter;
     private MeDialog meDialog;
+
+    private CountDownTimer countDownTimer;
+    private boolean doubleClickExitEnabled = false;
 
     @Override
     protected void afterViewAttached(IncludeDrawerCoordinatorLayoutBinding binding) {
@@ -252,4 +255,26 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         };
     }
 
+    @Override
+    public boolean onBackPressed() {
+        if (doubleClickExitEnabled) return false;
+        if (countDownTimer == null) {
+            countDownTimer = new CountDownTimer(3000, 100) {
+                @Override
+                public void onTick(long l) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    doubleClickExitEnabled = false;
+                    countDownTimer = null;
+                }
+            };
+            doubleClickExitEnabled = true;
+            Toaster.toast(getContext(), R.string.click_again_exit_app, 3000);
+            countDownTimer.start();
+        }
+        return true;
+    }
 }

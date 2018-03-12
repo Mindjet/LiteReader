@@ -12,38 +12,56 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray_light"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:elevation="@{10f}">
+            android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/status_bar_height" />
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="45dp"
                 android:layout_margin="@dimen/common_gap_medium"
                 android:background="@drawable/shape_corner_5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/common_gap_small"
+                android:paddingLeft="@dimen/common_gap_small"
+                android:paddingRight="@dimen/common_gap"
+                android:paddingTop="@dimen/common_gap_small"
+                app:elevation="@{5f}">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_back"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
+                    android:background="@drawable/ripple_borderless_default"
+                    android:onClick="@{data::onBack}"
                     android:padding="@dimen/common_gap_medium"
                     android:src="@drawable/ic_back" />
 
-            </LinearLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="32dp"
+                    android:background="@color/white"
+                    android:hint="@string/douban_movie_search"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@drawable/shape_text_cursor" />
+
+            </FrameLayout>
 
         </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/fly_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

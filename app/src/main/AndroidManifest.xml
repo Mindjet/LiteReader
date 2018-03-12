@@ -71,6 +71,10 @@
             android:name=".ui.activity.OneArticleDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitle" />
+        <activity
+            android:name=".ui.activity.DoubanMovieSearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitle" />
     </application>
 
 </manifest>

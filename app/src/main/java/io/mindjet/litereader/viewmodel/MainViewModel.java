@@ -22,6 +22,7 @@ import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderItemViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.HeaderViewModel;
 import io.mindjet.jetgear.mvvm.viewmodel.header.IHeaderItemCallback;
 import io.mindjet.jetgear.mvvm.viewmodel.integrated.DrawerCoordinatorLayoutViewModel;
+import io.mindjet.jetgear.mvvm.viewmodel.list.SwipeRecyclerViewModel;
 import io.mindjet.jetgear.reactivex.rxbus.RxBus;
 import io.mindjet.jetutil.hint.Toaster;
 import io.mindjet.jetutil.task.Task;
@@ -31,6 +32,7 @@ import io.mindjet.litereader.entity.ChannelCode;
 import io.mindjet.litereader.entity.Constant;
 import io.mindjet.litereader.ui.activity.ChannelSubscribeActivity;
 import io.mindjet.litereader.ui.activity.CollectActivity;
+import io.mindjet.litereader.ui.activity.DoubanMovieSearchActivity;
 import io.mindjet.litereader.ui.activity.SettingActivity;
 import io.mindjet.litereader.ui.dialog.MeDialog;
 import io.mindjet.litereader.util.ChannelUtil;
@@ -189,7 +191,12 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
 
     @Override
     protected void onFabClick() {
-        columnViewPagerAdapter.getItem(getViewPager().getCurrentItem()).getRecyclerView().smoothScrollToPosition(0);
+        SwipeRecyclerViewModel currentItem = columnViewPagerAdapter.getItem(getViewPager().getCurrentItem());
+        if (currentItem instanceof DoubanMovieListViewModel) {
+            getContext().startActivity(DoubanMovieSearchActivity.intentFor(getContext()));
+        } else {
+            currentItem.getRecyclerView().smoothScrollToPosition(0);
+        }
     }
 
     private Action0 onSubscribeChannel() {

@@ -6,6 +6,7 @@ import android.view.View;
 import io.mindjet.jetgear.mvvm.base.BaseViewModel;
 import io.mindjet.jetgear.mvvm.listener.ViewAttachedListener;
 import io.mindjet.jetgear.mvvm.viewinterface.ActivityCompatInterface;
+import io.mindjet.jetgear.mvvm.viewinterface.ViewInterface;
 import io.mindjet.jetgear.mvvm.viewmodel.ViewModelBinder;
 import io.mindjet.jetgear.mvvm.viewmodel.list.RecyclerViewModel;
 import io.mindjet.jetgear.network.ServiceGen;
@@ -26,7 +27,7 @@ import rx.functions.Func1;
  * Created by Mindjet on 2018/3/12.
  */
 
-public class DoubanMovieSearchViewModel extends BaseViewModel<ActivityCompatInterface<ActivityDoubanMovieSearchBinding>> {
+public class DoubanMovieSearchViewModel extends BaseViewModel<ViewInterface<ActivityDoubanMovieSearchBinding>> {
 
     private RecyclerViewModel<ItemDoubanMovieBinding> mRecyclerViewModel;
     private DoubanService mService;

@@ -30,6 +30,7 @@ import io.mindjet.litereader.R;
 import io.mindjet.litereader.adapter.ColumnViewPagerAdapter;
 import io.mindjet.litereader.entity.ChannelCode;
 import io.mindjet.litereader.entity.Constant;
+import io.mindjet.litereader.ui.activity.AboutMeActivity;
 import io.mindjet.litereader.ui.activity.ChannelSubscribeActivity;
 import io.mindjet.litereader.ui.activity.CollectActivity;
 import io.mindjet.litereader.ui.activity.DoubanMovieSearchActivity;
@@ -250,16 +251,23 @@ public class MainViewModel extends DrawerCoordinatorLayoutViewModel<ActivityComp
         return new Action0() {
             @Override
             public void call() {
-                meDialog = meDialog == null ? new MeDialog(getContext()) : meDialog;
-                meDialog.show();
+//                meDialog = meDialog == null ? new MeDialog(getContext()) : meDialog;
+//                meDialog.show();
+//                Task.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        closeDrawer();
+//                    }
+//                }, 200);
                 Task.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        closeDrawer();
+                        getContext().startActivity(AboutMeActivity.intentFor(getContext()));
                     }
                 }, 200);
             }
         };
+
     }
 
     @Override
